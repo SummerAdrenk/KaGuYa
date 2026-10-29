@@ -1,0 +1,15 @@
+#include "AppreciationSceneData.h"
+
+namespace KaGuYa::Start::Runtime::HaramiTamaAppreciationSceneData
+{
+namespace
+{
+// 原构造、声音及选择分支：.BuildCache/compatibility/replay-page-profile-audit/profiles/04-harami-tama.json。
+constexpr char s0[] = "\x42\x47\x4D\x30\x31\x2E\x62\x67\x6D";
+constexpr char s1[] = "\x83\x4E\x83\x8A\x83\x62\x83\x4E\x89\xB9\x2E\x73\x65\x64";
+constexpr char s2[] = "\x91\x49\x91\xF0\x89\xB9\x2E\x73\x65\x64";
+constexpr char s3[] = "\x83\x4C\x83\x83\x83\x93\x83\x5A\x83\x8B\x89\xB9\x2E\x73\x65\x64";
+constexpr AppreciationSceneResourceProfile profile{5, s0, s0, s1, s2, s3, true};
+}
+const AppreciationSceneResourceProfile& Profile() noexcept { return profile; }
+}

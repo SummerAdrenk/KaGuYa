@@ -1,0 +1,344 @@
+#include "StartupData.h"
+
+namespace KaGuYa::Start::Runtime::BakuAne2StartupData
+{
+namespace
+{
+// Original Start.exe preferred VAs; root 0x469720, Prepare 0x4444C0/0x4447F0.
+// CP932 resource bytes and null slots are preserved; no resolution-based transforms.
+// Opacity() exposes the initialized track only. Original background position
+// 0x55F860=(774,547) is not representable by OpacityDialogNativeProfile.
+// 0x5311D4
+constexpr char resource00[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x8D"
+    "\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x5311B4
+constexpr char resource01[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x8D"
+    "\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x53118C
+constexpr char resource02[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x4E\x83\x43"
+    "\x83\x62\x83\x4E\x83\x8D\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x531168
+constexpr char resource03[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x4E\x83\x43\x83\x62"
+    "\x83\x4E\x83\x8D\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x530EC0
+constexpr char resource04[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x8D"
+    "\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x531260
+constexpr char resource05[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x5A"
+    "\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x531240
+constexpr char resource06[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x5A"
+    "\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x531218
+constexpr char resource07[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x4E\x83\x43"
+    "\x83\x62\x83\x4E\x83\x5A\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x5311F4
+constexpr char resource08[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x4E\x83\x43\x83\x62"
+    "\x83\x4E\x83\x5A\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x530EA0
+constexpr char resource09[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x4E\x83\x43\x83\x62\x83\x4E\x83\x5A"
+    "\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x5312D4
+constexpr char resource10[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x8D\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x5312BC
+constexpr char resource11[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x8D\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x53129C
+constexpr char resource12[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x8D\x81\x5B"
+    "\x83\x68\x2E\x76\x72\x6D";
+// 0x531280
+constexpr char resource13[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x8D\x81\x5B\x83\x68"
+    "\x2E\x76\x72\x6D";
+// 0x530E88
+constexpr char resource14[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x8D\x81\x5B\x83\x68\x2E\x76\x72\x6D";
+// 0x531340
+constexpr char resource15[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x5A\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x531328
+constexpr char resource16[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x5A\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x531308
+constexpr char resource17[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x5A\x81\x5B"
+    "\x83\x75\x2E\x76\x72\x6D";
+// 0x5312EC
+constexpr char resource18[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x5A\x81\x5B\x83\x75"
+    "\x2E\x76\x72\x6D";
+// 0x530E70
+constexpr char resource19[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x5A\x81\x5B\x83\x75\x2E\x76\x72\x6D";
+// 0x53106C
+constexpr char resource20[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x49\x81\x5B\x83\x67\x2E\x76\x72\x6D";
+// 0x531054
+constexpr char resource21[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x49\x81\x5B\x83\x67\x2E\x76\x72\x6D";
+// 0x531034
+constexpr char resource22[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x49\x81\x5B"
+    "\x83\x67\x2E\x76\x72\x6D";
+// 0x531018
+constexpr char resource23[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x49\x81\x5B\x83\x67"
+    "\x2E\x76\x72\x6D";
+// 0x530C20
+constexpr char resource24[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x49\x81\x5B\x83\x67\x2E\x76\x72\x6D";
+// 0x530C04
+constexpr char resource25[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x76\x83\x8C\x83\x43\x83\x49\x81\x5B\x83\x67\x2E\x76"
+    "\x72\x6D";
+// 0x530BE8
+constexpr char resource26[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x32\x83\x49\x81\x5B\x83"
+    "\x67\x2E\x76\x72\x6D";
+// 0x530FFC
+constexpr char resource27[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x58\x83\x4C\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x530FE0
+constexpr char resource28[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x58\x83\x4C\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x530FC0
+constexpr char resource29[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x58\x83\x4C"
+    "\x83\x62\x83\x76\x2E\x76\x72\x6D";
+// 0x530FA0
+constexpr char resource30[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x58\x83\x4C\x83\x62"
+    "\x83\x76\x2E\x76\x72\x6D";
+// 0x530BCC
+constexpr char resource31[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x58\x83\x4C\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x530BB0
+constexpr char resource32[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x76\x83\x8C\x83\x43\x83\x58\x83\x4C\x83\x62\x83\x76"
+    "\x2E\x76\x72\x6D";
+// 0x530B90
+constexpr char resource33[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x76\x83\x8C\x83\x43\x83\x49\x83\x74\x83\x58\x83\x4C"
+    "\x83\x62\x83\x76\x2E\x76\x72\x6D";
+// 0x531150
+constexpr char resource34[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x7B\x83\x43\x83\x58\x2E\x76\x72\x6D";
+// 0x531138
+constexpr char resource35[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x7B\x83\x43\x83\x58\x2E\x76\x72\x6D";
+// 0x531118
+constexpr char resource36[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x7B\x83\x43"
+    "\x83\x58\x2E\x76\x72\x6D";
+// 0x5310FC
+constexpr char resource37[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x7B\x83\x43\x83\x58"
+    "\x2E\x76\x72\x6D";
+// 0x530E58
+constexpr char resource38[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x7B\x83\x43\x83\x58\x2E\x76\x72\x6D";
+// 0x530E40
+constexpr char resource39[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x93\xA7\x96\xBE\x93\x78\x2E\x76\x72\x6D";
+// 0x530E28
+constexpr char resource40[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x93\xA7\x96\xBE\x93\x78\x2E\x76\x72\x6D";
+// 0x530E08
+constexpr char resource41[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x93\xA7\x96\xBE"
+    "\x93\x78\x2E\x76\x72\x6D";
+// 0x530DF0
+constexpr char resource42[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x93\xA7\x96\xBE\x93\x78\x2E\x76\x72\x6D";
+// 0x530D50
+constexpr char resource43[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x5E\x83\x43\x83\x67\x83\x8B\x2E\x76"
+    "\x72\x6D";
+// 0x530D34
+constexpr char resource44[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x5E\x83\x43\x83\x67\x83\x8B\x2E\x76"
+    "\x72\x6D";
+// 0x530D14
+constexpr char resource45[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x5E\x83\x43"
+    "\x83\x67\x83\x8B\x2E\x76\x72\x6D";
+// 0x530CF4
+constexpr char resource46[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x5E\x83\x43\x83\x67"
+    "\x83\x8B\x2E\x76\x72\x6D";
+// 0x530CD8
+constexpr char resource47[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x5E\x83\x43\x83\x67\x83\x8B\x2E\x76"
+    "\x72\x6D";
+// 0x530CA4
+constexpr char resource48[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x94\xF1\x95\x5C\x8E\xA6\x2E\x76\x72\x6D";
+// 0x530C8C
+constexpr char resource49[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x94\xF1\x95\x5C\x8E\xA6\x2E\x76\x72\x6D";
+// 0x530C6C
+constexpr char resource50[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x94\xF1\x95\x5C"
+    "\x8E\xA6\x2E\x76\x72\x6D";
+// 0x530C50
+constexpr char resource51[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x94\xF1\x95\x5C\x8E\xA6"
+    "\x2E\x76\x72\x6D";
+// 0x530C38
+constexpr char resource52[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x94\xF1\x95\x5C\x8E\xA6\x2E\x76\x72\x6D";
+// 0x5310E0
+constexpr char resource53[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x93\x83\x58\x83\x67\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x5310C4
+constexpr char resource54[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x49\x83\x74\x83\x58\x83\x67\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x5310A4
+constexpr char resource55[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x83\x58\x83\x67"
+    "\x83\x62\x83\x76\x2E\x76\x72\x6D";
+// 0x531084
+constexpr char resource56[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x83\x4E\x83\x8A\x83\x62\x83\x4E\x83\x58\x83\x67\x83\x62"
+    "\x83\x76\x2E\x76\x72\x6D";
+// 0x530CBC
+constexpr char resource57[] =
+    "\x83\x52\x83\x7D\x83\x93\x83\x68\x94\xCD\x88\xCD\x83\x58\x83\x67\x83\x62\x83\x76\x2E\x76"
+    "\x72\x6D";
+// 0x525254
+constexpr char resource58[] =
+    "\x83\x7D\x81\x5B\x83\x4E\x2E\x76\x72\x6D";
+// 0x525240
+constexpr char resource59[] =
+    "\x83\x49\x81\x5B\x83\x67\x83\x7D\x81\x5B\x83\x4E\x2E\x76\x72\x6D";
+// 0x530B38
+constexpr char resource60[] =
+    "\x91\x49\x91\xF0\x8E\x88\x2E\x76\x72\x6D";
+// 0x530B20
+constexpr char resource61[] =
+    "\x91\x49\x91\xF0\x8E\x88\x83\x5E\x81\x5B\x83\x51\x83\x62\x83\x67\x2E\x76\x72\x6D";
+// 0x530B0C
+constexpr char resource62[] =
+    "\x91\x49\x91\xF0\x8E\x88\x83\x4E\x83\x8A\x83\x62\x83\x4E\x2E\x76\x72\x6D";
+constexpr POINT point0{115, 575}; // 0x55F5C8
+constexpr POINT point1{212, 574}; // 0x55F5D0
+constexpr POINT point2{303, 576}; // 0x55F5D8
+constexpr POINT point3{397, 575}; // 0x55F5E0
+constexpr POINT point4{493, 575}; // 0x55F5E8
+constexpr POINT point5{596, 575}; // 0x55F5F0
+constexpr POINT point6{706, 575}; // 0x55F5F8
+constexpr POINT point7{806, 577}; // 0x55F600
+
+// Original 0x55F608; kind 1, count 4.
+constexpr GuiCheckBoxDescriptorNative2Ch normalGroup0[]{
+    {{8, {resource00, resource01, nullptr, resource02, resource02, resource03, resource04}, &point0}, 6, -1}, // 0x55F608
+    {{7, {resource05, resource06, nullptr, resource07, resource07, resource08, resource09}, &point1}, 6, -1}, // 0x55F634
+    {{1, {resource10, resource11, nullptr, resource12, resource12, resource13, resource14}, &point2}, 6, -1}, // 0x55F660
+    {{0, {resource15, resource16, nullptr, resource17, resource17, resource18, resource19}, &point3}, 6, -1}, // 0x55F68C
+};
+
+// Original 0x55F7C0; kind 2, count 2.
+constexpr ToolCheckDescriptorNative48h normalGroup1[]{
+    {4, {resource20, resource21, nullptr, resource22, resource22, resource23, resource24}, {resource25, resource21, nullptr, resource25, resource25, resource26, resource24}, &point4, 6, 26}, // 0x55F7C0
+    {5, {resource27, resource28, nullptr, resource29, resource29, resource30, resource31}, {resource32, resource33, nullptr, resource32, resource32, resource32, resource31}, &point5, 6, -1}, // 0x55F808
+};
+
+// Original 0x55F6B8; kind 1, count 2.
+constexpr GuiCheckBoxDescriptorNative2Ch normalGroup2[]{
+    {{6, {resource34, resource35, nullptr, resource36, resource36, resource37, resource38}, &point6}, 6, -1}, // 0x55F6B8
+    {{9, {resource39, resource40, nullptr, resource41, resource41, resource41, resource42}, &point7}, 6, -1}, // 0x55F6E4
+};
+
+// Original 0x55F73C; kind 1, count 1.
+constexpr GuiCheckBoxDescriptorNative2Ch normalGroup3[]{
+    {{11, {resource43, resource44, nullptr, resource45, resource45, resource46, resource47}, nullptr}, 6, -1}, // 0x55F73C
+};
+
+// Original 0x55F794; kind 1, count 1.
+constexpr GuiCheckBoxDescriptorNative2Ch normalGroup4[]{
+    {{2, {resource48, resource49, nullptr, resource50, resource50, resource51, resource52}, nullptr}, 6, -1}, // 0x55F794
+};
+
+// Original 0x55F768; kind 1, count 1.
+constexpr GuiCheckBoxDescriptorNative2Ch replayGroup3[]{
+    {{12, {resource53, resource54, nullptr, resource55, resource55, resource56, resource57}, nullptr}, 6, -1}, // 0x55F768
+};
+
+// 0x562AD8
+constexpr ToolControlGroupNative0Ch normal[]{
+    {1, 4, normalGroup0},
+    {2, 2, normalGroup1},
+    {1, 2, normalGroup2},
+    {1, 1, normalGroup3},
+    {1, 1, normalGroup4},
+};
+
+// 0x562B14
+constexpr ToolControlGroupNative0Ch replay[]{
+    {1, 4, normalGroup0},
+    {2, 2, normalGroup1},
+    {1, 2, normalGroup2},
+    {1, 1, replayGroup3},
+    {1, 1, normalGroup4},
+};
+static_assert(std::size(normal) == 5 && std::size(replay) == 5);
+constexpr ToolDialogNativeProfile tool{normal, replay};
+// Original event 0..12 -> {3,2,11,-1,4,5,6,1,0,7,8,9,10}.
+// Event decoder 0x4B8740; relation reader 0x4CFAC0.
+constexpr ToolDialogNativeRelation relation{100, 10};
+
+// Wait descriptors 0x557AC8, constructor 0x4651E0.
+constexpr WaitMarkNativeProfile wait{{
+    {resource58, 1, 1, 961, 529},
+    {resource59, 1, 1, 955, 529},
+}};
+
+constexpr GuiButtonDescriptorNative2Ch selectionButton0{{0, {resource60, nullptr, nullptr, resource61, resource61, resource62, nullptr}, nullptr}, 7, -1}; // 0x55F88C
+// Placements 0x55F8B8; original count is explicit.
+constexpr SelectButtonPlacementNative10h placements[]{
+    {&selectionButton0, 115, 107, 0},
+    {&selectionButton0, 115, 212, 1},
+    {&selectionButton0, 115, 317, 2},
+};
+constexpr std::int32_t visible2[]{0, 1}; // 0x55F8E8
+constexpr std::int32_t visible3[]{0, 1, 2}; // 0x55F8F0
+constexpr GuiDialogNavigationMapping navigation2Pairs0[]{{0, 1}, {1, 0}, {-1, 0}};
+constexpr GuiDialogNavigationMapping navigation2Pairs1[]{{0, 1}, {1, 0}, {-1, 0}};
+constexpr SelectNavigationDescriptorNative8h navigation2[]{{2, navigation2Pairs0}, {1, navigation2Pairs1}, {255, nullptr}};
+constexpr GuiDialogNavigationMapping navigation3Pairs0[]{{0, 1}, {1, 2}, {2, 0}, {-1, 0}};
+constexpr GuiDialogNavigationMapping navigation3Pairs1[]{{0, 2}, {1, 0}, {2, 1}, {-1, 0}};
+constexpr SelectNavigationDescriptorNative8h navigation3[]{{2, navigation3Pairs0}, {1, navigation3Pairs1}, {255, nullptr}};
+constexpr SelectDialogNativeProfile selection{placements, {nullptr, nullptr, visible2, visible3},
+    {nullptr, nullptr, navigation2, navigation3}, std::size(placements)};
+
+// Opacity slider 0x563440+0x4C; adjustment remains (0,0,-12,0).
+// CRT 0x520DB0: (x+31,y+9,x+116,y+28), base point 0x55F860.
+// 原CRT初始化滑轨，背景位置来自55F860；不复制盘面零RECT，也不丢弃显式位置。
+constexpr OpacityDialogNativeProfile opacity{{805, 556, 890, 575}, POINT{774, 547}};
+}
+
+const ToolDialogNativeProfile& Tool() noexcept { return tool; }
+const ToolDialogNativeRelation& ToolRelation() noexcept { return relation; }
+const WaitMarkNativeProfile& WaitMark() noexcept { return wait; }
+const SelectDialogNativeProfile& Selection() noexcept { return selection; }
+const OpacityDialogNativeProfile& Opacity() noexcept { return opacity; }
+// Full root append chain has 7 roles and no Countdown; both Prepare boundaries audited.
+bool HasCountdown() noexcept { return false; }
+}

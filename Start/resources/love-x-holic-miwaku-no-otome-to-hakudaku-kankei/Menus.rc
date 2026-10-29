@@ -1,0 +1,133 @@
+LANGUAGE 0x11, 0x1
+IDR_MENU_128 MENU
+{
+  POPUP "ゲーム中"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "セーブ(&S)\tF5",  32775
+      MENUITEM "ロード(&L)\tF6",  32776
+      MENUITEM SEPARATOR
+      MENUITEM "クイックセーブ(&A)\tF7",  32777
+      MENUITEM "クイックロード(&K)\tF8",  32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "オートモード(&A)",  32782
+    MENUITEM "メッセージスキップ(&S)",  32783
+    MENUITEM "メッセージ履歴(&B)",  32784
+    MENUITEM "音声の再生(&R)",  32785
+    MENUITEM "ウィンドウ消去(&D)",  32786
+    MENUITEM SEPARATOR
+    MENUITEM "タイトルに戻る(&T)",  32789
+    MENUITEM "終了(&X)",  32790
+  }
+  POPUP "シーン再生"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "オートモード(&A)",  32782
+    MENUITEM "メッセージスキップ(&S)",  32783
+    MENUITEM "メッセージ履歴(&B)",  32784
+    MENUITEM "音声の再生(&R)",  32785
+    MENUITEM "ウィンドウ消去(&D)",  32786
+    MENUITEM SEPARATOR
+    MENUITEM "シーン再生の中止(&X)",  32791
+  }
+  POPUP "オプション"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)",  32792
+    MENUITEM "シーン再生へ(&S)",  32793
+    MENUITEM "音楽鑑賞へ(&M)",  32794
+    MENUITEM "タイトルに戻る(&T)",  32795
+  }
+  POPUP "タイトル"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "ロード(&L)\tF6",  32776
+      MENUITEM "クイックロード(&K)\tF8",  32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)",  32792
+    MENUITEM "シーン再生へ(&S)",  32793
+    MENUITEM "音楽鑑賞へ(&M)",  32794
+    MENUITEM SEPARATOR
+    MENUITEM "終了(&X)",  32790
+  }
+  POPUP "CG選択"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "CG選択(&S)",  32800
+    MENUITEM "ウィンドウ消去(&D)",  32803
+    MENUITEM "戻る(&R)",  32804
+  }
+  POPUP "オプション２"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)",  32792
+    MENUITEM "シーン再生へ(&S)",  32793
+    MENUITEM "タイトルに戻る(&T)",  32795
+  }
+  POPUP "タイトル２"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "ロード(&L)\tF6",  32776
+      MENUITEM "クイックロード(&K)\tF8",  32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)",  32779
+      MENUITEM "ウィンドウ表示(&W)",  32780
+    }
+    MENUITEM "設定(&C)...",  32781
+    MENUITEM "バージョン情報(&V)...",  32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)",  32792
+    MENUITEM "シーン再生へ(&S)",  32793
+    MENUITEM SEPARATOR
+    MENUITEM "終了(&X)",  32790
+  }
+}

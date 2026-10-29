@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{FC77E79B-92FB-4102-A175-9D3A44B9FFED}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Graphics</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaOutputRoot)Lib\</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>Graphics</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>$(ProjectDir)Graphics.def</ModuleDefinitionFile>
+      <AdditionalDependencies>Gdi32.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\GraphicsApi.h" />
+    <ClInclude Include="include\GraphicsState.h" />
+    <ClInclude Include="include\GdiBackendState.h" />
+    <ClInclude Include="include\GdiDraw.h" />
+    <ClInclude Include="include\RendererReference.h" />
+    <ClInclude Include="include\RendererState.h" />
+    <ClInclude Include="include\BackendLibrary.h" />
+    <ClInclude Include="include\RenderDxBridge.h" />
+    <ClInclude Include="include\RenderGlBridge.h" />
+    <ClInclude Include="include\Surface.h" />
+    <ClInclude Include="include\SurfaceBlur.h" />
+    <ClInclude Include="include\SurfaceManager.h" />
+    <ClInclude Include="include\SurfaceReference.h" />
+    <ClInclude Include="include\NativeReferenceArray.h" />
+    <ClInclude Include="include\NativeArrayReference.h" />
+    <ClInclude Include="include\DibBitmap.h" />
+    <ClInclude Include="include\DibBitmapReference.h" />
+    <ClInclude Include="include\NativeObjectReference.h" />
+    <ClInclude Include="include\FontWrap.h" />
+    <ClInclude Include="include\GlyphLayout.h" />
+    <ClInclude Include="include\TextRenderer.h" />
+    <ClInclude Include="include\TextRendererState.h" />
+    <ClInclude Include="include\NativeTextName.h" />
+    <ClInclude Include="include\NativeAnsiString.h" />
+    <ClInclude Include="include\SurfaceTransfer.h" />
+    <ClInclude Include="..\Common\include\Logging\Logger.h" />
+    <ClInclude Include="..\Common\include\Logging\WinUtf8FileSink.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\GraphicsState.cpp" />
+    <ClCompile Include="src\GdiBackendState.cpp" />
+    <ClCompile Include="src\DibDraw.cpp">
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\GdiPlusDraw.cpp">
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\BackendLibrary.cpp" />
+    <ClCompile Include="src\RenderDxBridge.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\RenderGlBridge.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\Surface.cpp" />
+    <ClCompile Include="src\SurfaceBlur.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\SurfaceInfo.cpp" />
+    <ClCompile Include="src\DibBitmap.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\FontWrap.cpp">
+      <!-- 原40BA0的catch包括GDI调用，保留与TextRenderer相同的/EHs异常边界。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\SurfaceManager.cpp" />
+    <ClCompile Include="src\GlyphLayout.cpp" />
+    <ClCompile Include="src\TextGlyphRenderer.cpp">
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\TextRenderer.cpp">
+      <!-- 原10040BA0的catch覆盖GDI调用；不能让/EHsc按extern C不抛异常移除该边界。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\NativeAnsiString.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\GraphicsExports.System.cpp">
+      <!-- 原系统导出允许异常外传；不让/EHsc给extern C包装强加不抛假定。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\GraphicsExports.Surface.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\GraphicsExports.Effects.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\GraphicsExports.Text.cpp">
+      <!-- 原047F0/3B010允许分配异常外传；1806实测/EHsc遗漏导出内Runtime锁的异常展开。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <ClCompile Include="src\GraphicsExports.DIBitmap.cpp">
+      <!-- 1734实际bad_alloc未展开owner/锁；原1000E6C0保留RAII展开，不能按extern C不抛优化掉。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\KaGuYaLogging.vcxproj">
+      <Project>{E77563CE-422B-4D1E-A35A-906A35404B41}</Project>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

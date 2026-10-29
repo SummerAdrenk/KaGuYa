@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{C7CD5E03-2B0F-4531-BDAE-B99471DF5271}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>RenderDX</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaOutputRoot)Lib\</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>RenderDX</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <!-- 原UpdatePrimary的转换分配异常可以越过extern C导出，不能按EHsc假设C调用不抛出。 -->
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>$(ProjectDir)RenderDX.def</ModuleDefinitionFile>
+      <AdditionalDependencies>d3d9.lib;User32.lib;Advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\RenderDxState.h" />
+    <ClInclude Include="include\TextureFormatSelection.h" />
+    <ClInclude Include="include\TexturePixelConversion.h" />
+    <ClInclude Include="include\SurfaceTransfer.h" />
+    <ClInclude Include="include\DebugMute.h" />
+    <ClInclude Include="..\Common\include\Logging\Logger.h" />
+    <ClInclude Include="..\Common\include\Logging\WinUtf8FileSink.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\Exports.cpp" />
+    <ClCompile Include="src\RenderDxState.cpp" />
+    <ClCompile Include="src\TextureFormatSelection.cpp" />
+    <ClCompile Include="src\TexturePixelConversion.cpp" />
+    <ClCompile Include="src\SurfaceTransfer.cpp" />
+    <ClCompile Include="src\DebugMute.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RenderDX.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\KaGuYaLogging.vcxproj">
+      <Project>{E77563CE-422B-4D1E-A35A-906A35404B41}</Project>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

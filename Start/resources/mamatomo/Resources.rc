@@ -1,0 +1,29 @@
+﻿// Mamatomo的可维护Windows原生资源；生成物只写入.BuildCache。
+#pragma code_page(65001)
+#include <windows.h>
+#include "resource.h"
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+
+#include "Images.rc"
+#include "dialogs/FileProgress.rc"
+#include "dialogs/SettingsText.rc"
+#include "dialogs/SettingsWindow.rc"
+#include "dialogs/Sound105.rc"
+#include "dialogs/SettingsSaveLoad.rc"
+#include "dialogs/SettingsSystem1.rc"
+#include "dialogs/SettingsSystem2.rc"
+#include "dialogs/About.rc"
+#include "dialogs/StartupSettings.rc"
+#include "dialogs/ChangeName.rc"
+#include "dialogs/Sound113.rc"
+#include "dialogs/Voice.rc"
+#include "dialogs/System115.rc"
+#include "dialogs/Dialog209.rc"
+#include "dialogs/FullscreenSettings.rc"
+#include "dialogs/DisplayModeConfirmation.rc"
+#include "dialogs/SettingsSound.rc"
+#include "MainMenu.rc"
+#include "Strings.rc"
+#include "Accelerators.rc"
+#include "VersionInfo.rc"
+#include "Manifest.rc"

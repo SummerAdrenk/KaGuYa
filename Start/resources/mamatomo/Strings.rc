@@ -1,0 +1,92 @@
+﻿STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_128, 	"AdvGame"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57345, 	"Ready"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57600, 	"新規にファイルを作成\n新規ファイル"
+  IDS_STRING_57601, 	"既存のファイルを開く\n開く"
+  IDS_STRING_57602, 	"作業中のファイルを閉じる\n閉じる"
+  IDS_STRING_57603, 	"作業中のファイルを上書きして保存\n保存"
+  IDS_STRING_57604, 	"作業中のファイルを新しい名前で保存\n名前をつけて保存"
+  IDS_STRING_57605, 	"印刷オプションの変更\nページ レイアウトの設定"
+  IDS_STRING_57606, 	"プリンタおよび印刷オプションの変更\n印刷設定"
+  IDS_STRING_57607, 	"作業中のファイルを印刷\n印刷"
+  IDS_STRING_57609, 	"印刷イメージを表示\n印刷プレビュー"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57632, 	"選択範囲を消去\n消去"
+  IDS_STRING_57633, 	"すべて消去\nすべて消去"
+  IDS_STRING_57634, 	"選択範囲をコピーしてクリップボードに保存\n保存"
+  IDS_STRING_57635, 	"選択範囲を切り取ってクリップボードに保存\n切り取り"
+  IDS_STRING_57636, 	"指定した文字列の検索\n検索"
+  IDS_STRING_57637, 	"クリップボードの内容を貼り付け\n貼り付け"
+  IDS_STRING_57640, 	"直前に行った動作を繰り返す\n繰り返し"
+  IDS_STRING_57641, 	"指定した文字列を他の文字列で置換\n置換"
+  IDS_STRING_57642, 	"ファイル内のすべてを選択\nすべて選択"
+  IDS_STRING_57643, 	"直前に行った動作を元に戻す\n元に戻す"
+  IDS_STRING_57644, 	"取り消した操作をやり直す\nやり直す"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57648, 	"作業中のウィンドウを複写して表示\n新規ウィンドウ"
+  IDS_STRING_57649, 	"ウィンドウの下部にアイコンを整列\nアイコンの整列"
+  IDS_STRING_57650, 	"ウィンドウを重ねて表示\n重ねて表示"
+  IDS_STRING_57651, 	"ウィンドウを並べて表示\n並べて表示"
+  IDS_STRING_57652, 	"ウィンドウを並べて表示\n並べて表示"
+  IDS_STRING_57653, 	"作業中のウィンドウを分割\n分割"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57664, 	"プログラム情報、バージョン、著作権を表示します。\nバージョン情報"
+  IDS_STRING_57665, 	"アプリケーションを終了し、ファイルの保存を指示\\終了"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_57680, 	"次のウィンドウに切り替える\n次のペイン"
+  IDS_STRING_57681, 	"前のウィンドウに切り替える\n前のペイン"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_61184, 	"ウィンドウのサイズを変更"
+  IDS_STRING_61185, 	"ウィンドウの位置を変更"
+  IDS_STRING_61186, 	"ウィンドウを最小化する"
+  IDS_STRING_61187, 	"ウィンドウを最大化する"
+  IDS_STRING_61188, 	"次のウィンドウに切り替える"
+  IDS_STRING_61189, 	"前のウィンドウに切り替える"
+  IDS_STRING_61190, 	"作業中のウィンドウを閉じ、変更したファイルの保存を指示"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_61202, 	"ウィンドウを通常のサイズに戻す"
+  IDS_STRING_61203, 	"タスク一覧をアクティブにする"
+  IDS_STRING_61215, 	"ウィンドウをアクティブにする"
+}
+
+STRINGTABLE
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  IDS_STRING_61402, 	"Open this document"
+}

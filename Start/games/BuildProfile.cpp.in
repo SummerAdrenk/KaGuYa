@@ -1,0 +1,112 @@
+#include <Runtime/GameBuildProfile.h>
+#include <Runtime/ScriptNamedValueNative.h>
+#include <Runtime/TitleResourceProfile.h>
+#include <Runtime/StartupResourceProfile.h>
+#include <Runtime/DateWindowNative.h>
+#include <Runtime/CountDownWindowFiveFrameProfile.h>
+#include <Runtime/CommandSelectionNative.h>
+#include <Runtime/TokimekiGaugeNative.h>
+#include <Runtime/LoveHolicGaugesNative.h>
+#include <Runtime/MusicResourceProfile.h>
+#include <Runtime/SettingPage03ResourceProfile.h>
+#include <Runtime/SettingShellResourceProfile.h>
+#include <Runtime/SettingTextDisplayResourceProfile.h>
+#include <Runtime/SettingOtherResourceProfile.h>
+#include <Runtime/CgPageResourceProfile.h>
+#include <Runtime/ReplayPageResourceProfile.h>
+#include <Runtime/AppreciationSceneResourceProfile.h>
+#include <Runtime/OptionCharResourceProfile.h>
+#include <Runtime/CgOperationResourceProfile.h>
+#include <Runtime/LogPageResourceProfile.h>
+#include <Runtime/SaveLoadResourceProfile.h>
+#include <Runtime/NameRegistrationResourceProfile.h>
+#include <Runtime/GeneralConfirmResourceProfile.h>
+#include <Runtime/ProgramResourceProfile.h>
+#include <Runtime/CountResourceProfile.h>
+#include <Runtime/LegacyMenuSelectionResourceProfile.h>
+#include <Runtime/LegacyCharacterSelectionProfile.h>
+#include <Runtime/LikabilityResourceProfile.h>
+#include <Runtime/LegacyItemAcquisitionResourceProfile.h>
+#include <Runtime/LegacyMapSelectionProfile.h>
+@_script_names_include@
+@_text_layout_include@
+@_title_data_include@
+@_startup_data_include@
+@_date_data_include@
+@_countdown_data_include@
+@_command_data_include@
+@_gauge_data_include@
+@_music_data_include@
+@_mode_select_include@
+@_sound_page_include@
+@_settings_shell_include@
+@_settings_text_display_include@
+@_settings_other_include@
+@_cg_page_include@
+@_replay_page_include@
+@_appreciation_scene_include@
+@_option_characters_include@
+@_cg_operation_include@
+@_log_page_include@
+@_save_load_include@
+@_native_name_include@
+@_general_confirm_include@
+@_program_resources_include@
+@_count_resources_include@
+@_menu_selection_include@
+@_legacy_character_selection_include@
+@_likability_include@
+@_item_acquisition_include@
+@_legacy_map_selection_include@
+
+namespace KaGuYa::Start::Runtime
+{
+const GameBuildProfile& CompiledGameProfile() noexcept
+{
+@_title_data_initializer@
+@_startup_data_initializer@
+@_date_data_initializer@
+@_countdown_data_initializer@
+@_command_data_initializer@
+@_gauge_data_initializer@
+@_music_data_initializer@
+@_sound_page_initializer@
+@_settings_shell_initializer@
+@_settings_text_display_initializer@
+@_settings_other_initializer@
+@_cg_page_initializer@
+@_replay_page_initializer@
+@_appreciation_scene_initializer@
+@_option_characters_initializer@
+@_cg_operation_initializer@
+@_log_page_initializer@
+@_save_load_initializer@
+@_native_name_initializer@
+@_general_confirm_initializer@
+@_program_resources_initializer@
+@_count_resources_initializer@
+@_menu_selection_initializer@
+@_legacy_character_selection_initializer@
+@_likability_initializer@
+@_item_acquisition_initializer@
+@_legacy_map_selection_initializer@
+    static const GameBuildProfile profile{
+        "@_slug@", {TitleDialogFamily::@_title_family@, TitleNamePromptGate::@_title_gate@,
+            TitleButtonResources::@_title_resources@, TitlePhase5Recovery::@_title_recovery@, @_title_data_reference@},
+        GameBuildProfile::SoundSettings::@_sound_settings@,
+        GameBuildProfile::StartupResources::@_startup_resources@,
+        &@_script_names_provider@, @_countdown_enabled@, @_wait_skip_result@, @_restart_point@,
+        &@_text_layout_provider@, @_startup_data_reference@, @_date_data_reference@,
+        @_countdown_data_reference@, @_command_data_reference@,
+        @_tokimeki_data_reference@, @_love_holic_data_reference@, @_music_data_reference@,
+        @_env_read_color_byte@, @_startup_fullscreen_control@, &@_mode_select_provider@,
+        @_mode_select_explicit_position@, &soundPage, &settings_shell, &settings_text_display,
+        @_top_menu_requires_frame_left@, LegacyDisplaySettingsFamily::@_legacy_display_family@, &settings_other,
+        &cg_page, &replay_page, &appreciation_scene, &option_characters,
+        &cg_operation, &log_page, &save_load,
+        @_native_name_reference@, &general_confirm, &program_resources, &count_resources,
+        @_menu_selection_reference@, &legacy_character_selection, &likability,
+        @_item_acquisition_reference@, &legacy_map_selection};
+    return profile;
+}
+}

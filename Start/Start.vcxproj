@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32"><Configuration>Debug</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32"><Configuration>Release</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals"><VCProjectVersion>17.0</VCProjectVersion><ProjectGuid>{44DF9FC2-72EC-4EC5-ABCE-17C17FBA31CD}</ProjectGuid><Keyword>Win32Proj</Keyword><RootNamespace>Start</RootNamespace></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration"><ConfigurationType>Application</ConfigurationType><UseDebugLibraries>true</UseDebugLibraries><WholeProgramOptimization>false</WholeProgramOptimization></PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration"><ConfigurationType>Application</ConfigurationType><UseDebugLibraries>false</UseDebugLibraries><WholeProgramOptimization>false</WholeProgramOptimization></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaOutputRoot)</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>Start</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <EmbedManifest>false</EmbedManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(KaGuYaRoot)Start\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link><SubSystem>Windows</SubSystem><AdditionalDependencies>User32.lib;Shell32.lib;Winmm.lib;Comctl32.lib;Imagehlp.lib;%(AdditionalDependencies)</AdditionalDependencies><AdditionalOptions>/INCLUDE:_KaGuYaProcessStringsInitializer /INCLUDE:_KaGuYaProcessRootLockInitializer /INCLUDE:_KaGuYaProcessRootRetirementInitializer /INCLUDE:_KaGuYaNativeTimerProcessInitializer /INCLUDE:_KaGuYaSaveFileMagicInitializer %(AdditionalOptions)</AdditionalOptions></Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ResourceCompile Include="resources\mamatomo\Resources.rc">
+      <AdditionalIncludeDirectories>$(ProjectDir)resources\mamatomo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <ClInclude Include="resources\mamatomo\resource.h" />
+    <None Include="resources\mamatomo\**\*" Exclude="resources\mamatomo\Resources.rc;resources\mamatomo\resource.h" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="StartRuntime.vcxproj"><Project>{50A98747-C685-41E6-B189-A1616B23B844}</Project><LinkLibraryDependencies>true</LinkLibraryDependencies></ProjectReference>
+    <ProjectReference Include="StartPlatform.vcxproj"><Project>{7B0897BF-55DD-4E5E-A30F-50434AF113D7}</Project><LinkLibraryDependencies>true</LinkLibraryDependencies></ProjectReference>
+    <ProjectReference Include="..\Common\KaGuYaLogging.vcxproj"><Project>{E77563CE-422B-4D1E-A35A-906A35404B41}</Project><LinkLibraryDependencies>true</LinkLibraryDependencies></ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

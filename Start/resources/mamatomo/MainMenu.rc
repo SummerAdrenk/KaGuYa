@@ -1,0 +1,133 @@
+﻿IDR_MAIN_MENU MENU
+LANGUAGE LANG_JAPANESE, 0x1
+{
+  POPUP "ゲーム中"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "セーブ(&S)\tF5", IDM_COMMAND_32775
+      MENUITEM "ロード(&L)\tF6", IDM_COMMAND_32776
+      MENUITEM SEPARATOR
+      MENUITEM "クイックセーブ(&A)\tF7", IDM_COMMAND_32777
+      MENUITEM "クイックロード(&K)\tF8", IDM_COMMAND_32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "オートモード(&A)", IDM_COMMAND_32782
+    MENUITEM "メッセージスキップ(&S)", IDM_COMMAND_32783
+    MENUITEM "メッセージ履歴(&B)", IDM_COMMAND_32784
+    MENUITEM "音声の再生(&R)", IDM_COMMAND_32785
+    MENUITEM "ウィンドウ消去(&D)", IDM_COMMAND_32786
+    MENUITEM SEPARATOR
+    MENUITEM "タイトルに戻る(&T)", IDM_COMMAND_32789
+    MENUITEM "終了(&X)", IDM_COMMAND_32790
+  }
+  POPUP "シーン再生"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "オートモード(&A)", IDM_COMMAND_32782
+    MENUITEM "メッセージスキップ(&S)", IDM_COMMAND_32783
+    MENUITEM "メッセージ履歴(&B)", IDM_COMMAND_32784
+    MENUITEM "音声の再生(&R)", IDM_COMMAND_32785
+    MENUITEM "ウィンドウ消去(&D)", IDM_COMMAND_32786
+    MENUITEM SEPARATOR
+    MENUITEM "シーン再生の中止(&X)", IDM_COMMAND_32791
+  }
+  POPUP "オプション"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)", IDM_COMMAND_32792
+    MENUITEM "シーン再生へ(&S)", IDM_COMMAND_32793
+    MENUITEM "音楽鑑賞へ(&M)", IDM_COMMAND_32794
+    MENUITEM "タイトルに戻る(&T)", IDM_COMMAND_32795
+  }
+  POPUP "タイトル"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "ロード(&L)\tF6", IDM_COMMAND_32776
+      MENUITEM "クイックロード(&K)\tF8", IDM_COMMAND_32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)", IDM_COMMAND_32792
+    MENUITEM "シーン再生へ(&S)", IDM_COMMAND_32793
+    MENUITEM "音楽鑑賞へ(&M)", IDM_COMMAND_32794
+    MENUITEM SEPARATOR
+    MENUITEM "終了(&X)", IDM_COMMAND_32790
+  }
+  POPUP "CG選択"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "CG選択(&S)", IDM_COMMAND_32800
+    MENUITEM "ウィンドウ消去(&D)", IDM_COMMAND_32803
+    MENUITEM "戻る(&R)", IDM_COMMAND_32804
+  }
+  POPUP "オプション２"
+  {
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)", IDM_COMMAND_32792
+    MENUITEM "シーン再生へ(&S)", IDM_COMMAND_32793
+    MENUITEM "タイトルに戻る(&T)", IDM_COMMAND_32795
+  }
+  POPUP "タイトル２"
+  {
+    POPUP "ファイル(&F)..."
+    {
+      MENUITEM "ロード(&L)\tF6", IDM_COMMAND_32776
+      MENUITEM "クイックロード(&K)\tF8", IDM_COMMAND_32778
+    }
+    POPUP "表示(&E)..."
+    {
+      MENUITEM "フルスクリーン表示(&F)", IDM_COMMAND_32779
+      MENUITEM "ウィンドウ表示(&W)", IDM_COMMAND_32780
+    }
+    MENUITEM "設定(&C)...", IDM_COMMAND_32781
+    MENUITEM "バージョン情報(&V)...", IDM_COMMAND_32788
+    MENUITEM SEPARATOR
+    MENUITEM "ＣＧ鑑賞へ(&G)", IDM_COMMAND_32792
+    MENUITEM "シーン再生へ(&S)", IDM_COMMAND_32793
+    MENUITEM SEPARATOR
+    MENUITEM "終了(&X)", IDM_COMMAND_32790
+  }
+}

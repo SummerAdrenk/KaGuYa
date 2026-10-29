@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32"><Configuration>Debug</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32"><Configuration>Release</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals"><VCProjectVersion>17.0</VCProjectVersion><ProjectGuid>{E77563CE-422B-4D1E-A35A-906A35404B41}</ProjectGuid><Keyword>Win32Proj</Keyword><RootNamespace>KaGuYaLogging</RootNamespace></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration"><ConfigurationType>StaticLibrary</ConfigurationType><UseDebugLibraries>true</UseDebugLibraries><WholeProgramOptimization>false</WholeProgramOptimization></PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration"><ConfigurationType>StaticLibrary</ConfigurationType><UseDebugLibraries>false</UseDebugLibraries><WholeProgramOptimization>false</WholeProgramOptimization></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaBuildRoot)lib\$(Configuration)\x86\</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>KaGuYaLogging</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+    <KaGuYaEnableLogging Condition="'$(KaGuYaEnableLogging)'=='' and '$(Configuration)'=='Debug'">1</KaGuYaEnableLogging>
+    <KaGuYaEnableLogging Condition="'$(KaGuYaEnableLogging)'==''">0</KaGuYaEnableLogging>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>KAGUYA_ENABLE_LOGGING=$(KaGuYaEnableLogging);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(KaGuYaRoot)Start\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Logger.cpp" />
+    <ClInclude Include="include\Logging\Logger.h" />
+    <ClInclude Include="include\Logging\WinUtf8FileSink.h" />
+  </ItemGroup>
+  <ItemGroup>
+
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

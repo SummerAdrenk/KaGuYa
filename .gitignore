@@ -1,0 +1,37 @@
+# Local build products, backups and editor state.
+/.bk/
+/.BuildCache/
+/Release/
+/build/
+/cmake-build-*/
+/.idea/
+/.vs/
+/CMakeUserPresets.json
+
+# Generated binaries and diagnostics do not belong in the source snapshot.
+*.obj
+*.o
+*.lib
+*.a
+*.dll
+*.exe
+*.pdb
+*.ilk
+*.exp
+*.res
+*.dmp
+*.log
+*.vcxproj.user
+__pycache__/
+*.py[cod]
+
+# User data and credentials.
+/Save/
+/Save_*/
+/Logs/
+/Log/
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12

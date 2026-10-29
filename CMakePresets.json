@@ -1,0 +1,32 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 30, "patch": 0 },
+  "configurePresets": [
+    {
+      "name": "clang-cl-base",
+      "hidden": true,
+      "generator": "Ninja",
+      "toolchainFile": "${sourceDir}/cmake/toolchains/clang-cl-x86.cmake",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "cacheVariables": { "CMAKE_EXPORT_COMPILE_COMMANDS": true }
+    },
+    {
+      "name": "clang-cl-release",
+      "inherits": "clang-cl-base",
+      "displayName": "LLVM x86 / Release / C++ latest",
+      "binaryDir": "${sourceDir}/.BuildCache/clang-cl-release",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Release" }
+    },
+    {
+      "name": "clang-cl-debug",
+      "inherits": "clang-cl-base",
+      "displayName": "LLVM x86 / Debug / C++ latest",
+      "binaryDir": "${sourceDir}/.BuildCache/clang-cl-debug",
+      "cacheVariables": { "CMAKE_BUILD_TYPE": "Debug" }
+    }
+  ],
+  "buildPresets": [
+    { "name": "clang-cl-release", "configurePreset": "clang-cl-release", "targets": ["KaGuYaProduction"], "jobs": 6 },
+    { "name": "clang-cl-debug", "configurePreset": "clang-cl-debug", "targets": ["KaGuYaProduction"], "jobs": 6 }
+  ]
+}

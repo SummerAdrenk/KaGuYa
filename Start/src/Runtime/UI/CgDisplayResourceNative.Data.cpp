@@ -1,0 +1,13 @@
+#include "CgDisplayResourceNative.Internal.h"
+
+namespace KaGuYa::Start::Runtime::CgDisplayResourceNativeDetail
+{
+// 5F01C0原14条FI；normal reader/physical字符串的资格不能统一提前撤销。
+const UnwindEntry unwind[14]{{-1,0},{0,0x59DD00},{1,0x59DD08},{1,0x59DD5D},
+    {1,0x59DD68},{1,0x59DD10},{5,0x59DD29},{5,0x59DD34},{5,0x59DD3F},
+    {8,0x59DD47},{8,0x59DD52},{1,0x541E55},{0,0x541E55},{-1,0}};
+// 原PE CP932：5B5234/5B5258/5B527C，异常类型由466760共享CT2入口提供。
+const char readFailure[] = " \x83\x74\x83\x40\x83\x43\x83\x8B\x82\xCC\x93\xC7\x82\xDD\x8D\x9E\x82\xDD\x82\xC9\x8E\xB8\x94\x73\x82\xB5\x82\xDC\x82\xB5\x82\xBD\x81\x49";
+const char loadFailure[] = " \x83\x74\x83\x40\x83\x43\x83\x8B\x82\xCC\x83\x8D\x81\x5B\x83\x68\x82\xC9\x8E\xB8\x94\x73\x82\xB5\x82\xDC\x82\xB5\x82\xBD\x81\x49";
+const char missingResource[] = " \x83\x74\x83\x40\x83\x43\x83\x8B\x82\xAA\x82\xA0\x82\xE8\x82\xDC\x82\xB9\x82\xF1\x81\x49\x81\x49";
+}

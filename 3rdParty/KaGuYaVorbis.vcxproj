@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32"><Configuration>Debug</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32"><Configuration>Release</Configuration><Platform>Win32</Platform></ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals"><VCProjectVersion>17.0</VCProjectVersion><ProjectGuid>{32B84375-2A5D-4CF2-A77B-7F8E3416D192}</ProjectGuid><Keyword>Win32Proj</Keyword><RootNamespace>KaGuYaVorbis</RootNamespace></PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType><WholeProgramOptimization>false</WholeProgramOptimization>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Debug'">true</UseDebugLibraries>
+    <UseDebugLibraries Condition="'$(Configuration)'=='Release'">false</UseDebugLibraries>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaBuildRoot)lib\$(Configuration)\x86\</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>KaGuYaVorbis</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader><CompileAs>CompileAsC</CompileAs>
+      <LanguageStandard></LanguageStandard><ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)Xiph\libogg-1.3.6\include;$(ProjectDir)Xiph\libvorbis-1.3.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!-- 上游Release配置及新MSVC对上游有意局部遮蔽的警告，仅作用于第三方C源码。 -->
+      <DisableSpecificWarnings>4244;4100;4267;4189;4305;4127;4706;4456;4457;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Xiph\libogg-1.3.6\src\bitwise.c" />
+    <ClCompile Include="Xiph\libogg-1.3.6\src\framing.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\mdct.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\smallft.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\block.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\envelope.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\window.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\lsp.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\lpc.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\analysis.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\synthesis.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\psy.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\info.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\floor1.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\floor0.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\res0.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\mapping0.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\registry.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\codebook.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\sharedbook.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\lookup.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\bitrate.c" />
+    <ClCompile Include="Xiph\libvorbis-1.3.7\lib\vorbisfile.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Xiph\libogg-1.3.6\COPYING" />
+    <None Include="Xiph\libvorbis-1.3.7\COPYING" />
+    <None Include="Xiph\README.md" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="CopyXiphLicenses" AfterTargets="Build">
+    <Copy SourceFiles="$(ProjectDir)Xiph\libogg-1.3.6\COPYING;$(ProjectDir)Xiph\libvorbis-1.3.7\COPYING" DestinationFiles="$(KaGuYaOutputRoot)licenses\libogg-1.3.6.txt;$(KaGuYaOutputRoot)licenses\libvorbis-1.3.7.txt" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

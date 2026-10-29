@@ -1,0 +1,16 @@
+﻿// 声明顺序保留原图标/光标子资源ID，不能随意排序。
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+
+IDI_GAME_APPLICATION ICON "assets/Application.ico"
+
+IDI_ICON_206 ICON "assets/Icon206.ico"
+
+IDC_CURSOR_207 CURSOR "assets/Cursor207.cur"
+
+IDC_CURSOR_208 CURSOR "assets/Cursor208.cur"
+
+IDB_FILE_PROGRESS_LOGO BITMAP "assets/FileProgressLogo.bmp"
+
+IDB_BITMAP_203 BITMAP "assets/Bitmap203.bmp"
+
+IDB_MESSAGE_PREVIEW BITMAP "assets/MessagePreview.bmp"

@@ -1,0 +1,18 @@
+LIBRARY RenderDX
+EXPORTS
+    GetBits @1
+    GetErrorMessage @2
+    GetMagFiltering @3
+    GetMinFiltering @4
+    GetPitch @5
+    Initialize @6
+    IsFiltering @7
+    Release @8
+    RenderReset @9
+    RenderSceen @10
+    RenderSceenHDC @11
+    Resize @12
+    SetMagFiltering @13
+    SetMinFiltering @14
+    TestCooperativeLevel @15
+    UpdatePrimary @16

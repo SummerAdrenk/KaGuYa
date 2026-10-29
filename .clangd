@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: .BuildCache/clang-cl-release
+---
+If:
+  PathMatch: (\.bk|\.BuildCache|build|Release)/.*
+Index:
+  Background: Skip

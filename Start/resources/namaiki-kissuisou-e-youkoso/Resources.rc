@@ -1,0 +1,28 @@
+// Restored from this game only; validation compares every resource leaf.
+#pragma code_page(65001)
+#include <windows.h>
+#include "resource.h"
+
+#include "Images.rc"
+#include "dialogs/Dialog101_1041.rc"
+#include "dialogs/Dialog102_1041.rc"
+#include "dialogs/Dialog104_1041.rc"
+#include "dialogs/Dialog105_1041.rc"
+#include "dialogs/Dialog106_1041.rc"
+#include "dialogs/Dialog107_1041.rc"
+#include "dialogs/Dialog108_1041.rc"
+#include "dialogs/Dialog109_1041.rc"
+#include "dialogs/Dialog111_1041.rc"
+#include "dialogs/Dialog112_1041.rc"
+#include "dialogs/Dialog113_1041.rc"
+#include "dialogs/Dialog114_1041.rc"
+#include "dialogs/Dialog115_1041.rc"
+#include "dialogs/Dialog209_1041.rc"
+#include "dialogs/Dialog210_1041.rc"
+#include "dialogs/Dialog211_1041.rc"
+#include "dialogs/Dialog212_1041.rc"
+#include "Menus.rc"
+#include "Strings.rc"
+#include "Accelerators.rc"
+#include "VersionInfo.rc"
+#include "Manifest.rc"

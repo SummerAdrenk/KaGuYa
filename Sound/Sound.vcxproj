@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{12C209E7-EF2B-4D18-97E8-C522EF515FC9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Sound</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup>
+    <OutDir>$(KaGuYaOutputRoot)Lib\</OutDir>
+    <IntDir>$(KaGuYaBuildRoot)obj\$(Configuration)\x86\$(MSBuildProjectName)\</IntDir>
+    <TargetName>Sound</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;$(KaGuYaRoot)3rdParty\Xiph\libogg-1.3.6\include;$(KaGuYaRoot)3rdParty\Xiph\libvorbis-1.3.7\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <Link>
+      <ModuleDefinitionFile>$(ProjectDir)Sound.def</ModuleDefinitionFile>
+      <AdditionalDependencies>dsound.lib;dxguid.lib;User32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp" />
+    <!-- 原导出允许冷构造异常外传，枚举C回调也可能抛出；禁止/EHsc消掉跨层展开。 -->
+    <ClCompile Include="src\Exports.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\SoundState.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\SoundAnsiText.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+    <ClCompile Include="src\SoundRegistry.cpp" />
+    <ClCompile Include="src\SoundRoots.cpp" />
+    <ClCompile Include="src\SoundDeviceDrivers.cpp"><ExceptionHandling>SyncCThrow</ExceptionHandling></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\AudioDecoder.h" />
+    <ClInclude Include="include\SoundState.h" />
+    <ClInclude Include="include\SoundAnsiText.h" />
+    <ClInclude Include="include\SoundRegistry.h" />
+    <ClInclude Include="include\SoundRoots.h" />
+    <ClInclude Include="include\SoundDeviceDrivers.h" />
+    <ClInclude Include="include\SoundFileName.h" />
+    <ClInclude Include="include\StaticSoundRuntime.h" />
+    <ClInclude Include="include\SoundBufferRuntime.h" />
+    <ClInclude Include="include\SoundPollingCursor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sound.def" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\KaGuYaLogging.vcxproj">
+      <Project>{E77563CE-422B-4D1E-A35A-906A35404B41}</Project>
+    </ProjectReference>
+    <ProjectReference Include="SoundCore.vcxproj">
+      <Project>{9FB88D05-68D4-4AE5-97E6-471A730F7240}</Project>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

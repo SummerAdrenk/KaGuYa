@@ -1,0 +1,30 @@
+﻿LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+
+IDR_VERSION_INFO VERSIONINFO
+FILEVERSION 1,0,0,11
+PRODUCTVERSION 4,3,2,16
+FILEFLAGSMASK 0x3F
+FILEFLAGS 0x0
+FILEOS 0x4
+FILETYPE 0x2
+{
+BLOCK "StringFileInfo"
+{
+	BLOCK "041104b0"
+	{
+		VALUE "CompanyName", "アトリエかぐや"
+		VALUE "FileDescription", "アトリエかぐや アプリケーション"
+		VALUE "FileVersion", "1.0.0.11"
+		VALUE "InternalName", "ゲームプログラム"
+		VALUE "LegalCopyright", "Copyright (C) 2026 アトリエかぐや"
+		VALUE "OriginalFilename", "AdvGame.exe"
+		VALUE "ProductName", "AdvGame Module"
+		VALUE "ProductVersion", "4.3.2.16"
+	}
+}
+
+BLOCK "VarFileInfo"
+{
+	VALUE "Translation", 0x0411, 0x04B0  
+}
+}

@@ -1,0 +1,34 @@
+LIBRARY Sound
+EXPORTS
+    ActivateAppRestore @1
+    AddSound @2
+    ExitSystem @3
+    GetDefaultDeviceID @4
+    GetPrimaryVolume @5
+    InitSystem @6
+    IsFrequencyControl @7
+    IsGlobalFocus @8
+    IsPanControl=IsGlobalFocus @9
+    IsTruePlayPosition @10
+    RemoveSound @11
+    ResetDevice @12
+    SetFrequencyControl @13
+    SetGlobalFocus @14
+    SetMinimumVolume @15
+    SetPanControl @16
+    SetPrimaryBufferFormat @17
+    SetPrimaryVolume @18
+    SetTruePlayPosition @19
+    SoundCalcValueToVolume @20
+    SoundCalcVolumeToValue @21
+    SoundClose @22
+    SoundGetFileName @23
+    SoundGetVolume @24
+    SoundIsLoop @25
+    SoundIsPlay @26
+    SoundOpen @27
+    SoundPause @28
+    SoundPlay @29
+    SoundSetLoop @30
+    SoundSetVolume @31
+    SoundStop @32

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- 仅供/getItem只读求值，将Link的默认元数据显式呈现；不执行任何target。 -->
+  <ItemGroup>
+    <Link Include="KaGuYaCMakeMetadata" />
+  </ItemGroup>
+</Project>
