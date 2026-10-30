@@ -19,10 +19,19 @@ constexpr std::uint32_t MaximumReferences = 0x15555555u;
 std::int32_t __fastcall Invoke(Body* body, void*) { body->clickedFlagAt04 = 1; return 0; }
 void __fastcall Clear(Body* body, void*) { body->clickedFlagAt04 = 0; }
 Body* __fastcall Delete(Body* body, void*, std::uint32_t flags);
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::invokeAt00)>(&Invoke),
     reinterpret_cast<decltype(Table::clearAt04)>(&Clear),
     reinterpret_cast<decltype(Table::deletingDestructorAt08)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall Delete(Body* body, void*, std::uint32_t flags)
 {
     body->vptrAt00 = &methods; // 4FC49A；flags=0也恢复本类表，两个DWORD不改。

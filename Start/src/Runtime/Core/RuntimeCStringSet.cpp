@@ -32,7 +32,8 @@ char* Data(ATL::CStringData* header) noexcept
 void Publish(RuntimeCString& destination, char* data) noexcept
 {
     static_assert(sizeof(destination) == sizeof(data));
-    std::memcpy(&destination, &data, sizeof(data));
+    // 只发布已有引用的原生指针；Clone及旧串释放仍由调用方负责。
+    std::memcpy(static_cast<void*>(&destination), &data, sizeof(data));
 }
 
 template<class Function>
@@ -40,7 +41,7 @@ Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     // 不能经过 v143 IAtlStringMgr 的 throw() 声明；原始目标可将异常传给调用者。
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function function;
     static_assert(sizeof(function) == sizeof(void*));
     std::memcpy(&function, table + offset, sizeof(function));

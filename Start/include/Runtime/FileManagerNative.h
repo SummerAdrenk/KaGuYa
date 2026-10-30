@@ -21,6 +21,10 @@ public:
 };
 
 // 5B2B20仅有一个flags删除槽。所有实际拥有字段均原位，不附诊断或服务sidecar。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class FileManagerNative28h final
 {
 public:
@@ -42,6 +46,9 @@ public:
     union { YtlReferenceSlotRuntime messageAt10; };
     union { ByteArrayReferenceRuntime keyAt1C; };
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(FileManagerNative28h) == 0x28 && alignof(FileManagerNative28h) == 4);
 static_assert(offsetof(FileManagerNative28h, directoryAt04) == 4);
 static_assert(offsetof(FileManagerNative28h, scanStatusAt0C) == 0x0C);

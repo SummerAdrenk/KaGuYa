@@ -62,7 +62,8 @@ void CloneArgument(TextStorage& storage, const RuntimeCString& source)
 {
     auto* header = reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())) - 1;
     const auto* chars = reinterpret_cast<const char*>(CloneRuntimeCStringDataAt414540(header) + 1);
-    std::memcpy(&storage.value, &chars, sizeof(chars));
+    // 414540已取得引用；TextStorage为空槽，原生指针表示由TextLifetime接管，不经CString赋值。
+    std::memcpy(static_cast<void*>(&storage.value), &chars, sizeof(chars));
 }
 void Blit(Body& body, std::int32_t sourceHandle, LONG x, LONG y)
 {

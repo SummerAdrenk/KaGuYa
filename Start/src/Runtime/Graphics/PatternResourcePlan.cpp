@@ -142,7 +142,8 @@ bool HasPatternResourceSuffixAt4CB905(const RuntimeCString& source,
                 reinterpret_cast<std::uintptr_t>(source.GetString()) - sizeof(ATL::CStringData));
             auto* const cloned = CloneRuntimeCStringDataAt414540(header);
             const char* const characters = static_cast<const char*>(cloned->data());
-            std::memcpy(out, &characters, sizeof(characters));
+            // Clone引用交给原始返回槽，缓存及异常释放路径不增减引用。
+            std::memcpy(static_cast<void*>(out), &characters, sizeof(characters));
         });
     const char* const cachedCharacters = input.Value().GetString();
     const bool hasSuffix = HasCgDisplayResourceSuffixAt4A8680(cachedCharacters, strings);

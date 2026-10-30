@@ -17,6 +17,13 @@ const OptionCharSelectDialogNativeVtable38& OptionCharSelectDialogNativeVtable()
         OptionCharSelectDialogNativeVtable38 value;
         value.common = GuiDialogBaseVtable();
         using namespace OptionCharSelectNativeDetail;
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(field, entry) value.common.field = reinterpret_cast<decltype(value.common.field)>(&entry)
         SLOT(dirtyAt00, Dirty);
         SLOT(deletingDestructorAt04, Delete);
@@ -31,6 +38,9 @@ const OptionCharSelectDialogNativeVtable38& OptionCharSelectDialogNativeVtable()
         value.countAt8C = reinterpret_cast<decltype(value.countAt8C)>(&Count);
         value.resetAt90 = reinterpret_cast<decltype(value.resetAt90)>(&Reset);
         value.attachDirtyAt94 = reinterpret_cast<decltype(value.attachDirtyAt94)>(&AttachDirty);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();
     return table;

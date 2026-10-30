@@ -13,8 +13,16 @@ using namespace TitleSceneNativeDetail;
 std::uint8_t __fastcall PureRun(Body*,void*,std::int32_t){_purecall();std::terminate();}
 Body* __fastcall RetiredDelete(Body* body,void*,std::uint32_t flags) noexcept;
 struct RetiredTable final{decltype(Table::runAt00) run;decltype(Table::deleteAt04) destroy;};
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RetiredTable retired{reinterpret_cast<decltype(RetiredTable::run)>(&PureRun),
     reinterpret_cast<decltype(RetiredTable::destroy)>(&RetiredDelete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall RetiredDelete(Body* body,void*,std::uint32_t flags) noexcept
 {Retire(*body);if(flags&1u)::operator delete(body,std::size_t{4});return body;}
 __declspec(naked) std::uint8_t __fastcall RawRun(Body*,void*,std::int32_t)
@@ -34,9 +42,17 @@ Body* __fastcall RawDelete(Body* body,void*,std::uint32_t flags) noexcept
 {return DeleteTitleSceneNativeAt4A71E0(body,flags);}
 void __fastcall RawUpdate(Body* body,void*){UpdateTitleSceneNativeAt4BADA0(*body,ActiveServices());}
 __declspec(naked) void __fastcall RawDraw(Body*,void*){__asm {_emit 0xC3}} // 4B5E20仅C3；MSVC的ret会编码为C2 00 00。
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{reinterpret_cast<decltype(Table::runAt00)>(&RawRun),
     reinterpret_cast<decltype(Table::deleteAt04)>(&RawDelete),reinterpret_cast<decltype(Table::updateAt08)>(&RawUpdate),
     reinterpret_cast<decltype(Table::drawAt0C)>(&RawDraw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 template<class Result>Result DialogCall(Body& body,std::uint32_t offset)
 {
     auto* dialog=ResolveEnvironmentObjectReference<void>(body.dialogAt08);
@@ -76,7 +92,8 @@ void UpdateTitleSceneNativeAt4BADA0(Body& body,TitleSceneNativeServices& service
         bool requested;
         {
             const auto receiver=source.CaptureScenesAfter413BE0();
-            RuntimeCStringResult text([&](RuntimeCString* out){const auto* chars=reinterpret_cast<const char*>(CloneCommand(receiver)+1);std::memcpy(out,&chars,4);});
+            // CloneCommand已取得引用；只写未构造返回槽的原生指针，不再执行CString赋值。
+            RuntimeCStringResult text([&](RuntimeCString* out){const auto* chars=reinterpret_cast<const char*>(CloneCommand(receiver)+1);std::memcpy(static_cast<void*>(out),&chars,4);});
             requested=Same(text.Value().GetString(),load)||source.EvaluateLoadPredicateAfter413BE0();
         }
         // 4BB043即使predicate=false仍取根；Settings clone消费这次固定manager。

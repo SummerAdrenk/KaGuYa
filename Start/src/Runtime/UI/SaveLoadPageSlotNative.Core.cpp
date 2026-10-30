@@ -37,14 +37,6 @@ std::int32_t DatePart(const std::int64_t* time, unsigned part, ISaveLoadTimestam
     if (part == 2) return tm.tm_hour;
     return tm.tm_min;
 }
-void Pair(SaveLoadPageSecondNativeBodyACh& page, const Slot& target, std::int32_t value,
-    std::int32_t mode, unsigned position, SaveLoadPageSlotNativeServices& services)
-{
-    const auto tens = value / 10;
-    DrawDateDigit(page, target, tens, mode, position, services);
-    DrawDateDigit(page, target, Signed(std::uint32_t(value) - std::uint32_t(tens) * 10u),
-        mode, position + 1, services);
-}
 void DrawSlotNumber(SaveLoadPageSecondNativeBodyACh& page, const Slot& target,
     std::uint32_t fileSlot, std::int32_t mode, const SaveLoadSlotResources& skin,
     SaveLoadPageSlotNativeServices& services)
@@ -140,7 +132,7 @@ void DrawPreview(SaveLoadPageSecondNativeBodyACh& page, const Slot& target, cons
         const RECT crop{0,0,policy.extent.cx,policy.extent.cy};
         const auto destination=Required(Resolve<GraphicsSurfaceNativeBody>(target))->handleAt04;
         if(destination&&image->handleAt04)
-            services.drawing.SurfaceBlitRaw(destination,image->handleAt04,
+            (void)services.drawing.SurfaceBlitRaw(destination,image->handleAt04,
                 policy.origin.x,policy.origin.y,nullptr,&crop,nullptr,0);
     }
     else Blit(Resolve<GraphicsSurfaceNativeBody>(target), image, policy.origin.x, policy.origin.y, size, services);
@@ -280,7 +272,8 @@ void RenderSaveLoadPageSlotNativeAt52A470(SaveLoadPageSecondNativeBodyACh& page,
                 reinterpret_cast<ATL::CStringData*>(const_cast<char*>(shortened.value.GetString())) - 1);
             const auto* chars = reinterpret_cast<const char*>(cloned + 1);
             static_assert(sizeof(description.value) == sizeof(chars));
-            std::memcpy(&description.value, &chars, sizeof(chars));
+            // 414540已取得引用；仅写入TextCell的原生指针表示，后续TextLifetime负责释放。
+            std::memcpy(static_cast<void*>(&description.value), &chars, sizeof(chars));
             TextLifetime descriptionLifetime{description.value};
             shortenedLifetime.Finish();
             // 52B11B先固定bias，再复制按值Ref；label helper正常消费不清参数。

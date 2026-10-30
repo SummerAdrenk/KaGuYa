@@ -344,7 +344,8 @@ Slot* LoadGuiControlResourceAt5047A0(Slot& output, const char* const* sevenNames
                     const_cast<char*>(text.value.GetString()) - 16);
                 auto* cloned = CloneRuntimeCStringDataAt414540(normalHeader);
                 char* data = reinterpret_cast<char*>(cloned) + 16;
-                std::memcpy(position, &data, sizeof(data));
+                // Clone引用只写入尚未发布的尾槽，end及临时释放时序保持不变。
+                std::memcpy(static_cast<void*>(position), &data, sizeof(data));
                 ++names.names.end;
             }
             else

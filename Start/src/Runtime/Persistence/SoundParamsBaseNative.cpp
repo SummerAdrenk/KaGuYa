@@ -49,7 +49,8 @@ void SoundParamsBaseNative::Serialize(SerializeBuffer& serializer)
 }
 void* SoundParamsBaseNative::DeleteAtVslot04(std::uint32_t flags) noexcept
 {
-    this->~SoundParamsBaseNative();
+    // 删除虚槽内固定析构本类型；保留基类退表及flags控制的10h外块释放。
+    this->SoundParamsBaseNative::~SoundParamsBaseNative();
     if (flags & 1u) ::operator delete(this, std::size_t{0x10});
     return this;
 }

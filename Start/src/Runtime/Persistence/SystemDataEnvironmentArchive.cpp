@@ -258,7 +258,7 @@ RuntimeCStringResult CaptureSettingValueAt47D470(
                 auto* cloned = CloneRuntimeCStringDataAt414540(header);
                 auto* chars = reinterpret_cast<char*>(cloned + 1);
                 // 隐藏返回槽尚未构造；Clone 回调之后不得再访问旧 pair。
-                std::memcpy(destination, &chars, sizeof(chars));
+                std::memcpy(static_cast<void*>(destination), &chars, sizeof(chars));
                 return;
             }
             ++pair;

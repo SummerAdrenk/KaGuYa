@@ -61,7 +61,8 @@ RuntimeCStringResult SceneManagerView::ClonePendingCommandAt414540() const
         const auto& value=PendingCommandSlotAt1C();
         auto* header=reinterpret_cast<ATL::CStringData*>(const_cast<char*>(value.GetString()))-1;
         auto* cloned=CloneRuntimeCStringDataAt414540(header);
-        const auto* characters=reinterpret_cast<const char*>(cloned+1);std::memcpy(out,&characters,sizeof(characters));
+        // Clone引用交给隐藏返回槽，不经CString赋值或额外析构。
+        const auto* characters=reinterpret_cast<const char*>(cloned+1);std::memcpy(static_cast<void*>(out),&characters,sizeof(characters));
     });
 }
 std::string_view SceneManagerView::ReadPendingCommandAt1C() const{return RuntimeStringView(PendingCommandSlotAt1C());}

@@ -70,7 +70,7 @@ LikabilityDialogNativeBody94h* ConstructLikabilityDialogNativeAt4E0E30(Likabilit
     }
     ConstructGuiDialogAt4E0BE0(&b.common, nullptr, -1);
     b.common.vptrAt00 = &LikabilityDialogNativeVtable();
-    ConstructorFrame f{b};
+    ConstructorFrame f{b, {}, {}};
     f.state = 0;
     ::new(&b.clickedManagerAt6C) Slot;
     ::new(&b.backgroundAt78) Slot;

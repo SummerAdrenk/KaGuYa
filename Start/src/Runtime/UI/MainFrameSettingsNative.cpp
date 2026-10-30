@@ -53,7 +53,8 @@ void CloneInto(RuntimeCString& out, const RuntimeCString& source)
     auto* const header = reinterpret_cast<ATL::CStringData*>(reinterpret_cast<std::uintptr_t>(source.GetString()) - 16u);
     auto* const clone = CloneRuntimeCStringDataAt414540(header);
     const auto chars = reinterpret_cast<const char*>(reinterpret_cast<std::uintptr_t>(clone) + 16u);
-    std::memcpy(&out, &chars, sizeof(chars));
+    // Clone已取得引用；原始输出槽只接管指针，不触发CString赋值。
+    std::memcpy(static_cast<void*>(&out), &chars, sizeof(chars));
 }
 }
 void RunMainFrameSettingsNativeAt428E30(void* menu, MainFrameSettingsNativeServices& services)

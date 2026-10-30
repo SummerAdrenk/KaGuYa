@@ -530,12 +530,13 @@ function(kaguya_register_game_targets)
     target_sources(${_native} PRIVATE ${_inputs} "${_metadata}")
     # Start在导入子目录创建；目标级launcher也覆盖跨目录的Native直接链接。
     kaguya_bind_resource_metadata(${_native} "${_metadata}" "${_slug}")
-    # 每次显式选择编号都会从对应缓存发布，避免切换游戏后沿用另一款的较新EXE。
+    # 按游戏名独立发布，多个编号可同时构建，不再争用根目录的Start.exe。
+    set(_game_output "${KAGUYA_ARTIFACT_DIR}/${_slug}")
     add_custom_target(${_public}
-      COMMAND "${CMAKE_COMMAND}" -E make_directory "${KAGUYA_ARTIFACT_DIR}"
-      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${_native}>" "${KAGUYA_ARTIFACT_DIR}/Start.exe"
+      COMMAND "${CMAKE_COMMAND}" -E make_directory "${_game_output}"
+      COMMAND "${CMAKE_COMMAND}" -E copy_if_different "$<TARGET_FILE:${_native}>" "${_game_output}/Start.exe"
       DEPENDS ${_native}
-      COMMENT "Publishing ${_public}: ${_slug} -> Release/Start.exe"
+      COMMENT "Publishing ${_public}: ${_game_output}/Start.exe"
       VERBATIM)
     list(APPEND _available "${_slug}")
     list(APPEND _targets "${_public}")
@@ -547,6 +548,8 @@ function(kaguya_register_game_targets)
     message(FATAL_ERROR "Default resource profile is unknown or not prepared: ${KAGUYA_GAME}")
   endif()
   set_property(CACHE KAGUYA_GAME PROPERTY STRINGS ${_available})
+  # 显式批量项仅发布EXE；默认整批构建仍尊重KAGUYA_GAME，不隐式扩大范围。
+  add_custom_target(StartAll DEPENDS ${_targets})
   add_custom_target(KaGuYaProduction ALL DEPENDS ${_default_target} Graphics RenderDX Sound)
   message(STATUS "Game resource targets: ${_targets}; this does not certify runtime compatibility.")
 endfunction()

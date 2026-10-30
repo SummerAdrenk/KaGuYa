@@ -32,12 +32,28 @@ Body* __fastcall Delete(Body* body,void*,std::uint32_t flags) noexcept
 Body* __fastcall BaseDelete(Body* body,void*,std::uint32_t flags) noexcept;
 void __fastcall Reset(Body* body,void*){ResetModeSelectButtonNativeAt487470(*body);}
 void __fastcall PureReset(Body*,void*){_purecall();}
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ModeSelectButtonNativeVtable2 methods{
     reinterpret_cast<decltype(ModeSelectButtonNativeVtable2::deleteAt00)>(&Delete),
     reinterpret_cast<decltype(ModeSelectButtonNativeVtable2::resetAt04)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ModeSelectButtonNativeVtable2 baseMethods{
     reinterpret_cast<decltype(ModeSelectButtonNativeVtable2::deleteAt00)>(&BaseDelete),
     reinterpret_cast<decltype(ModeSelectButtonNativeVtable2::resetAt04)>(&PureReset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall BaseDelete(Body* body,void*,std::uint32_t flags) noexcept
 {
     DestroyOptionButtonBaseNativeAt464920(*body);

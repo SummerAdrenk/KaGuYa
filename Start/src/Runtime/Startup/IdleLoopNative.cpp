@@ -32,8 +32,17 @@ BOOL __fastcall Idle(IdleLoopNativeBody38h* self,void*,LONG unused)
 }
 const IdleLoopNativeMethods8h& IdleLoopNativeMethods()noexcept
 {
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 void* 仅占 EDX、不读取其输入。
+    // MSG*/LONG 仍各占 4 字节栈实参并由被调方清栈；BOOL 返回及可抛异常约定一致。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     static const IdleLoopNativeMethods8h methods{
         reinterpret_cast<IdleLoopNativeMethods8h::Filter>(&Filter),reinterpret_cast<IdleLoopNativeMethods8h::Idle>(&Idle)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return methods;
 }
 void InitializeIdleLoopNativeAt4342D1(IdleLoopNativeBody38h& body)noexcept

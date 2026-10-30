@@ -6,6 +6,10 @@
 namespace KaGuYa::Start::Runtime
 {
 // 5B25AC 的两个虚槽是长度和 CString 返回；原表没有虚析构槽。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class MessageTextCommand final
 {
 public:
@@ -20,6 +24,9 @@ public:
 private:
     RuntimeCString textAt04_;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(MessageTextCommand) == 8);
 
 class MessageTextCommandReference final

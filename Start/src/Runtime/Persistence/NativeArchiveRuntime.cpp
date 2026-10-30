@@ -25,9 +25,17 @@ void* __fastcall DeleteBase(void* body, void*, std::uint32_t flags) noexcept
 }
 
 // 与既有 raw native 表相同的静态函数地址初始化；无懒建、owner 或析构。
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeArchiveVtable2 baseMethods{
     reinterpret_cast<decltype(NativeArchiveVtable2::serializeAt00)>(&PureSerialize),
     reinterpret_cast<decltype(NativeArchiveVtable2::deleteAt04)>(&DeleteBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const NativeArchiveVtable2& NativeArchiveBaseMethods() noexcept

@@ -21,7 +21,16 @@ const GuiButtonNativeVtable29& RadioTable() noexcept
     static const auto t = []
     {
         auto value = GuiButtonVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         value.common.nullAt54 = reinterpret_cast<decltype(value.common.nullAt54)>(&RadioSelect);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();
     return t;

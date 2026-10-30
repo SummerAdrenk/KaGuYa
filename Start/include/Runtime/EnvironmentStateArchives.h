@@ -112,6 +112,11 @@ private:
 };
 
 // CSecretSC是独立1Ch正文，不继承CG记录表，也不内嵌key服务或分配器。
+// final限制C++继承，不取消5B2948的原业务虚槽。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class SecretScArchive final : public IEnvironmentArchiveRuntime
 {
 public:
@@ -146,6 +151,9 @@ public:
 private:
     void InitializeAt45CAF0(ISecretScCountSource& source, IEnvironmentRootMemory& memory);
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(SecretScArchive) == 0x1C);
 static_assert(alignof(SecretScArchive) == 4);
 static_assert(offsetof(SecretScArchive, readyAt04) == 0x04);

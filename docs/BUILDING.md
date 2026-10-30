@@ -24,7 +24,17 @@ cmake --build .BuildCache/clang-cl-release --target Graphics RenderDX Sound
 
 `Start01` … `Start18` 选择对应的游戏配置和资源。完整对应关系见
 [`Start/games/catalog.json`](../Start/games/catalog.json)。所有编号共用运行时静态库；
-一次只发布一个 Start 编号，避免多个目标竞争 `Release/Start.exe`。
+EXE 按清单中的 `slug` 分别发布，不会互相覆盖。批量构建全部 18 个 EXE：
+
+```text
+cmake --build .BuildCache/clang-cl-release --target StartAll
+```
+
+`StartAll` 不包含 DLL；也可以一次选择几个编号，例如：
+
+```text
+cmake --build .BuildCache/clang-cl-release --target Start01 Start18
+```
 
 `Graphics`、`RenderDX`、`Sound` 可任意单独或组合构建。底层 `Start` 目标保留，但选择游戏时使用编号目标。
 `KAGUYA_GAME` 仅决定默认整批构建发布哪款作品，默认 `mamatomo`；显式编号不要求重新配置。
@@ -36,12 +46,30 @@ cmake --preset clang-cl-release -DKAGUYA_ENABLE_LOGGING=ON
 cmake --build --preset clang-cl-release
 ```
 
-关回去把 `ON` 改成 `OFF`。Release 默认 OFF，Debug 默认 ON；Debug 使用独立的 `clang-cl-debug` 预设。
+Release 默认 OFF，Debug 默认 ON；Debug 使用独立的 `clang-cl-debug` 预设。
 切换后统一构建 EXE 和三个 DLL，避免混用不同配置的旧产物。
 
 ## 输出
 
-- `Release/Start.exe`：所选游戏的 EXE。
+- `Release/<game-slug>/Start.exe`：所选游戏的 EXE，目录名与游戏清单中的 `slug` 一致。
+- 例如 `Start01` 输出到 `Release/baku-ane/Start.exe`，`Start18` 输出到 `Release/mamatomo/Start.exe`。
 - `Release/Lib/`：三个配套 DLL。
 - `Release/licenses/`：第三方许可证；发布时也应携带根目录 `LICENSE`。
-- `Release/Debug/`：Debug 产物。
+- `Release/Debug/<game-slug>/Start.exe`、`Release/Debug/Lib/`：Debug EXE 和 DLL。
+
+## 游戏目录简称
+
+同一作品在 `Start/games/`、`Start/resources/`、构建缓存及 `Release/` 下使用一致的简短 `slug`。
+作品全名和编号仍保留在游戏清单中；目录改名不改变资源内容、存档格式或编译目标。
+
+| 目标 | 目录名 | 目标 | 目录名 |
+|---|---|---|---|
+| `Start01` | `baku-ane` | `Start10` | `mamagoto` |
+| `Start02` | `namaiki` | `Start11` | `mama-x-holic` |
+| `Start03` | `chu-x-pet` | `Start12` | `nee-nee-nee` |
+| `Start04` | `harami-tama` | `Start13` | `anetomo` |
+| `Start05` | `ero-zemi` | `Start14` | `bunnys-mama` |
+| `Start06` | `baku-ane-2` | `Start15` | `pure-x-holic` |
+| `Start07` | `shigokare` | `Start16` | `oppai-dekai-nurse` |
+| `Start08` | `love-x-holic` | `Start17` | `hakoniwa` |
+| `Start09` | `nee-chan-no-susume` | `Start18` | `mamatomo` |

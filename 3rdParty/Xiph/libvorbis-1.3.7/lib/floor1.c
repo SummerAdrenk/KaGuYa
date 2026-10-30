@@ -489,6 +489,9 @@ static int fit_line(lsfit_acc *a,int fits,int *y0,int *y1,
     bn++;
   }
 
+  /* Keep upstream accumulations; y2b is not used by the line fit. */
+  (void)y2b;
+
   {
     double denom=(bn*x2b-xb*xb);
 

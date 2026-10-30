@@ -30,7 +30,8 @@ bool HideOrMouse(CgOperationWindowNativeServices& services)
     auto& text=services.source.CaptureScenesAt413BE0(0x4BD7B1)->commandAt1C;
     auto* clone=CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(const_cast<char*>(text.GetString()))-1);
     union Text{RuntimeCString value;Text(){}~Text(){}} temporary;
-    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(&temporary.value,&chars,4);
+    // Clone引用以原生指针进入空槽，仍由cleanup按原时点释放。
+    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(static_cast<void*>(&temporary.value),&chars,4);
     struct Cleanup{RuntimeCString& value;bool active=true;~Cleanup() noexcept{if(active)DestroyRuntimeCStringAt40CD40(&value);}} cleanup{temporary.value};
     bool result=::_mbscmp(reinterpret_cast<const unsigned char*>(temporary.value.GetString()),
         reinterpret_cast<const unsigned char*>(hide))==0;

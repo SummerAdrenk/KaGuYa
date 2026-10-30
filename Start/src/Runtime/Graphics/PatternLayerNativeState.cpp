@@ -18,7 +18,8 @@ std::uint32_t Count(const Body& body) noexcept
 SpriteNativeBodyA0h& Sprite(Body& body, std::uint32_t index)
 {
     auto& slot = body.spritesAt34;
-    if (!slot.baseAt00) return *static_cast<SpriteNativeBodyA0h*>(nullptr);
+    // 原空payload访问属于危险域；明确失败，不构造无效引用或伪造空Sprite。
+    if (!slot.baseAt00) throw std::logic_error("Pattern sprite reference has no payload");
     const auto stride = slot.controlAt08 ?
         static_cast<EnvironmentObjectReferenceControl*>(slot.controlAt08)->strideAt0C : 0;
     return *reinterpret_cast<SpriteNativeBodyA0h*>(slot.baseAt00 + (slot.biasAt04 + index) * stride);

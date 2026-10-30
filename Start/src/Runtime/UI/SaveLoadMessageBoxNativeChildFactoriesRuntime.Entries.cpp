@@ -200,6 +200,13 @@ const SaveLoadMessageBoxMultiCheckNativeVtable31& SaveLoadMessageBoxMultiCheckNa
 {
     static const auto table = []
     {
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         SaveLoadMessageBoxMultiCheckNativeVtable31 t{GuiButtonVtable(),
             reinterpret_cast<decltype(SaveLoadMessageBoxMultiCheckNativeVtable31::resetMappedHitSlotsAt74)>(&ResetMappedAt5025F0),
             reinterpret_cast<decltype(SaveLoadMessageBoxMultiCheckNativeVtable31::setMappedHitSlotAt78)>(&SetMappedAt536E70)};
@@ -207,6 +214,9 @@ const SaveLoadMessageBoxMultiCheckNativeVtable31& SaveLoadMessageBoxMultiCheckNa
         t.button.common.mouseAt18 = COMMON_SLOT(mouseAt18, MultiCheckMouseAt5215E0);
         t.button.hasHitSlotAt64 = reinterpret_cast<decltype(t.button.hasHitSlotAt64)>(&HasMappedAt50FE80);
         t.button.hitSlotAt68 = reinterpret_cast<decltype(t.button.hitSlotAt68)>(&MappedAt509D10);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;
@@ -216,9 +226,19 @@ const GuiButtonNativeVtable29& SaveLoadMessageBoxMultiHotkeyNativeVtable() noexc
     static const auto table = []
     {
         auto t = GuiButtonVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         t.common.deletingDestructorAt00 = COMMON_SLOT(deletingDestructorAt00, DeleteMultiHotkeyAt4FCD40);
         t.common.resetAt08 = COMMON_SLOT(resetAt08, ResetMultiHotkeyAt531240);
         t.common.keyboardAt14 = COMMON_SLOT(keyboardAt14, MultiHotkeyKeyboardAt51EFD0);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;
@@ -228,9 +248,19 @@ const GuiButtonNativeVtable29& SaveLoadMessageBoxRadioNativeVtable() noexcept
     static const auto table = []
     {
         auto t = GuiButtonVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         t.common.deletingDestructorAt00 = COMMON_SLOT(deletingDestructorAt00, DeleteRadioAt4FDC00);
         t.common.mouseAt18 = COMMON_SLOT(mouseAt18, RadioMouseAt521710);
         t.common.nullAt54 = COMMON_SLOT(nullAt54, RadioSelectAt5311D0);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

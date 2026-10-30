@@ -178,6 +178,7 @@ const LegacyMapSelectionProfile profile{
     .resultVariable="prog_result",
     .secondResultVariable=nullptr,
     .results=results,
+    .actors={},
     .animatedActors=animatedActors,
     .animationPositions=animationPositions
 };

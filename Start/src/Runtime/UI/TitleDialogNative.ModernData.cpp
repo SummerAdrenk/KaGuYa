@@ -1,5 +1,5 @@
 #include <Runtime/TitleDialogNative.h>
-#include "../../../games/baku-ane-otouto-shibocchau-zo/TitleData.h"
+#include "../../../games/baku-ane/TitleData.h"
 
 #include <stdexcept>
 

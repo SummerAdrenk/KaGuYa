@@ -17,9 +17,17 @@ thread_local GraffitiPageNativeServices* active = nullptr;
 std::uint8_t __fastcall PureRun(TaskNativeBody4h*, void*, std::int32_t)
 { _purecall(); std::terminate(); }
 TaskNativeBody4h* __fastcall DeleteTask(TaskNativeBody4h* body, void*, std::uint32_t flags) noexcept;
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskNativeVtable retired{
     reinterpret_cast<decltype(TaskNativeVtable::runAt00)>(&PureRun),
     reinterpret_cast<decltype(TaskNativeVtable::deleteAt04)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 TaskNativeBody4h* __fastcall DeleteTask(TaskNativeBody4h* body, void*, std::uint32_t flags) noexcept
 {
     // 469A70：已退役ITask只删除4字节，不重放派生Ref释放。
@@ -35,11 +43,19 @@ void __fastcall Update(Body* body, void*)
 { UpdateGraffitiPageNativeAt4B6130(*body, GraffitiPageNativeDetail::RequireServices()); }
 void __fastcall Draw(Body* body, void*)
 { DrawGraffitiPageNativeAt4B5860(*body, GraffitiPageNativeDetail::RequireServices()); }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::runAt00)>(&Run),
     reinterpret_cast<decltype(Table::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),
     reinterpret_cast<decltype(Table::drawAt0C)>(&Draw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 // 两个不同的原类型控制表；不在18h控制块内附加Source/owner。
 template<bool Weight> class DialogControl final : public EnvironmentObjectReferenceControl

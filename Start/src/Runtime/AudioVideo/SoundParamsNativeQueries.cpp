@@ -34,7 +34,8 @@ RuntimeCString* Share(RuntimeCString* out, const RuntimeCString& source)
     auto* header = reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())) - 1;
     auto* shared = CloneRuntimeCStringDataAt414540(header);
     const auto characters = reinterpret_cast<std::uintptr_t>(shared) + sizeof(ATL::CStringData);
-    std::memcpy(out, &characters, sizeof(characters));
+    // Clone已取得引用；输出槽只接管原生指针，不额外增减引用。
+    std::memcpy(static_cast<void*>(out), &characters, sizeof(characters));
     return out;
 }
 template<class T> std::uint8_t* ByteAddress(T* body, std::uint32_t offset) noexcept
@@ -45,7 +46,8 @@ template<class T> std::uint8_t* ByteAddress(T* body, std::uint32_t offset) noexc
 }
 void* EnvironmentSoundParamsArchive::DeleteAtVslot04(std::uint32_t flags) noexcept
 {
-    this->~EnvironmentSoundParamsArchive();
+    // 删除虚槽内固定析构本类型，保留flags控制的44h外块释放。
+    this->EnvironmentSoundParamsArchive::~EnvironmentSoundParamsArchive();
     if (flags & 1u) ::operator delete(this, std::size_t{0x44});
     return this;
 }

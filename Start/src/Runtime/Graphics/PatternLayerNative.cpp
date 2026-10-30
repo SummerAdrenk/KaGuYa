@@ -32,11 +32,19 @@ void __fastcall Composite(Base* body, void*, GraphicsSurfaceNativeBody* destinat
     { CompositePatternLayerNativeAt481BD0(Derived(body), destination, clip, Drawing()); }
 Base* __fastcall Delete(Base* body, void*, std::uint32_t flags)
     { DeletePatternLayerNativeAt468FC0(Derived(body), flags); return body; }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const PatternLayerNativeVtable methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
      reinterpret_cast<decltype(LayerItemNativeVtable::deletingDestructorAt08)>(&Delete)},
     reinterpret_cast<decltype(PatternLayerNativeVtable::drawOffsetAt0C)>(&DrawOffset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 struct ConstructionUnwind final
 {

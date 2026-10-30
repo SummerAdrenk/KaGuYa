@@ -66,7 +66,8 @@ void CopyCurrentRange(SoundManagerNativeBody50h& body, Slot* destination)
             const_cast<char*>(begin->nameAt04.GetString())) - 1;
         auto* const header = CloneRuntimeCStringDataAt414540(oldHeader);
         const char* const characters = reinterpret_cast<const char*>(header + 1);
-        std::memcpy(&prefix.completed->nameAt04, &characters, 4);
+        // Clone成功后原生指针才进入已构造前缀；不经CString赋值。
+        std::memcpy(static_cast<void*>(&prefix.completed->nameAt04), &characters, 4);
         prefix.completed = Advance(prefix.completed, 1);
     }
     prefix.active = false;

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "games": {
-    "baku-ane-otouto-shibocchau-zo": {
+    "baku-ane": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "BakuAne",
@@ -41,7 +41,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "None"
     },
-    "namaiki-kissuisou-e-youkoso": {
+    "namaiki": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -162,7 +162,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "HaramiMapSelectionData"
     },
-    "ero-zemi-ecchi-ni-yaru-ki-ni-abc": {
+    "ero-zemi": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -202,7 +202,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "EroZemiMapSelectionData"
     },
-    "baku-ane-2-otouto-ippai-shibocchau-zo": {
+    "baku-ane-2": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -241,7 +241,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "BakuAne2MapSelectionData"
     },
-    "shigokare-ecchi-na-joshi-daisei-to-doki-x2-love-lesson": {
+    "shigokare": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -283,7 +283,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "ShigokareMapSelectionData"
     },
-    "love-x-holic-miwaku-no-otome-to-hakudaku-kankei": {
+    "love-x-holic": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -325,7 +325,7 @@
       "item_acquisition_data": "LoveHolicItemAcquisitionData",
       "legacy_map_selection_data": "LoveHolicMapSelectionData"
     },
-    "nee-chan-no-susume-onee-chan-no-itazura-seiseikatsu": {
+    "nee-chan-no-susume": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -364,7 +364,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "NeechanMapSelectionData"
     },
-    "mamagoto-mama-to-naisho-no-ecchi-shimasho": {
+    "mamagoto": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -403,7 +403,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "MamagotoMapSelectionData"
     },
-    "mama-x-holic-miwaku-no-mama-to-ama-ama-kankei": {
+    "mama-x-holic": {
       "title_family": "LegacyComposedTitle",
       "title_name_gate": "EditableNameBits",
       "title_button_resources": "Configured",
@@ -511,7 +511,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "None"
     },
-    "bunnys-mama-daikou-service": {
+    "bunnys-mama": {
       "title_family": "GuiTitleDialog",
       "title_name_gate": "SavedPreferenceOnly",
       "title_button_resources": "BunnysMama",
@@ -546,7 +546,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "None"
     },
-    "pure-x-holic-junketsu-otome-to-konin-kankei": {
+    "pure-x-holic": {
       "title_family": "GuiTitleDialog",
       "title_name_gate": "SavedPreferenceOnly",
       "title_button_resources": "PureHolic",
@@ -581,7 +581,7 @@
       "item_acquisition_data": null,
       "legacy_map_selection_data": "PureHolicMapSelectionData"
     },
-    "oppai-dekai-nurse-to-ichakora-ero-x-2-nyuuin-seikatsu": {
+    "oppai-dekai-nurse": {
       "title_family": "GuiTitleDialog",
       "title_name_gate": "SavedPreferenceOnly",
       "title_button_resources": "Mamatomo",
@@ -686,10 +686,10 @@
     }
   },
   "evidence": {
-    "baku-ane-otouto-shibocchau-zo": ".BuildCache/compatibility/title-profile-review.md; name-flow-review.md: Start 49DFD0",
-    "bunnys-mama-daikou-service": ".BuildCache/compatibility/title-family-matrix.md/json: Start 4E4EB0/4F7ED0/4FE041, table 55FAA0; title-modern-integration.md",
-    "pure-x-holic-junketsu-otome-to-konin-kankei": ".BuildCache/compatibility/title-family-matrix.md/json: Start 4E6040/4FAF60/5000C1, table 563A20; title-modern-integration.md",
-    "oppai-dekai-nurse-to-ichakora-ero-x-2-nyuuin-seikatsu": ".BuildCache/compatibility/modern-title-review.md: Start 4E84F0/4FCBF0",
+    "baku-ane": ".BuildCache/compatibility/title-profile-review.md; name-flow-review.md: Start 49DFD0",
+    "bunnys-mama": ".BuildCache/compatibility/title-family-matrix.md/json: Start 4E4EB0/4F7ED0/4FE041, table 55FAA0; title-modern-integration.md",
+    "pure-x-holic": ".BuildCache/compatibility/title-family-matrix.md/json: Start 4E6040/4FAF60/5000C1, table 563A20; title-modern-integration.md",
+    "oppai-dekai-nurse": ".BuildCache/compatibility/modern-title-review.md: Start 4E84F0/4FCBF0",
     "hakoniwa": ".BuildCache/compatibility/modern-title-review.md: Start 4D8FF0/4FBE50",
     "mamatomo": ".BuildCache/compatibility/modern-title-review.md: Start 4F4530/522BD0"
   }

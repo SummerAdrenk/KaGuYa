@@ -27,7 +27,8 @@ int Subtract(int left, int right)
 void Publish(RuntimeCString& value, ATL::CStringData* header)
 {
     const auto chars = reinterpret_cast<std::uintptr_t>(header) + 16u;
-    std::memcpy(&value, &chars, sizeof(chars));
+    // 已取得的引用只按原生指针发布，producer/caller的清理责任不变。
+    std::memcpy(static_cast<void*>(&value), &chars, sizeof(chars));
 }
 
 struct ResultUnwind final

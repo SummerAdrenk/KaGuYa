@@ -38,6 +38,13 @@ const ModalTable38& ModalTable() noexcept
     {
         ModalTable38 value{};
         value.common = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 void* 仅占 EDX、不读取其输入。
+        // 仅析构 flags 占 4 字节栈实参并由被调方清栈，其余槽无栈实参；各返回类型一致。
+        // DeleteBase 的 noexcept 仅向可抛槽类型放宽，其余异常约定不变。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(field, function) value.common.field = reinterpret_cast<decltype(value.common.field)>(&function)
         SLOT(deletingDestructorAt04, DeleteBase);
         SLOT(activeInputAt38, ActiveInput); SLOT(resetInputAt3C, ResetInput);
@@ -47,6 +54,9 @@ const ModalTable38& ModalTable() noexcept
         value.beginHookAt8C = reinterpret_cast<decltype(value.beginHookAt8C)>(&NullHook);
         value.eventsAt90 = reinterpret_cast<decltype(value.eventsAt90)>(&PureEvents);
         value.endHookAt94 = reinterpret_cast<decltype(value.endHookAt94)>(&NullHook);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();
     return table;

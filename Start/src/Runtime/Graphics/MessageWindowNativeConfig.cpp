@@ -73,7 +73,8 @@ void ReadValue(RuntimeCString& out, RuntimeCString* error,
             auto* header = reinterpret_cast<ATL::CStringData*>(
                 const_cast<char*>(cursor->valueAt04.GetString())) - 1;
             const auto* chars = static_cast<const char*>(CloneRuntimeCStringDataAt414540(header)->data());
-            std::memcpy(&out, &chars, sizeof(chars));
+            // Clone返回的引用以原生指针写入输出槽，不触发CString赋值。
+            std::memcpy(static_cast<void*>(&out), &chars, sizeof(chars));
             return;
         }
         ++cursor;

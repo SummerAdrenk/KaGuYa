@@ -91,6 +91,11 @@ static_assert(offsetof(NativeMessage2Groups, formats) == 0x60);
 
 class MessageReaderInput;
 
+// 具体Message2的读取/姓名槽必须保留在原虚表中，不能因final删除virtual。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class NativeMessage2Runtime final : public NativeMessageReader
 {
 public:
@@ -132,6 +137,9 @@ private:
     MessageTextCommandReference GetStringWithContext(std::int32_t index, bool name,
         const MessageReaderCallContext& context);
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(NativeMessage2Runtime) == 0x90);
 static_assert(offsetof(NativeMessage2Runtime, groupsAt10) == 0x10);
 

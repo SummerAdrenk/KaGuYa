@@ -174,9 +174,11 @@ const LegacyCharacterSelectionProfile profile{
     .resultVariable="prog_result", .bgm=bgm,
     .selectionCue=nullptr,
     .confirmationMode=0, .confirmationFallback=nullptr,
+    .costVariable=nullptr, .costs={},
+    .animations={}, .animationPositions={}, .hoverRows={}, .effects={},
     .tabs=tabs, .portraits=portraits, .otherLocation="\x82\xBB\x82\xCC\x91\xBC\x81\x40\x83\x7D\x83\x62\x83\x76\x8F\xEA\x8F\x8A",
     .dateBase="\x83\x4C\x83\x83\x83\x89\x83\x4E\x83\x5E\x81\x5B\x91\x49\x91\xF0\x5F\x83\x78\x81\x5B\x83\x58\x2E\x76\x72\x6D", .dateDigits=digits, .datePositions=datePositions, .timeImages=timeImages,
-    .navigation=navigation,
+    .navigation=navigation, .hotkeys={},
 };
 }
 const LegacyCharacterSelectionProfile& Profile() noexcept { return profile; }

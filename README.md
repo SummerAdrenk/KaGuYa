@@ -23,8 +23,17 @@ cmake --build .BuildCache/clang-cl-release --target Start18
 cmake --build .BuildCache/clang-cl-release --target Graphics RenderDX Sound
 ```
 
-把 `Start18` 换成 `Start01` … `Start17` 即可构建对应游戏。每次只选择一个 Start 编号，
-因为它们都会发布为 `Release/Start.exe`。  
+把 `Start18` 换成 `Start01` … `Start17` 即可构建对应游戏。源码、资源和发布目录统一使用作品的简短英文名标识。
+EXE 分别发布到
+`Release/<game-slug>/Start.exe`，例如 `Start18` 输出到 `Release/mamatomo/Start.exe`，不同游戏不会互相覆盖。
+批量构建全部 18 个 EXE，或只选择其中几个：
+
+```text
+cmake --build .BuildCache/clang-cl-release --target StartAll
+cmake --build .BuildCache/clang-cl-release --target Start01 Start18
+```
+
+`StartAll` 仅构建 EXE，不包含三个 DLL。
 DLL 可以单独或组合构建：
 
 ```text
@@ -53,7 +62,8 @@ Debug 使用独立的 `clang-cl-debug` 预设。完整前置条件、工具定�
 <game>/Lib/Sound.dll
 ```
 
-`Start_RS.exe` 来自所选编号构建出的 `Release/Start.exe`，三个 DLL 使用本工程的配套产物。  
+`Start_RS.exe` 来自所选编号的 `Release/<game-slug>/Start.exe`，三个 DLL 来自 `Release/Lib/`。
+
 目前不建议将原版 EXE 混配新 DLL 亦或者反之配套使用。  
 部分日文数据路径仍使用 CP932 系统转换，需要对应的日文区域环境或用户自己的 Locale Emulator 配置。  
 运行依赖相应的 x86 Visual C++ Runtime。
@@ -63,8 +73,8 @@ Debug 使用独立的 `clang-cl-debug` 预设。完整前置条件、工具定�
 | 路径 | 内容 |
 |---|---|
 | `Start/` | 入口、平台层、VM、资源、场景及持久化 |
-| `Start/games/` | 各作品的配置和描述符 |
-| `Start/resources/` | RC、资源头、manifest、位图、图标和光标 |
+| `Start/games/<game-slug>/` | 按作品简称组织的配置和描述符 |
+| `Start/resources/<game-slug>/` | 同名作品的 RC、资源头、manifest、位图、图标和光标 |
 | `Graphics/` | Surface、图片装载、像素效果及文字 |
 | `RenderDX/` | Direct3D 9 后端 |
 | `Sound/` | 声音对象、解码及 DirectSound 后端 |

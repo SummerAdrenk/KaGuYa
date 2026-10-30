@@ -97,7 +97,8 @@ private:
         std::int32_t x,
         std::int32_t y);
 
-    ICgOperationSurfaceFactory* surfaceFactory_ = nullptr;
+    // 保留既有服务槽及布局；资源创建直接使用构造参数，后续复用已建surface。
+    [[maybe_unused]] ICgOperationSurfaceFactory* surfaceFactory_ = nullptr;
     IGraphicsSurfaceCompositionApi* graphics_ = nullptr;
     ISaveLoadSlotConfirmationRenderServices* renderServices_ = nullptr;
     std::vector<CgOperationChildControlRef> children_;

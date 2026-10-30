@@ -9,6 +9,11 @@
 
 namespace KaGuYa::Graphics
 {
+// 原字体对象保留vptr和析构虚槽；final不表示可以改变0x54字节布局。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class FontWrap final
 {
 public:
@@ -33,6 +38,9 @@ public:
 private:
     ATL::CStringA DisplayFace() const;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(FontWrap) == 0x54);
 using FontReference = NativeObjectReference<FontWrap, 0x54>;
 static_assert(sizeof(FontReference) == 12);

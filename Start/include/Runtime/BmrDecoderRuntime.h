@@ -87,9 +87,11 @@ public:
 
 private:
     std::array<std::uint8_t, 3> magicAt00_;
-    std::uint8_t unwrittenAt03_;
+    // 原生03h保留未写字节，不删除字段或补初始化。
+    [[maybe_unused]] std::uint8_t unwrittenAt03_;
     YtlReferenceSlotRuntime headerAt04_;
-    std::array<std::uint8_t, 4> unwrittenAt10_;
+    // 原生10h..13h同样保持未写，维持14h正文布局。
+    [[maybe_unused]] std::array<std::uint8_t, 4> unwrittenAt10_;
 };
 static_assert(sizeof(BmrDecoderRuntime) == 0x14);
 

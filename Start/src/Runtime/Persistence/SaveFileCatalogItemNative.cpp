@@ -29,7 +29,8 @@ ATL::CStringData* Header(const char* chars) noexcept
 void PublishText(RuntimeCString& output, ATL::CStringData* header) noexcept
 {
     const auto chars = reinterpret_cast<std::uintptr_t>(header) + sizeof(ATL::CStringData);
-    std::memcpy(&output, &chars, sizeof(chars));
+    // 只发布已有引用的原生指针，不额外增减引用；沿用调用方清理资格。
+    std::memcpy(static_cast<void*>(&output), &chars, sizeof(chars));
 }
 
 struct TextUnwind final
@@ -54,7 +55,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 原生vptr读取，保留管理器虚槽派发及异常边界。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function result;
     std::memcpy(&result, table + offset, sizeof(result));
     return result;

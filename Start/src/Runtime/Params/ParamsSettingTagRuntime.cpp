@@ -47,7 +47,8 @@ ATL::CStringData* Header(const RuntimeCString& text) noexcept
 void Publish(RuntimeCString& text, ATL::CStringData* header) noexcept
 {
     const auto chars = reinterpret_cast<const char*>(Address(header) + 16u);
-    std::memcpy(&text, &chars, sizeof(chars));
+    // 只发布Clone取得的原生指针，字段前缀清理仍由调用方控制。
+    std::memcpy(static_cast<void*>(&text), &chars, sizeof(chars));
 }
 
 // 对应部分 pair 的 40CD40 展开动作；只在第二字段尚未完成时持有 first。

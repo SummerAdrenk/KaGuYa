@@ -11,7 +11,8 @@ bool NameMatches(UpdateFrame& frame,void* scenes,unsigned nameAddress,int state)
     auto& text=Field<RuntimeCString>(scenes,0x1C);
     auto* header=reinterpret_cast<ATL::CStringData*>(const_cast<char*>(text.GetString()))-1;
     auto* clone=CloneRuntimeCStringDataAt414540(header);const auto* chars=reinterpret_cast<const char*>(clone+1);
-    std::memcpy(&frame.text.value,&chars,4);frame.cachedText=clone;frame.state=state;
+    // Clone引用只写原生指针；缓存header及state仍在发布后取得清理资格。
+    std::memcpy(static_cast<void*>(&frame.text.value),&chars,4);frame.cachedText=clone;frame.state=state;
     return ::_mbscmp(reinterpret_cast<const unsigned char*>(chars),reinterpret_cast<const unsigned char*>(ProgramSceneNativeName(nameAddress)))==0;
 }
 void ReleaseName(UpdateFrame& frame)

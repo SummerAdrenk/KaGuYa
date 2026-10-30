@@ -204,6 +204,13 @@ const GuiDialogNativeVtable35& SelectDialogNativeVtable() noexcept
 {
     static const GuiDialogNativeVtable35 table = [] {
         auto result = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 void* 仅占 EDX、不读取其输入。
+        // 仅析构 flags 占 4 字节栈实参并由被调方清栈，其余槽无栈实参；各返回类型一致。
+        // Dirty/Delete 的 noexcept 仅向可抛槽类型放宽，其余异常约定不变。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SELECT_SLOT(slot, function) result.slot = reinterpret_cast<decltype(result.slot)>(&function)
         SELECT_SLOT(dirtyAt00, Dirty);
         SELECT_SLOT(deletingDestructorAt04, Delete);
@@ -214,6 +221,9 @@ const GuiDialogNativeVtable35& SelectDialogNativeVtable() noexcept
         SELECT_SLOT(endAt4C, End);
         SELECT_SLOT(resultAt50, Result);
 #undef SELECT_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;

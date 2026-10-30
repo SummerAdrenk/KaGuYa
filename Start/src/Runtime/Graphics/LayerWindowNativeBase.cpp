@@ -22,6 +22,11 @@ RECT* __fastcall Bounds(Base* self, void*, RECT* output)
 std::uint8_t __fastcall Request(Base*, void*, std::uint8_t, std::int32_t) { return 0; }
 void __fastcall Advance(Base*, void*) {}
 [[noreturn]] void __fastcall Reset(Base*, void*) { _purecall(); std::terminate(); }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -30,6 +35,9 @@ const Table methods{
     reinterpret_cast<decltype(Table::requestAt10)>(&Request),
     reinterpret_cast<decltype(Table::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(Table::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const LayerItemNativeFrameVtable& LayerWindowNativeBaseMethods() noexcept { return methods; }

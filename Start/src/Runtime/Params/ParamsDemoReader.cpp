@@ -35,7 +35,8 @@ public:
     {
         auto* header = CloneRuntimeCStringDataAt414540(Header(source.GetString()));
         const auto characters = reinterpret_cast<std::uintptr_t>(header) + sizeof(ATL::CStringData);
-        std::memcpy(&cell_.value, &characters, sizeof(characters));
+        // Clone引用只按原生指针发布，active仍在写槽后取得清理资格。
+        std::memcpy(static_cast<void*>(&cell_.value), &characters, sizeof(characters));
         active_ = true;
     }
     void ReleaseNormal()
@@ -129,13 +130,15 @@ void ReadHeader(TextCell& text, const ParamsRuntimeReadCursor& cursor,
     if (!input.data) throw ATL::CAtlException(E_INVALIDARG);
     using Allocate = ATL::CStringData* (__thiscall*)(ATL::IAtlStringMgr*, int, int);
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 原生vptr读取，不更换Allocate虚槽或其异常传播边界。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Allocate allocate;
     std::memcpy(&allocate, table, sizeof(allocate));
     auto* header = allocate(manager, 9, 1);
     if (!header) throw ATL::CAtlException(E_OUTOFMEMORY);
     const auto characters = reinterpret_cast<std::uintptr_t>(header) + sizeof(ATL::CStringData);
-    std::memcpy(&text.Value(), &characters, sizeof(characters));
+    // 只发布Allocate所得指针；保持419F3B之前尚无清理资格的原时序。
+    std::memcpy(static_cast<void*>(&text.Value()), &characters, sizeof(characters));
     if (header->nAllocLength < 9) throw ATL::CAtlException(E_INVALIDARG);
     header->nDataLength = 9;
     reinterpret_cast<char*>(characters)[9] = 0;

@@ -180,7 +180,8 @@ WindowCreationPlan BuildWindowCreationPlan(const Runtime::EnvironmentStartupRunt
         const auto* chars = environment.CaptureAt4180C0().titleAt10.GetString();
         auto* header = reinterpret_cast<ATL::CStringData*>(const_cast<char*>(chars)) - 1;
         const auto* copied = reinterpret_cast<const char*>(Runtime::CloneRuntimeCStringDataAt414540(header) + 1);
-        std::memcpy(out, &copied, sizeof(copied));
+        // Clone引用交给隐藏返回槽，不经CString赋值或额外析构。
+        std::memcpy(static_cast<void*>(out), &copied, sizeof(copied));
     });
     if (environment.CaptureAt4180C0().appendTitleAt14.GetLength() != 0)
     {

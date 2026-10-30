@@ -65,8 +65,16 @@ public:
 static_assert(sizeof(LowerControl) == 0x18 && sizeof(ManagerControl) == 0x18);
 SoundManagerNativeBody50h* __fastcall DeleteEntry(SoundManagerNativeBody50h* body, void*, std::uint32_t flags)
 { return DeleteSoundManagerAt469480(*body, flags, Memory()); }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const SoundManagerNativeVtable methods{
     reinterpret_cast<decltype(SoundManagerNativeVtable::deleteAt00)>(&DeleteEntry)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 SoundManagerNativeScope::SoundManagerNativeScope(IEnvironmentRootMemory& memory) noexcept : previous_(activeMemory)
 { activeMemory = &memory; }

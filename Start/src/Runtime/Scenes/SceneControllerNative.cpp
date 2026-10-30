@@ -93,14 +93,30 @@ const char* PopName(Body& body)
 std::uint8_t __fastcall Run(Body* body,void*,std::int32_t argument)
 {return RunSceneControllerNativeAt48E100(*body,argument,Services());}
 Body* __fastcall Delete(Body* body,void*,std::uint32_t flags) noexcept;
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskNativeVtable methods{
     reinterpret_cast<decltype(TaskNativeVtable::runAt00)>(&Run),
     reinterpret_cast<decltype(TaskNativeVtable::deleteAt04)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 std::uint8_t __fastcall PureRun(TaskNativeBody4h*,void*,std::int32_t){_purecall();std::terminate();}
 TaskNativeBody4h* __fastcall DeleteRetired(TaskNativeBody4h* body,void*,std::uint32_t flags) noexcept;
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskNativeVtable retired{
     reinterpret_cast<decltype(TaskNativeVtable::runAt00)>(&PureRun),
     reinterpret_cast<decltype(TaskNativeVtable::deleteAt04)>(&DeleteRetired)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 TaskNativeBody4h* __fastcall DeleteRetired(TaskNativeBody4h* body,void*,std::uint32_t flags) noexcept
 {body->vptrAt00=&retired;if(flags&1u)::operator delete(body,std::size_t{4});return body;}
 Body* __fastcall Delete(Body* body,void*,std::uint32_t flags) noexcept

@@ -48,11 +48,26 @@ void __fastcall Remove(WinHookNativeBody30h* p,void*,void* item){RemoveWinHookNa
 void __fastcall Clear(WinHookNativeBody30h* p,void*){ClearWinHookNativeAt43F5C0(*p,Services());}
 std::int32_t __fastcall Dispatch(WinHookNativeBody30h* p,void*,HWND w,UINT m,WPARAM a,LPARAM l,LRESULT* r,std::uint32_t id)
 {return DispatchWinHookNativeAt43F6E0(*p,w,m,a,l,r,id,Services());}
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const WinHookNativeVtable methods{reinterpret_cast<decltype(WinHookNativeVtable::addAt00)>(&Add),
     reinterpret_cast<decltype(WinHookNativeVtable::removeAt04)>(&Remove),
     reinterpret_cast<decltype(WinHookNativeVtable::clearAt08)>(&Clear),
     reinterpret_cast<decltype(WinHookNativeVtable::dispatchAt0C)>(&Dispatch)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const CriticalSectionNativeVtable WinHookRetiredCriticalSectionNativeTable{
     reinterpret_cast<decltype(CriticalSectionNativeVtable::enterAt00)>(&Pure),
     reinterpret_cast<decltype(CriticalSectionNativeVtable::leaveAt04)>(&Pure),
@@ -63,6 +78,9 @@ const CriticalSectionNativeVtable WinHookCriticalSectionNativeTable{
     reinterpret_cast<decltype(CriticalSectionNativeVtable::leaveAt04)>(&Leave),
     reinterpret_cast<decltype(CriticalSectionNativeVtable::heldAt08)>(&Held),
     reinterpret_cast<decltype(CriticalSectionNativeVtable::deleteAt0C)>(&DeleteCritical)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 IWinHookNativePlatform& DefaultWinHookNativePlatform() noexcept{static Win32 value;return value;}
 WinHookNativeScope::WinHookNativeScope(WinHookNativeServices& services) noexcept:previous_(active){active=&services;}
 WinHookNativeScope::~WinHookNativeScope() noexcept{active=previous_;}

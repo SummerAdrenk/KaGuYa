@@ -10,28 +10,58 @@ GuiDialogNativeVtable35 Base() noexcept
 {
     auto result = GuiDialogBaseVtable();
     // 5C08E8的00槽与509ED0逐指令同义，但保留派生509EA0入口身份。
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     result.dirtyAt00 = SLOT(dirtyAt00, Dirty);
     result.deletingDestructorAt04 = SLOT(deletingDestructorAt04, DeleteBase);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return result;
 }
 GuiDialogNativeVtable35 LikableTable() noexcept
 {
     auto result = Base();
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     result.deletingDestructorAt04 = SLOT(deletingDestructorAt04, DeleteLikable);
     result.beginAt44 = SLOT(beginAt44, BeginLikable);
     result.pollAt48 = SLOT(pollAt48, PollLikable);
     result.endAt4C = SLOT(endAt4C, EndLikable);
     result.processInputAt54 = SLOT(processInputAt54, InputLikable);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return result;
 }
 GuiDialogNativeVtable35 WeightTable() noexcept
 {
     auto result = Base();
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     result.deletingDestructorAt04 = SLOT(deletingDestructorAt04, DeleteWeight);
     result.beginAt44 = SLOT(beginAt44, BeginWeight);
     result.pollAt48 = SLOT(pollAt48, PollWeight);
     result.endAt4C = SLOT(endAt4C, EndWeight);
     result.processInputAt54 = SLOT(processInputAt54, InputWeight);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return result;
 }
 #undef SLOT

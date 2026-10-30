@@ -23,12 +23,14 @@ ATL::CStringData* Header(const char* text) noexcept
 void Publish(RuntimeCString* out, ATL::CStringData* header) noexcept
 {
     const auto data = reinterpret_cast<std::uintptr_t>(header) + 16u;
-    std::memcpy(out, &data, sizeof(data));
+    // 仅发布已有引用的原生指针，保持调用方的Clone/返回槽清理责任。
+    std::memcpy(static_cast<void*>(out), &data, sizeof(data));
 }
 template<class Function> Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 原生vptr读取，保留后续可抛虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function function;
     std::memcpy(&function, table + offset, sizeof(function));
     return function;

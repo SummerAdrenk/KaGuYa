@@ -22,6 +22,11 @@ std::int32_t __fastcall Entry(ScriptNativeBody* self, void*)
 }
 
 ScriptNativeBody* __fastcall DeleteBody(ScriptNativeBody* self, void*, std::uint32_t flags);
+// ECX接收原CScript；EDX只作fastcall占位，原虚槽/入口的栈与返回约定不变。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ScriptNativeVtable methods{
     reinterpret_cast<decltype(ScriptNativeVtable::deletingDestructor)>(&DeleteBody)};
 
@@ -41,6 +46,9 @@ void RegisterEntries(ScriptNativeBody& body) noexcept
     KAGUYA_SCRIPT_ENTRY(25); KAGUYA_SCRIPT_ENTRY(28);
 #undef KAGUYA_SCRIPT_ENTRY
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 ScriptNativeBody* __fastcall DeleteBody(ScriptNativeBody* self, void*, std::uint32_t flags)
 {

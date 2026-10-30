@@ -61,7 +61,8 @@ RuntimeCStringResult SceneManagerRuntime::ClonePendingCommandAt414540() const
             const_cast<char*>(pendingCommandAt1C_.Value().GetString())) - 1;
         auto* copy = CloneRuntimeCStringDataAt414540(header);
         const auto* chars = reinterpret_cast<const char*>(copy + 1);
-        std::memcpy(out, &chars, sizeof(chars));
+        // Clone引用交给隐藏返回槽，不经CString赋值或额外析构。
+        std::memcpy(static_cast<void*>(out), &chars, sizeof(chars));
     });
 }
 

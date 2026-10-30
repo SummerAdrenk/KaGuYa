@@ -19,7 +19,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr，保持可抛管理器虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function function;
     std::memcpy(&function, table + offset, sizeof(function));
     return function;
@@ -95,7 +96,8 @@ LRESULT InitializeStartupSettingsDialogNativeAt4837E0(StartupSettingsDialogNativ
         auto* nil = ManagerSlot<GetNil>(manager, 0x0C)(manager); // 4838F0，可抛原始槽
         TextSlot path;
         const auto nilChars = reinterpret_cast<std::uintptr_t>(nil) + sizeof(ATL::CStringData);
-        std::memcpy(&path.value, &nilChars, sizeof(nilChars));
+        // GetNil引用只写入原始槽，不经CString赋值；清理资格仍在发布后取得。
+        std::memcpy(static_cast<void*>(&path.value), &nilChars, sizeof(nilChars));
         PathUnwind unwind{path.value}; // GetNil成功才有state0/bit1资格。
 
         // 483900：Clone/GetNil之后重读同一个路径槽的chars及其header长度。

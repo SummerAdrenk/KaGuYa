@@ -182,7 +182,8 @@ Body* Construct(void* raw, Common* parent, std::int32_t id, bool mode01,
     auto* body = ::new(raw) Body;
     ConstructGuiDialogAt4E0BE0(&body->common, parent, id);
     body->common.vptrAt00 = mode01 ? &ProgramSystem01DialogNativeVtable() : &ProgramSystem00DialogNativeVtable();
-    ConstructorFrame frame{*body};
+    ConstructorFrame frame{.body=*body,.child={},.factory={},.event={},
+        .binding={},.eventAppend={},.childAppend={}};
     ::new(&body->clickedManagerAt5C) Slot;
     frame.state = 1;
     void* managerRaw = ::operator new(0x0C);

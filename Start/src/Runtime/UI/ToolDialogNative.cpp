@@ -70,6 +70,13 @@ const GuiDialogNativeVtable35& ToolDialogNativeVtable() noexcept
 {
     static const GuiDialogNativeVtable35 table = [] {
         auto result = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define TOOL_SLOT(slot, function) result.slot = reinterpret_cast<decltype(result.slot)>(&function)
         TOOL_SLOT(dirtyAt00, Dirty);
         TOOL_SLOT(deletingDestructorAt04, Delete);
@@ -79,6 +86,9 @@ const GuiDialogNativeVtable35& ToolDialogNativeVtable() noexcept
         TOOL_SLOT(resultAt50, Result);
         TOOL_SLOT(processInputAt54, Process);
 #undef TOOL_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;

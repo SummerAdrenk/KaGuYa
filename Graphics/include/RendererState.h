@@ -8,6 +8,11 @@
 
 namespace KaGuYa::Graphics
 {
+// 原dirty对象的vptr占首DWORD，析构虚槽不可因final而删除。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 struct DirtyRectState final
 {
     virtual ~DirtyRectState() = default;
@@ -15,6 +20,9 @@ struct DirtyRectState final
     std::array<int, 6> areas;
     int count = 0;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(DirtyRectState) == 0x80);
 
 struct BorrowedPrimaryPixels

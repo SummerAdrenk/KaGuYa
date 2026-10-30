@@ -50,14 +50,15 @@ void Publish(RuntimeCString* element, ATL::CStringData* header) noexcept
 {
     char* const data = Data(header);
     // 直接发布原始字符串槽；v143 构造函数会经过带 throw() 声明的管理器槽。
-    std::memcpy(element, &data, sizeof(data));
+    std::memcpy(static_cast<void*>(element), &data, sizeof(data));
 }
 
 template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr，保持管理器虚槽及异常传播边界。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function function;
     static_assert(sizeof(function) == sizeof(void*));
     std::memcpy(&function, table + offset, sizeof(function));

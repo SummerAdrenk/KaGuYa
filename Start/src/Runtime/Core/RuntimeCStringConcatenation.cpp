@@ -11,7 +11,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr，保留Clone/GetNil的原始虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function result;
     std::memcpy(&result, table + offset, sizeof(result));
     return result;
@@ -56,7 +57,7 @@ void RuntimeCStringConcatenation::Initialize(RuntimeStringBorrow prefix,
     auto* const nil = ManagerSlot<GetNil>(manager, 12)(manager);
     // 4667BF返回后才写输出并取得清理资格；不经过ATL构造，也不替换空nil返回。
     const auto chars = reinterpret_cast<std::uintptr_t>(nil) + sizeof(ATL::CStringData);
-    std::memcpy(&storage_.value, &chars, sizeof(chars));
+    std::memcpy(static_cast<void*>(&storage_.value), &chars, sizeof(chars));
     struct ConstructionCleanup
     {
         RuntimeCString* value;
@@ -91,7 +92,8 @@ void ConstructRuntimeCStringPrefixAt4CA280(RuntimeCString* out,const char* prefi
     using GetNil=ATL::CStringData*(__thiscall*)(ATL::IAtlStringMgr*);
     auto* nil=ManagerSlot<GetNil>(manager,12)(manager);
     const auto chars=reinterpret_cast<std::uintptr_t>(nil)+sizeof(ATL::CStringData);
-    std::memcpy(out,&chars,sizeof(chars));
+    // GetNil引用只按原生指针发布；后续cleanup的取得及撤销时点不变。
+    std::memcpy(static_cast<void*>(out),&chars,sizeof(chars));
     struct Unwind final{RuntimeCString* value;~Unwind() noexcept{if(value)DestroyRuntimeCStringAt40CD40(value);}} cleanup{out};
     const char* second=suffix.GetString();
     const auto firstLength=prefix?std::uint32_t(std::strlen(prefix)):0u;

@@ -117,7 +117,8 @@ void BuildCharacters(Page& p,Services& s)
 RuntimeCString* ExpandName(Page& p,RuntimeCString* out,const RuntimeCString& input,Services& s)
 {
     auto* clone=CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(const_cast<char*>(input.GetString()))-1);
-    const char* chars=reinterpret_cast<const char*>(clone+1);std::memcpy(out,&chars,4);
+    // Clone引用交给原始输出槽，后续异常清理不增添CString赋值或析构。
+    const char* chars=reinterpret_cast<const char*>(clone+1);std::memcpy(static_cast<void*>(out),&chars,4);
     try
     {
         for(;;)

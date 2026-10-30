@@ -139,7 +139,15 @@ const Vtable36& ButtonsMethods() noexcept
 {
     static const auto table = []() noexcept
     {
-        Vtable36 result{GuiDialogBaseVtable()};
+        Vtable36 result{GuiDialogBaseVtable(), {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define CG_SLOT(name, entry) result.common.name = reinterpret_cast<decltype(result.common.name)>(&entry)
         CG_SLOT(deletingDestructorAt04, DeleteButtons);
         CG_SLOT(beginAt44, BeginButtons);
@@ -150,6 +158,9 @@ const Vtable36& ButtonsMethods() noexcept
         CG_SLOT(drawAt60, DrawButtons);
 #undef CG_SLOT
         result.boundsAt8C = reinterpret_cast<decltype(result.boundsAt8C)>(&ButtonsBounds);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;
@@ -158,7 +169,14 @@ const Vtable36& PopupMethods() noexcept
 {
     static const auto table = []() noexcept
     {
-        Vtable36 result{GuiDialogBaseVtable()};
+        Vtable36 result{GuiDialogBaseVtable(), {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define CG_SLOT(name, entry) result.common.name = reinterpret_cast<decltype(result.common.name)>(&entry)
         CG_SLOT(deletingDestructorAt04, DeletePopup);
         CG_SLOT(activeInputAt38, ActivePopup);
@@ -169,6 +187,9 @@ const Vtable36& PopupMethods() noexcept
         CG_SLOT(resultAt50, PopupResult);
 #undef CG_SLOT
         result.boundsAt8C = reinterpret_cast<decltype(result.boundsAt8C)>(&PopupBounds);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;
@@ -181,6 +202,13 @@ const GuiDialogIntoNativeVtable37& CgOperationDialogNativeMethods() noexcept
     static const auto table = []() noexcept
     {
         auto result = GuiDialogIntoBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define CG_SLOT(name, entry) result.common.name = reinterpret_cast<decltype(result.common.name)>(&entry)
         CG_SLOT(deletingDestructorAt04, DeleteDialog);
         CG_SLOT(beginAt44, BeginDialog);
@@ -188,6 +216,9 @@ const GuiDialogIntoNativeVtable37& CgOperationDialogNativeMethods() noexcept
         CG_SLOT(endAt4C, One);
         CG_SLOT(resultAt50, DialogResult);
 #undef CG_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;

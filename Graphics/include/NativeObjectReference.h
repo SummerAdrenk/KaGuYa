@@ -38,7 +38,13 @@ class NativeObjectReference final
     public:
         explicit Control(T* value) noexcept : payload(value) {}
         virtual void DestroyPayload() { PayloadDeleter{}(payload); }
-        virtual void DeleteControl(std::uint32_t flags) { if (flags & 1u) delete this; }
+        virtual void DeleteControl(std::uint32_t flags)
+        {
+            if (!(flags & 1u)) return;
+            // 本槽只销毁当前控制块；不能添加虚析构槽或把Control标final而去虚化跨模块调用。
+            this->Control::~Control();
+            ::operator delete(this);
+        }
         std::uint32_t references;
         std::uint8_t owning;
         std::uint8_t unwritten[3];

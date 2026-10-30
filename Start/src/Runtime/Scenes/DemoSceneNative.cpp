@@ -24,9 +24,17 @@ struct TaskTable final
     decltype(Table::deleteAt04) destroy;
 };
 Body* __fastcall DeleteTask(Body* body,void*,std::uint32_t flags) noexcept;
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskTable task{
     reinterpret_cast<decltype(TaskTable::run)>(&PureRun),
     reinterpret_cast<decltype(TaskTable::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void Retire(Body& body) noexcept{body.vptrAt00=reinterpret_cast<const Table*>(&task);}
 Body* __fastcall DeleteTask(Body* body,void*,std::uint32_t flags) noexcept
 {
@@ -62,18 +70,42 @@ void __fastcall FinishEnding(Body*,void*)
     services.ending.ClearScreen(0);services.ending.InvalidateScreenRect(nullptr);
     services.ending.AdvanceActiveSceneFromPending();
 }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table base{
     reinterpret_cast<decltype(Table::runAt00)>(&Run),reinterpret_cast<decltype(Table::deleteAt04)>(&DeleteBase),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),reinterpret_cast<decltype(Table::drawAt0C)>(&Draw),
     reinterpret_cast<decltype(Table::finishAt10)>(&PureFinish)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table logo{
     reinterpret_cast<decltype(Table::runAt00)>(&Run),reinterpret_cast<decltype(Table::deleteAt04)>(&DeleteLogo),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),reinterpret_cast<decltype(Table::drawAt0C)>(&Draw),
     reinterpret_cast<decltype(Table::finishAt10)>(&FinishLogo)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table ending{
     reinterpret_cast<decltype(Table::runAt00)>(&Run),reinterpret_cast<decltype(Table::deleteAt04)>(&DeleteEnding),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),reinterpret_cast<decltype(Table::drawAt0C)>(&Draw),
     reinterpret_cast<decltype(Table::finishAt10)>(&FinishEnding)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 DemoSequenceNativeBodyA4h* Sequence(Body& body)
 {return ResolveEnvironmentObjectReference<DemoSequenceNativeBodyA4h>(body.sequenceAt08);}
 class EndingName final

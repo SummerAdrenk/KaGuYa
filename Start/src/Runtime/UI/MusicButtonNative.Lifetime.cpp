@@ -21,8 +21,18 @@ const ModeButtonNativeVtable13& MusicButtonNativeVtable() noexcept
     static const auto table=[]
     {
         auto result=IModeBtnProcNativeVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         result.deleteAt00=reinterpret_cast<decltype(result.deleteAt00)>(&Delete);
         result.processAt04=reinterpret_cast<decltype(result.processAt04)>(&Process);return result;
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     }();return table;
 }
 MusicButtonNativeBody70h* DeleteMusicButtonNativeAt4A70B0(MusicButtonNativeBody70h* p,unsigned flags) noexcept

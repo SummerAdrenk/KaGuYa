@@ -43,14 +43,30 @@ HRESULT WINAPI UpdateId(void* p,UINT id,BOOL start,const AppModuleRegistryMapNat
 {return UpdateAppModuleRegistryIdNativeAt439210(p,id,start,map);}
 HRESULT WINAPI UpdateName(void* p,const char* name,BOOL start,const AppModuleRegistryMapNative8h* map)
 {return UpdateAppModuleRegistryNameNativeAt4396C0(p,name,start,map);}
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const AppModuleNativeVtable10 base{
     reinterpret_cast<decltype(base.deleteAt00)>(&DeleteBase),reinterpret_cast<decltype(base.lockAt04)>(&Lock),
     reinterpret_cast<decltype(base.unlockAt08)>(&Unlock),reinterpret_cast<decltype(base.lockCountAt0C)>(&LockCount),
     reinterpret_cast<decltype(base.gitAt10)>(&Git),reinterpret_cast<decltype(base.replacementsAt14)>(&Replacements),
     Deprecated,Deprecated,UpdateId,UpdateName};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const AppModuleNativeVtable10 app{
     reinterpret_cast<decltype(app.deleteAt00)>(&DeleteApp),base.lockAt04,base.unlockAt08,base.lockCountAt0C,
     base.gitAt10,base.replacementsAt14,Deprecated,Deprecated,UpdateId,UpdateName};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 IAppModuleNativeComApi& DefaultAppModuleNativeComApi()noexcept{return com;}
 AppModuleNativeVirtualScope::AppModuleNativeVirtualScope(AppModuleNativeVirtualServices& services)noexcept:previous_(active){active=&services;}

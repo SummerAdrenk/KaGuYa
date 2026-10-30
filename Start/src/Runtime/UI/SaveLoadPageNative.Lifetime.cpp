@@ -39,9 +39,19 @@ const SaveLoadPageSecondNativeVtable36& SaveLoadPage00NativeVtable() noexcept
     static const auto table=[]
     {
         auto value=SaveLoadPageSecondNativeVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         value.inheritedGui35.deletingDestructorAt04=reinterpret_cast<decltype(value.inheritedGui35.deletingDestructorAt04)>(&Delete00);
         value.inheritedGui35.endAt4C=reinterpret_cast<decltype(value.inheritedGui35.endAt4C)>(&End00);
         value.changePageAt8C=reinterpret_cast<decltype(value.changePageAt8C)>(&Change00);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();return table;
 }
@@ -50,9 +60,19 @@ const SaveLoadPageSecondNativeVtable36& SaveLoadPage01NativeVtable() noexcept
     static const auto table=[]
     {
         auto value=SaveLoadPageSecondNativeVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         value.inheritedGui35.deletingDestructorAt04=reinterpret_cast<decltype(value.inheritedGui35.deletingDestructorAt04)>(&Delete01);
         value.inheritedGui35.endAt4C=reinterpret_cast<decltype(value.inheritedGui35.endAt4C)>(&End01);
         value.changePageAt8C=reinterpret_cast<decltype(value.changePageAt8C)>(&Change01);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();return table;
 }

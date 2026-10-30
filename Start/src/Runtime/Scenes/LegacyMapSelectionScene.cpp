@@ -11,11 +11,19 @@ void __fastcall Draw(Scene*,void*){} // 十款原Draw均null；绘图属于GUI P
 std::uint8_t __fastcall Run(Scene* b,void*,int){UpdateLegacyMapSelectionScene(*b);return 1;}
 Scene* __fastcall Delete(Scene* b,void*,unsigned flags) noexcept
 {DestroyLegacyMapSelectionScene(*b);if(flags&1)::operator delete(b,sizeof(Scene));return b;}
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LegacyMapSelectionSceneVtable methods{
     reinterpret_cast<decltype(LegacyMapSelectionSceneVtable::run)>(&Run),
     reinterpret_cast<decltype(LegacyMapSelectionSceneVtable::destroy)>(&Delete),
     reinterpret_cast<decltype(LegacyMapSelectionSceneVtable::update)>(&Update),
     reinterpret_cast<decltype(LegacyMapSelectionSceneVtable::draw)>(&Draw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void WaitMark(UnSaveDataRuntime& u,std::uint8_t value)
 {u.DwordAt0C()=(u.DwordAt0C()&0xFFFFFF00u)|value;}
 bool SystemRequest(Scene& b)

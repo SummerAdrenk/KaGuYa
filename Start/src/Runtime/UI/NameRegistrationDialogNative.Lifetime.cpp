@@ -59,6 +59,13 @@ const NameRegistrationDialogNativeVtable38& DestructionTable() noexcept
     {
         NameRegistrationDialogNativeVtable38 t;
         t.common = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(f, e) t.common.f = reinterpret_cast<decltype(t.common.f)>(&e)
         BIND(dirtyAt00, Dirty);
         BIND(deletingDestructorAt04, DeleteModal);
@@ -73,6 +80,9 @@ const NameRegistrationDialogNativeVtable38& DestructionTable() noexcept
         t.beginExtraAt8C = reinterpret_cast<decltype(t.beginExtraAt8C)>(&Noop);
         t.pollExtraAt90 = reinterpret_cast<decltype(t.pollExtraAt90)>(&Pure);
         t.endExtraAt94 = reinterpret_cast<decltype(t.endExtraAt94)>(&Noop);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;
@@ -102,6 +112,13 @@ const NameRegistrationDialogNativeVtable38& NameRegistrationDialogNativeVtable()
     {
         NameRegistrationDialogNativeVtable38 t;
         t.common = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(f, e) t.common.f = reinterpret_cast<decltype(t.common.f)>(&e)
         BIND(dirtyAt00, Dirty);
         BIND(deletingDestructorAt04, Delete);
@@ -118,6 +135,9 @@ const NameRegistrationDialogNativeVtable38& NameRegistrationDialogNativeVtable()
         t.beginExtraAt8C = reinterpret_cast<decltype(t.beginExtraAt8C)>(&Noop);
         t.pollExtraAt90 = reinterpret_cast<decltype(t.pollExtraAt90)>(&PollExtra);
         t.endExtraAt94 = reinterpret_cast<decltype(t.endExtraAt94)>(&Noop);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

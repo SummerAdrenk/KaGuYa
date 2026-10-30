@@ -60,7 +60,7 @@ void AdvanceAnimations(Body& b)
     {
         auto* c=Find(b,a.view,a.event);
         if(!View(b,a.view).shown||!c||!c->visible||(!a.normalOnly&&!c->enabled))continue;
-        a.sprite->AdvanceAnimation();
+        (void)a.sprite->AdvanceAnimation();
     }
 }
 void RenderAnimations(Body& b,int view,const RECT* clip,const Slot* target)

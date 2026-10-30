@@ -23,14 +23,30 @@ struct Retired final
     decltype(MovieSceneNativeVtable4::deleteAt04) destroy;
 };
 static_assert(sizeof(Retired)==8);
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Retired retired{
     reinterpret_cast<decltype(Retired::run)>(&Pure),
     reinterpret_cast<decltype(Retired::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MovieSceneNativeVtable4 methods{
     reinterpret_cast<decltype(MovieSceneNativeVtable4::runAt00)>(&RunSceneTaskNativeAt4C3630),
     reinterpret_cast<decltype(MovieSceneNativeVtable4::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(MovieSceneNativeVtable4::updateAt08)>(&Update),
     reinterpret_cast<decltype(MovieSceneNativeVtable4::drawAt0C)>(&DrawSceneTaskNativeAt4B5E20)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteTask(Body* body,void*,unsigned flags)noexcept
 {Retire(*body);if(flags&1u)::operator delete(body,std::size_t{4});return body;}
 constexpr std::uint32_t table[]{0x4C3630,0x4A6EA0,0x4B9520,0x4B5E20};

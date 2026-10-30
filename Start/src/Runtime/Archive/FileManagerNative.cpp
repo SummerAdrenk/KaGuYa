@@ -21,7 +21,7 @@ public:
         // 492C30通过正文当前表派发，不能让final类型使编译器直接调用具体析构。
         using Delete = FileManagerNative28h* (__thiscall*)(FileManagerNative28h*, std::uint32_t);
         const Delete* table;
-        std::memcpy(&table, body, sizeof(table));
+        std::memcpy(&table, static_cast<const void*>(body), sizeof(table));
         table[0](body, 1);
     }
     void DeleteControlAtVslot04(std::uint32_t flags) override

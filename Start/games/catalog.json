@@ -6,22 +6,22 @@
     {
       "number": 1,
       "build_target": "Start01",
-      "slug": "baku-ane-otouto-shibocchau-zo",
+      "slug": "baku-ane",
       "title": "Baku Ane ~Otouto Shibocchau zo!~",
       "title_original": "ばくあね ～弟しぼっちゃうぞ！～",
       "vndb_id": "v13943",
       "vndb_url": "https://vndb.org/v13943",
-      "resource_entry": "resources/baku-ane-otouto-shibocchau-zo/Resources.rc"
+      "resource_entry": "resources/baku-ane/Resources.rc"
     },
     {
       "number": 2,
       "build_target": "Start02",
-      "slug": "namaiki-kissuisou-e-youkoso",
+      "slug": "namaiki",
       "title": "Namaiki ~Kissuisou e Youkoso!~",
       "title_original": "なまイキ～生粋荘へようこそ！～",
       "vndb_id": "v15417",
       "vndb_url": "https://vndb.org/v15417",
-      "resource_entry": "resources/namaiki-kissuisou-e-youkoso/Resources.rc"
+      "resource_entry": "resources/namaiki/Resources.rc"
     },
     {
       "number": 3,
@@ -46,72 +46,72 @@
     {
       "number": 5,
       "build_target": "Start05",
-      "slug": "ero-zemi-ecchi-ni-yaru-ki-ni-abc",
+      "slug": "ero-zemi",
       "title": "Ero Zemi ~Ecchi ni Yaru-ki ni ABC~",
       "title_original": "えろゼミ~エッチにヤル気にABC~",
       "vndb_id": "v19391",
       "vndb_url": "https://vndb.org/v19391",
-      "resource_entry": "resources/ero-zemi-ecchi-ni-yaru-ki-ni-abc/Resources.rc"
+      "resource_entry": "resources/ero-zemi/Resources.rc"
     },
     {
       "number": 6,
       "build_target": "Start06",
-      "slug": "baku-ane-2-otouto-ippai-shibocchau-zo",
+      "slug": "baku-ane-2",
       "title": "Baku Ane 2 ~Otouto, Ippai Shibocchau zo!~",
       "title_original": "ばくあね２ ～弟、いっぱいしぼっちゃうぞ！～",
       "vndb_id": "v20367",
       "vndb_url": "https://vndb.org/v20367",
-      "resource_entry": "resources/baku-ane-2-otouto-ippai-shibocchau-zo/Resources.rc"
+      "resource_entry": "resources/baku-ane-2/Resources.rc"
     },
     {
       "number": 7,
       "build_target": "Start07",
-      "slug": "shigokare-ecchi-na-joshi-daisei-to-doki-x2-love-lesson",
+      "slug": "shigokare",
       "title": "Shigokare ~Ecchi na Joshi Daisei to Doki x2 Love Lesson!!~",
       "title_original": "しごカレ ～エッチな女子大生とドキ×２ラブレッスン！！～",
       "vndb_id": "v21474",
       "vndb_url": "https://vndb.org/v21474",
-      "resource_entry": "resources/shigokare-ecchi-na-joshi-daisei-to-doki-x2-love-lesson/Resources.rc"
+      "resource_entry": "resources/shigokare/Resources.rc"
     },
     {
       "number": 8,
       "build_target": "Start08",
-      "slug": "love-x-holic-miwaku-no-otome-to-hakudaku-kankei",
+      "slug": "love-x-holic",
       "title": "Love×Holic ~Miwaku no Otome to Hakudaku Kankei~",
       "title_original": "Love×Holic ～魅惑の乙女と白濁カンケイ～",
       "vndb_id": "v22713",
       "vndb_url": "https://vndb.org/v22713",
-      "resource_entry": "resources/love-x-holic-miwaku-no-otome-to-hakudaku-kankei/Resources.rc"
+      "resource_entry": "resources/love-x-holic/Resources.rc"
     },
     {
       "number": 9,
       "build_target": "Start09",
-      "slug": "nee-chan-no-susume-onee-chan-no-itazura-seiseikatsu",
+      "slug": "nee-chan-no-susume",
       "title": "Nee-chan no Susume ~Onee-chan no Itazura Seiseikatsu~",
       "title_original": "姉ちゃんのススメ～お姉ちゃんのイタズラ性生活～",
       "vndb_id": "v24853",
       "vndb_url": "https://vndb.org/v24853",
-      "resource_entry": "resources/nee-chan-no-susume-onee-chan-no-itazura-seiseikatsu/Resources.rc"
+      "resource_entry": "resources/nee-chan-no-susume/Resources.rc"
     },
     {
       "number": 10,
       "build_target": "Start10",
-      "slug": "mamagoto-mama-to-naisho-no-ecchi-shimasho",
+      "slug": "mamagoto",
       "title": "Mamagoto ~Mama to Naisho no Ecchi Shimasho~",
       "title_original": "ままごと ～ママとないしょのエッチしましょ～",
       "vndb_id": "v26530",
       "vndb_url": "https://vndb.org/v26530",
-      "resource_entry": "resources/mamagoto-mama-to-naisho-no-ecchi-shimasho/Resources.rc"
+      "resource_entry": "resources/mamagoto/Resources.rc"
     },
     {
       "number": 11,
       "build_target": "Start11",
-      "slug": "mama-x-holic-miwaku-no-mama-to-ama-ama-kankei",
+      "slug": "mama-x-holic",
       "title": "Mama×Holic ~Miwaku no Mama to Ama Ama Kankei~",
       "title_original": "Mama×Holic ～魅惑のママと甘々カンケイ～",
       "vndb_id": "v28731",
       "vndb_url": "https://vndb.org/v28731",
-      "resource_entry": "resources/mama-x-holic-miwaku-no-mama-to-ama-ama-kankei/Resources.rc"
+      "resource_entry": "resources/mama-x-holic/Resources.rc"
     },
     {
       "number": 12,
@@ -136,32 +136,32 @@
     {
       "number": 14,
       "build_target": "Start14",
-      "slug": "bunnys-mama-daikou-service",
+      "slug": "bunnys-mama",
       "title": "Bunny's Mama Daikou Service",
       "title_original": "Bunny's ママ代行サービス",
       "vndb_id": "v41944",
       "vndb_url": "https://vndb.org/v41944",
-      "resource_entry": "resources/bunnys-mama-daikou-service/Resources.rc"
+      "resource_entry": "resources/bunnys-mama/Resources.rc"
     },
     {
       "number": 15,
       "build_target": "Start15",
-      "slug": "pure-x-holic-junketsu-otome-to-konin-kankei",
+      "slug": "pure-x-holic",
       "title": "Pure×Holic ~Junketsu Otome to Kon'in Kankei!?~",
       "title_original": "Pure×Holic ～純潔乙女と婚姻カンケイ！？～",
       "vndb_id": "v49143",
       "vndb_url": "https://vndb.org/v49143",
-      "resource_entry": "resources/pure-x-holic-junketsu-otome-to-konin-kankei/Resources.rc"
+      "resource_entry": "resources/pure-x-holic/Resources.rc"
     },
     {
       "number": 16,
       "build_target": "Start16",
-      "slug": "oppai-dekai-nurse-to-ichakora-ero-x-2-nyuuin-seikatsu",
+      "slug": "oppai-dekai-nurse",
       "title": "Oppai Dekai!! Nurse to Ichakora Ero×2 Nyuuin Seikatsu!?",
       "title_original": "おっぱいでかい!! ナースとイチャコラエロ×２入院生活!?",
       "vndb_id": "v53594",
       "vndb_url": "https://vndb.org/v53594",
-      "resource_entry": "resources/oppai-dekai-nurse-to-ichakora-ero-x-2-nyuuin-seikatsu/Resources.rc"
+      "resource_entry": "resources/oppai-dekai-nurse/Resources.rc"
     },
     {
       "number": 17,

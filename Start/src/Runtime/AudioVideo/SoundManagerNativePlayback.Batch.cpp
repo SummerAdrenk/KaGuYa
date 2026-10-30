@@ -171,7 +171,8 @@ bool SoundManagerNativePlayback::PlayBatchAt42C4F0(SoundManagerNativeBody50h& bo
         auto* const header = CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(
             const_cast<char*>(characters)) - 1);
         characters = reinterpret_cast<const char*>(header + 1);
-        TextStorage held; std::memcpy(&held.value, &characters, sizeof(characters));
+        // Clone引用写入空槽，仍由下方Unwind/缓存header负责释放。
+        TextStorage held; std::memcpy(static_cast<void*>(&held.value), &characters, sizeof(characters));
         TextUnwind unwind{&held.value};
         const auto slot = current.voicesBeginAt14 + static_cast<std::uint32_t>(i);
         if (open.OpenAt42BC90(body, slot, characters, value, 0, 1)) *states.AtCurrent(i) = 3;
@@ -188,7 +189,8 @@ bool SoundManagerNativePlayback::PlayBatchAt42C4F0(SoundManagerNativeBody50h& bo
             auto* const name = NameAt(input, i);
             slot = VoiceSlot(body, i); // Sound回调后重取names、当前voices起址/slots。
             const char* const source = name->GetString();
-            TextStorage borrowed; std::memcpy(&borrowed.value, &source, sizeof(source));
+            // 此槽仅借用chars，不Clone也不析构；410220自行取得目标引用。
+            TextStorage borrowed; std::memcpy(static_cast<void*>(&borrowed.value), &source, sizeof(source));
             AssignRuntimeCStringAt410220(slot->nameAt04, borrowed.value);
         }
         stateBase = static_cast<const volatile YtlReferenceSlotRuntime&>(states.slot).baseAt00;

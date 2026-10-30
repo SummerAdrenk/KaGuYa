@@ -26,7 +26,8 @@ bool TitleRequested(void* scenes,IReplaySceneNativeSource& source)
     auto& command=Field<RuntimeCString>(scenes,0x1C);
     auto* clone=CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(const_cast<char*>(command.GetString()))-1);
     union Text{RuntimeCString value;Text(){}~Text(){}} text;
-    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(&text.value,&chars,4);
+    // Clone引用以原生指针进入空槽，仍由prefix按原时点释放。
+    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(static_cast<void*>(&text.value),&chars,4);
     struct Prefix{RuntimeCString& value;bool active=true;~Prefix()noexcept{if(active)DestroyRuntimeCStringAt40CD40(&value);}} prefix{text.value};
     bool result=::_mbscmp(reinterpret_cast<const unsigned char*>(text.value.GetString()),reinterpret_cast<const unsigned char*>(CgSceneNativeDetail::TitleName()))==0;
     if(!result&&CurrentAppreciationSceneProfile().listRightClickToTitle)

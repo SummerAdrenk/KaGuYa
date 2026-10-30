@@ -95,6 +95,14 @@ void __fastcall SetPressed(Body* body, void*, std::int32_t value) noexcept
 { GuiControlNativeEntries::ButtonField<0x50>(*body) = value; }
 
 using namespace GuiControlNativeEntries;
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+// 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define CONTROL_SLOT(slot, entry) reinterpret_cast<decltype(GuiControlNativeVtable23::slot)>(&entry)
 #define CHECK_SLOT(slot, entry) reinterpret_cast<decltype(GuiCheckBoxNativeVtable30::slot)>(&entry)
 const GuiControlNativeVtable23 baseTable{
@@ -144,6 +152,9 @@ const GuiButtonNativeVtable29 buttonTable = [] {
 }();
 #undef CHECK_SLOT
 #undef CONTROL_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 template<std::size_t BodySize>
 class ControlReference final : public EnvironmentObjectReferenceControl

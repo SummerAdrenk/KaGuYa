@@ -80,7 +80,8 @@ ArchiveRawResourceNameRuntime InstallTableCatalogSource::CaptureFileNameAt458DD0
                 reinterpret_cast<std::uintptr_t>(entry->stringAt00.GetString()) - sizeof(ATL::CStringData));
             const auto* const cloned = CloneRuntimeCStringDataAt414540(header);
             const char* const data = reinterpret_cast<const char*>(cloned + 1);
-            std::memcpy(output, &data, sizeof(data));
+            // 414540已取得引用；只写返回槽的原生指针表示，保持现有清理资格。
+            std::memcpy(static_cast<void*>(output), &data, sizeof(data));
         }
         else
         {
@@ -409,7 +410,8 @@ static void BuildNativeCatalogWithCacheCore(
                     sizeof(ATL::CStringData));
                 const auto* const data = CloneRuntimeCStringDataAt414540(source);
                 const char* const characters = reinterpret_cast<const char*>(data + 1);
-                std::memcpy(output, &characters, sizeof(characters));
+                // Clone后的引用交给返回槽，不经CString赋值再次增减引用。
+                std::memcpy(static_cast<void*>(output), &characters, sizeof(characters));
             });
             ArchiverInfoReference pairValue;
             pairValue.reference = {reinterpret_cast<std::uintptr_t>(&info), 0, capturedControl};

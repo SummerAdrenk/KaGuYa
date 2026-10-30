@@ -15,10 +15,18 @@ void __fastcall Composite(Body*, void*, GraphicsSurfaceNativeBody*, const RECT*)
 Body* __fastcall Delete(Body* body, void*, std::uint32_t flags)
     { return DeleteLayerItemNativeAt441570(*body, flags); }
 
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::drawAt00)>(&Draw),
     reinterpret_cast<decltype(Table::compositeAt04)>(&Composite),
     reinterpret_cast<decltype(Table::deletingDestructorAt08)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const LayerItemNativeVtable& LayerItemNativeMethods() noexcept { return methods; }

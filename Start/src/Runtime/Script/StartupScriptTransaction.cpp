@@ -78,7 +78,8 @@ ScrScriptSwitchResult StartupScriptTransaction::Execute(
 
     const auto selectedScript = services_->ResolveScriptId(scriptNameCp932);
     if (selectedScript < 0)
-        return {.success = false, .error = ScrScriptSwitchError::MissingResourceName};
+        return {.success = false, .error = ScrScriptSwitchError::MissingResourceName,
+            .resourceError = {}, .containerError = {}, .message = {}};
     services_->WriteReplayFile(selectedScript);
     services_->WriteReplayPosition(entry);
     // 原 4D3FA0 即使固定调度脚本未命中也调用 4D3C90(-1)，保留加载失败链。

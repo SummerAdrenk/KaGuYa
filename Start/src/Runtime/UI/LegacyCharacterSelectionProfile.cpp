@@ -4,7 +4,12 @@
 namespace KaGuYa::Start::Runtime
 {
 const LegacyCharacterSelectionProfile& NoLegacyCharacterSelectionProfile() noexcept
-{ static const LegacyCharacterSelectionProfile p{LegacyCharacterSelectionKind::None}; return p; }
+{
+    // None为零值；整表值初始化保留原先省略成员的零/空状态。
+    static_assert(LegacyCharacterSelectionProfile{}.kind == LegacyCharacterSelectionKind::None);
+    static const LegacyCharacterSelectionProfile p{};
+    return p;
+}
 const char* LegacyCharacterSelectionSceneName() noexcept
 { return "\x83\x4C\x83\x83\x83\x89\x91\x49\x91\xF0\x8F\x88\x97\x9D"; }
 void ValidateLegacyCharacterSelectionProfile(const LegacyCharacterSelectionProfile& p)

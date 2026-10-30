@@ -276,7 +276,7 @@ void ReserveChildOrderSlot(std::vector<ResourceChildOrderEntry>& order)
     const std::size_t index = parent.folders.size();
     // 两个现代vector共同表达原单个Ref追加，先备好顺序槽，避免发布孤立节点。
     ReserveChildOrderSlot(parent.childOrder);
-    parent.folders.push_back(ResourceFolderEntry{name});
+    parent.folders.push_back(ResourceFolderEntry{name, {}, {}, {}});
     parent.childOrder.push_back({ResourceChildKind::Folder, index});
     return parent.folders.back();
 }

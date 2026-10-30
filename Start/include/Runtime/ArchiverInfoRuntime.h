@@ -56,7 +56,8 @@ private:
     union { RuntimeCString pathAt10_; };
     union { RuntimeCString mediaAt14_; };
     std::uint32_t versionAt18_;
-    std::byte unwrittenAt1C_[4];
+    // 原生1Ch..1Fh保留未写字节；保留字段及偏移，不补初始化。
+    [[maybe_unused]] std::byte unwrittenAt1C_[4];
     std::int64_t lastWriteTimeAt20_;
     std::uint64_t fileSizeAt28_;
     std::uint32_t countAt30_;

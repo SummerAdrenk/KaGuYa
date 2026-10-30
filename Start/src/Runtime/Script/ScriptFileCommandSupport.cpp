@@ -7,7 +7,8 @@ namespace KaGuYa::Start::Runtime::FileCommandDetail
 template<class F> F ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr字节，保留后续可抛虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     F result;
     std::memcpy(&result, table + offset, sizeof(result));
     return result;
@@ -27,7 +28,8 @@ void ConstructReportAt4CA280(RuntimeCString& out, const char* prefix,
         if (!manager) throw ATL::CAtlException(E_FAIL);
     }
     const auto chars = reinterpret_cast<std::uintptr_t>(ManagerSlot<Nil>(manager, 12)(manager)) + 16u;
-    std::memcpy(&out, &chars, sizeof(chars));
+    // GetNil已提供引用；只发布原生指针，不额外构造或赋值CString。
+    std::memcpy(static_cast<void*>(&out), &chars, sizeof(chars));
     TextUnwind cleanup{&out};
     // 4CA2EA之后重读detail；Clone/GetNil可能更换其缓冲，不缓存调用前的字符。
     const char* const current = detail.GetString();

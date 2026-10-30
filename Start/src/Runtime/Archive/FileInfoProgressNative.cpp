@@ -24,11 +24,19 @@ DialogEndpointNativeBody20h* __fastcall DeleteDialog(DialogEndpointNativeBody20h
 }
 DLGPROC __fastcall Procedure(DialogEndpointNativeBody20h*, void*) { return &BoundDialogEndpointNativeAt415810; }
 __declspec(naked) void __fastcall Final(DialogEndpointNativeBody20h*, void*, HWND) { __asm { ret 4 } } // 424DC0
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DialogEndpointNativeVtable4 dialogTable{
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::processAt00)>(&Process),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::deleteAt04)>(&DeleteDialog),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::procedureAt08)>(&Procedure),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 constexpr char CancelText[] =
     "\x83\x51\x81\x5B\x83\x80\x82\xF0\x8F\x49\x97\xB9"
     "\x82\xB5\x82\xDC\x82\xB7\x81\x42\x82\xE6\x82\xEB"

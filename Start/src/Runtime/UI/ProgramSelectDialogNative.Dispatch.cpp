@@ -86,6 +86,14 @@ ProgramSelectDialogNativeVtable42 MakeBase() noexcept
 {
     ProgramSelectDialogNativeVtable42 table{};
     auto& common = table.inherited.common;
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+    // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节、RECT 为 16 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(member, target) common.member = reinterpret_cast<decltype(common.member)>(&target)
     SLOT(dirtyAt00, Dirty); SLOT(deletingDestructorAt04, DeleteBase);
     SLOT(clearChildrenAt08, Clear); SLOT(idAt0C, Id);
@@ -108,16 +116,29 @@ ProgramSelectDialogNativeVtable42 MakeBase() noexcept
     table.captureAt9C = reinterpret_cast<decltype(table.captureAt9C)>(&CaptureBase);
     table.redrawAtA0 = reinterpret_cast<decltype(table.redrawAtA0)>(&Redraw);
     table.reopenAtA4 = reinterpret_cast<decltype(table.reopenAtA4)>(&Pure);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return table;
 }
 ProgramSelectDialogNativeVtable42 MakeTop(bool mode01) noexcept
 {
     auto table = ProgramSelectDialogNativeBaseVtable();
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     table.inherited.common.deletingDestructorAt04 = reinterpret_cast<decltype(table.inherited.common.deletingDestructorAt04)>(mode01 ? &Delete01 : &Delete00);
     table.updateChildrenAt94 = reinterpret_cast<decltype(table.updateChildrenAt94)>(mode01 ? &Update01 : &Update00);
     table.advanceTransitionAt98 = reinterpret_cast<decltype(table.advanceTransitionAt98)>(mode01 ? &Advance01 : &Advance00);
     table.captureAt9C = reinterpret_cast<decltype(table.captureAt9C)>(mode01 ? &Capture01 : &Capture00);
     table.reopenAtA4 = reinterpret_cast<decltype(table.reopenAtA4)>(mode01 ? &Reopen01 : &Reopen00);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return table;
 }
 }

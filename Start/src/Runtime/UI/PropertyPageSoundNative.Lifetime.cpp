@@ -31,6 +31,12 @@ LRESULT CALLBACK BoundList(HWND first,UINT m,WPARAM w,LPARAM l)
 WNDPROC __fastcall ListProcedure(EditWindowEndpointNativeBody24h*,void*) {return &BoundList;}
 void __fastcall ListFinal(EditWindowEndpointNativeBody24h*,void*,HWND) {} // 原424DD0确为retn 4。
 // x86自由函数用ECX/EDX shim实现原thiscall表，dummy EDX不占原栈实参。
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DialogEndpointNativeVtable4 table{
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::processAt00)>(&Process),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::deleteAt04)>(&Delete),
@@ -41,6 +47,9 @@ const EditWindowEndpointNativeVtable4 listTable{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&ListDelete),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::procedureAt08)>(&ListProcedure),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::finalMessageAt0C)>(&ListFinal)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 const DialogEndpointNativeVtable4& PropertyPageSoundNativeMethods() noexcept {return table;}
 const EditWindowEndpointNativeVtable4& PropertyPageSoundCheckListNativeMethods() noexcept {return listTable;}

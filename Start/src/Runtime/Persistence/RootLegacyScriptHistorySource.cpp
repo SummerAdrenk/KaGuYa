@@ -19,7 +19,8 @@ void CloneReturn(RuntimeCString* output, const RuntimeCString& source)
 {
     auto* header = reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())) - 1;
     const char* chars = reinterpret_cast<const char*>(CloneRuntimeCStringDataAt414540(header) + 1);
-    std::memcpy(output, &chars, sizeof(chars));
+    // 414540已取得引用；向未构造返回槽写入原生指针表示，不经CString赋值增减引用。
+    std::memcpy(static_cast<void*>(output), &chars, sizeof(chars));
 }
 bool EqualName(const RuntimeCString& saved, const RuntimeCString& original)
 {

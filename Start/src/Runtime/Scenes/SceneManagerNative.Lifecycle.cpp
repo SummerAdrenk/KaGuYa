@@ -52,8 +52,24 @@ Body* __fastcall Deleting(Body* body,void*,std::uint32_t flags) noexcept
 {return DeleteSceneManagerNativeAt469300(body,flags,RequireSceneManagerNativeServices());}
 TaskNativeBody4h* __fastcall Create(SceneFactoryNativeBody4h*,void*,const char* name)
 {return RequireSceneManagerNativeServices().factory.CreateAt4AAF90(name);}
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const SceneManagerNativeVtable1 methods{reinterpret_cast<decltype(SceneManagerNativeVtable1::deleteAt00)>(&Deleting)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const SceneFactoryNativeVtable factoryMethods{reinterpret_cast<decltype(SceneFactoryNativeVtable::createAt00)>(&Create)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 struct RefUnwind final
 {YtlReferenceSlotRuntime& slot;bool armed=true;~RefUnwind() noexcept{if(armed)ReleaseYtlReference(slot);}};
 struct CStringUnwind final

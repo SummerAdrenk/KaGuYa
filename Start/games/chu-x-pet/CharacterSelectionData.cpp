@@ -63,7 +63,11 @@ const LegacyCharacterSelectionProfile profile{
     .resultVariable="prog_result", .bgm=bgm,
     .selectionCue=nullptr,
     .confirmationMode=0, .confirmationFallback=nullptr,
-    .navigation=navigation,
+    .costVariable=nullptr, .costs={},
+    .animations={}, .animationPositions={}, .hoverRows={}, .effects={},
+    .tabs={}, .portraits={}, .otherLocation=nullptr, .dateBase=nullptr,
+    .dateDigits={}, .datePositions={}, .timeImages={},
+    .navigation=navigation, .hotkeys={},
 };
 }
 const LegacyCharacterSelectionProfile& Profile() noexcept { return profile; }

@@ -23,8 +23,16 @@ TransitRuntime* __fastcall DeleteBody(TransitRuntime* self, void*, std::uint32_t
 {
     return DeleteTransitNativeAt448C80(self, flags, Memory());
 }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TransitNativeVtable methods{
     reinterpret_cast<decltype(TransitNativeVtable::deletingDestructorAt00)>(&DeleteBody)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 class RetiredTransitControl final : public YtlReferenceControlRuntime
 {

@@ -18,7 +18,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr字节，保留后续虚槽派发。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function entry;
     std::memcpy(&entry, table + offset, sizeof(entry));
     return entry;
@@ -40,7 +41,8 @@ void InitializePathNil(RuntimeCString& output, EnvironmentPathRuntime* paths,
     }
     auto* const nil = ManagerSlot<Nil>(manager, 0x0C)(manager);
     const auto characters = reinterpret_cast<std::uintptr_t>(nil) + 16U;
-    std::memcpy(&output, &characters, sizeof(characters));
+    // GetNil已提供引用；只发布原生指针，不额外构造或赋值CString。
+    std::memcpy(static_cast<void*>(&output), &characters, sizeof(characters));
 }
 const char* AppendPath(RuntimeCString& output, EnvironmentPathRuntime* paths)
 {

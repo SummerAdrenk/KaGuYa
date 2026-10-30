@@ -227,6 +227,7 @@ const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
     .navigation=navigation,
+    .hotkeys={},
     .system={commands,disabled,36,37},
     .background={LegacyMapSelectionIndex::Time,backgroundNames,3,false,nullptr,dateDigits,datePositions},
     .bgm=bgm,
@@ -236,7 +237,8 @@ const LegacyMapSelectionProfile profile{
     .secondResultVariable=nullptr,
     .results=results,
     .actors=actorRows,
-    .area={.rule=LegacyMapSelectionAreaRule::StackedThree,.count=12,.firstPlace=4,.firstMarker=16,.firstBackground=26,.freeEvent=24,.cancelEvent=25,.freeResultBase=4,.markerPositions=markerPositions}
+    .area={.rule=LegacyMapSelectionAreaRule::StackedThree,.count=12,.firstPlace=4,.firstMarker=16,.firstBackground=26,.freeEvent=24,.cancelEvent=25,.freeResultBase=4,.extraAreaVariables={},.markerPositions=markerPositions,.markerStates={},.badgeNames={},.badges={}},
+    .animatedActors={}, .animationPositions={},
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

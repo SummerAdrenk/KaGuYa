@@ -24,7 +24,8 @@ ATL::CStringData* Header(const char* chars) noexcept
 void PublishText(RuntimeCString& text, ATL::CStringData* header) noexcept
 {
     const auto chars = reinterpret_cast<std::uintptr_t>(header) + 0x10u;
-    std::memcpy(&text, &chars, sizeof(chars));
+    // 只发布已有引用的原生指针，保持TextLifetime及缓存header的释放方式。
+    std::memcpy(static_cast<void*>(&text), &chars, sizeof(chars));
 }
 TextLifetime::~TextLifetime() noexcept { if (armed) DestroyRuntimeCStringAt40CD40(&text); }
 void TextLifetime::FinishCached(const char* chars)

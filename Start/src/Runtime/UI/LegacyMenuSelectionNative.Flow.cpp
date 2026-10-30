@@ -170,11 +170,21 @@ const GuiDialogNativeVtable35& PanelMethods() noexcept
 {
     static const auto table = [] {
         auto t = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define MENU_SLOT(name, fn) t.name = reinterpret_cast<decltype(t.name)>(&fn)
         MENU_SLOT(deletingDestructorAt04, DeletePanel);
         MENU_SLOT(activeInputAt38, Confirm); MENU_SLOT(resetInputAt3C, ResetInput);
         MENU_SLOT(beginAt44, BeginPanel); MENU_SLOT(pollAt48, PollPanel); MENU_SLOT(endAt4C, EndPanel);
 #undef MENU_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;
@@ -183,10 +193,20 @@ const GuiDialogIntoNativeVtable37& TopMethods() noexcept
 {
     static const auto table = [] {
         auto t = GuiDialogIntoBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define MENU_SLOT(name, fn) t.common.name = reinterpret_cast<decltype(t.common.name)>(&fn)
         MENU_SLOT(deletingDestructorAt04, DeleteTop); MENU_SLOT(beginAt44, BeginTop);
         MENU_SLOT(pollAt48, PollTop); MENU_SLOT(endAt4C, EndTop);
 #undef MENU_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

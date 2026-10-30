@@ -15,6 +15,10 @@ that contain them. The build copies the listed third-party notices into
 `Release/licenses/`; also provide the project's root `LICENSE` when distributing
 project binaries.
 
+Local build-only adjustment: libvorbis 1.3.7 `lib/floor1.c` explicitly marks the
+unused `fit_line` accumulator `y2b` as consumed to avoid a Clang warning. Its
+accumulation and the codec algorithms are unchanged.
+
 ## Game-Related Resources
 
 `Start/resources/` includes reconstructed Win32 resource declarations and bitmap,

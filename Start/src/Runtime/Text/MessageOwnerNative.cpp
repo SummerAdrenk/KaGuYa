@@ -34,7 +34,7 @@ public:
         // 492C80必须读取当前正文表，不能按final静态类型去虚拟化。
         using Delete = MessageOwnerNative34h* (__thiscall*)(MessageOwnerNative34h*, std::uint32_t);
         const Delete* table;
-        std::memcpy(&table, body, sizeof(table));
+        std::memcpy(&table, static_cast<const void*>(body), sizeof(table));
         table[0](body, 1);
     }
     void DeleteControlAtVslot04(std::uint32_t flags) override
@@ -164,7 +164,7 @@ void MessageOwnerNative34h::RestoreVptrAt463245() noexcept
         MessageOwnerNative34h body;
     } source;
     // 只写vptr；不能重建目标正文并抹掉回调留下的四个Ref槽。
-    std::memcpy(static_cast<void*>(this), &source.body, sizeof(void*));
+    std::memcpy(static_cast<void*>(this), static_cast<const void*>(&source.body), sizeof(void*));
 }
 void MessageOwnerNative34h::DestroyWithSourcesAt463220(IStartFileApi& files,
     const IMessageEnvironmentPathSource& paths) noexcept

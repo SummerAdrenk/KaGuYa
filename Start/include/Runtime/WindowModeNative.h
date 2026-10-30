@@ -12,6 +12,10 @@ namespace KaGuYa::Start::Runtime
 using WindowModeViewport = std::array<std::int32_t, 4>;
 
 // 477934/5B2B34：仅一个deleting虚槽。平台服务不得存入原2Ch正文。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class WindowModeNative2Ch final
 {
 public:
@@ -27,6 +31,9 @@ public:
     WindowModeViewport viewportAt0C;
     RECT savedMonitorRectAt1C;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(WindowModeNative2Ch) == 0x2C && alignof(WindowModeNative2Ch) == 4);
 static_assert(offsetof(WindowModeNative2Ch, modeAt04) == 4);
 static_assert(offsetof(WindowModeNative2Ch, deviceNameAt08) == 8);

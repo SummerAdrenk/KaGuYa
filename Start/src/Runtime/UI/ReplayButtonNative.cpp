@@ -15,7 +15,16 @@ const ReplayButtonNativeVtable15& ReplayButtonNativeVtable() noexcept
     static const auto methods=[]
     {
         auto result=std::bit_cast<ReplayButtonNativeVtable15>(ICgScButtonNativeVtable());
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         result.deleteAt00=reinterpret_cast<decltype(result.deleteAt00)>(&Delete);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return methods;

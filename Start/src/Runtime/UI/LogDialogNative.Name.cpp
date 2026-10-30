@@ -19,12 +19,16 @@ char* NameOffset(char* chars,int offset) noexcept
 int NameDistance(const char* first,const char* second) noexcept
 {return std::bit_cast<int>(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(first)-reinterpret_cast<std::uintptr_t>(second)));}
 void PublishName(RuntimeCString& value,char* chars) noexcept
-{std::memcpy(&value,&chars,sizeof(chars));}
+{
+    // 仅发布已有引用的原生指针；Clone及旧串释放仍由调用方负责。
+    std::memcpy(static_cast<void*>(&value),&chars,sizeof(chars));
+}
 ATL::IAtlStringMgr* CloneNameManager(ATL::IAtlStringMgr* manager)
 {
     using Clone=ATL::IAtlStringMgr*(__thiscall*)(ATL::IAtlStringMgr*);
     const std::byte* table;Clone clone;
-    std::memcpy(&table,manager,sizeof(table));std::memcpy(&clone,table+16,sizeof(clone));
+    // 按原生vptr读取Clone虚槽，不经C++虚调用去虚拟化。
+    std::memcpy(&table,static_cast<const void*>(manager),sizeof(table));std::memcpy(&clone,table+16,sizeof(clone));
     return clone(manager);
 }
 ATL::IAtlStringMgr* NameSubstringManager(ATL::CStringData* cached,IRuntimeStringManagerSource& strings)

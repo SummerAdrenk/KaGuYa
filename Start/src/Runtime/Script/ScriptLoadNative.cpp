@@ -12,7 +12,15 @@ namespace
 using Factory=ScriptReaderFactoryNativeBody14h;
 Factory* __fastcall Delete(Factory* body,void*,std::uint32_t flags) noexcept
 {DestroyScriptReaderFactoryNativeAt4C9D20(*body);if(flags&1u)::operator delete(body,std::size_t{0x14});return body;}
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ScriptReaderFactoryNativeVtable1 table{reinterpret_cast<decltype(ScriptReaderFactoryNativeVtable1::deleteAt00)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 struct FactoryUnwind final
 {
     Factory& body;bool complete=false,armed=true;

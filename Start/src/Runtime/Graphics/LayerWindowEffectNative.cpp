@@ -152,12 +152,36 @@ void __fastcall PureReset(Body*, void*) { Pure(); }
 RECT* __fastcall PureRectangle(Body*, void*, RECT*, std::uintptr_t) { Pure(); }
 
 #define ENTRY(slot, method) reinterpret_cast<decltype(Table::slot)>(&method)
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table baseTable{ENTRY(drawAt00, PureDraw), ENTRY(nullAt04, PureNull), ENTRY(motionAt08, PureMotion),
     ENTRY(resetAt0C, PureReset), ENTRY(emptyRectAt10, PureRectangle), ENTRY(deletingDestructorAt14, DeleteBaseAt4CAEE0)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table rollTable{ENTRY(drawAt00, DrawAt4D4250), ENTRY(nullAt04, NullAt4D4240), ENTRY(motionAt08, MotionAt4D42D0),
     ENTRY(resetAt0C, ResetAt4D4C90), ENTRY(emptyRectAt10, EmptyRectAt4CD210), ENTRY(deletingDestructorAt14, DeleteRoll)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table tossTable{ENTRY(drawAt00, DrawAt4D4250), ENTRY(nullAt04, NullAt4D4240), ENTRY(motionAt08, MotionAt4D42D0),
     ENTRY(resetAt0C, ResetAt4D4C90), ENTRY(emptyRectAt10, EmptyRectAt4CD210), ENTRY(deletingDestructorAt14, DeleteToss)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 #undef ENTRY
 
 struct MemberUnwind final

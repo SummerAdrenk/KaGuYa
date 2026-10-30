@@ -85,7 +85,8 @@ int RunMainFrameApplicationNativeAt4342A0(LPSTR, int show, IMainFrameApplication
         const auto sourceChars = Read(*reinterpret_cast<const char* const*>(&environment->titleAt10));
         auto* copied = CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(const_cast<char*>(sourceChars)) - 1);
         const char* chars = reinterpret_cast<const char*>(copied + 1);
-        std::memcpy(&title.value, &chars, 4);
+        // Clone引用只写入原始槽，unwind仍在发布后取得清理资格。
+        std::memcpy(static_cast<void*>(&title.value), &chars, 4);
         unwind.state = 4;
         environment = source.EnvironmentAt4180C0();
         auto* append = Read(*reinterpret_cast<const char* const*>(&environment->appendTitleAt14));

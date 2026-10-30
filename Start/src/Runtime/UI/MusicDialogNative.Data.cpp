@@ -41,7 +41,8 @@ constexpr OperationRecord operations[]{
 constexpr const char* songs[]{"BGM01.bgm","BGM02.bgm","BGM03.bgm","BGM04.bgm","BGM05.bgm","BGM06.bgm",
     "BGM07.bgm","BGM08.bgm","BGM09.bgm","BGM10.bgm","BGM11.bgm","BGM12.bgm",
     "BGM13.bgm","BGM14.bgm","BGM15.bgm","BGM16.bgm","BGM17.bgm","BGM18.bgm"};
-const MusicResourceProfile mamatomo{backgrounds,checkbox,positions,operations,songs};
+const MusicResourceProfile mamatomo{backgrounds,checkbox,positions,operations,songs,
+    nullptr,MusicResourceProfile::Presentation::TiledCheckboxes,{}};
 }
 const POINT* Positions() { return RequireMusicDialogNativeServices().resources.positions.data(); }
 const char* BackgroundName(std::uint32_t i) { return RequireMusicDialogNativeServices().resources.backgrounds[i]; }

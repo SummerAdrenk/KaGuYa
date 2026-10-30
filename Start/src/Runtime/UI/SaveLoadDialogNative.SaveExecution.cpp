@@ -41,7 +41,8 @@ std::int32_t ExecuteSaveLoadSaveNativeAt532A90(SaveLoadDialogNativeBody184h& dia
         const auto* header = reinterpret_cast<const ATL::CStringData*>(params->SaveParamsAt08().saveTitleAt08.GetString()) - 1;
         TextSlot copied;
         const auto chars = reinterpret_cast<std::uintptr_t>(CloneRuntimeCStringDataAt414540(const_cast<ATL::CStringData*>(header))) + 16u;
-        std::memcpy(&copied.value, &chars, sizeof(chars));
+        // Clone引用写入空槽；沿用copiedUnwind的缓存header释放，不经CString赋值。
+        std::memcpy(static_cast<void*>(&copied.value), &chars, sizeof(chars));
         TextUnwind copiedUnwind{copied.value};
         AssignRuntimeCStringAt410220(label.value, copied.value);
         copiedUnwind.FinishCached(reinterpret_cast<const char*>(chars));

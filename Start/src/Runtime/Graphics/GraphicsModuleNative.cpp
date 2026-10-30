@@ -58,14 +58,38 @@ Control* __fastcall DeleteControl(Control* control, void*, std::uint32_t flags);
     { _purecall(); std::terminate(); }
 Control* __fastcall DeleteRetiredControl(Control* control, void*, std::uint32_t flags);
 
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::deletingDestructorAt00)>(&DeleteModule)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ControlTable controlMethods{
     reinterpret_cast<decltype(ControlTable::destroyPayloadAt00)>(&DestroyPayload),
     reinterpret_cast<decltype(ControlTable::deletingDestructorAt04)>(&DeleteControl)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ControlTable retiredControlMethods{
     reinterpret_cast<decltype(ControlTable::destroyPayloadAt00)>(&PurePayload),
     reinterpret_cast<decltype(ControlTable::deletingDestructorAt04)>(&DeleteRetiredControl)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 Body* __fastcall DeleteModule(Body* body, void*, std::uint32_t flags)
 {

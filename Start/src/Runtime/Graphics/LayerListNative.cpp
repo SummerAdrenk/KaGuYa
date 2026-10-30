@@ -154,22 +154,36 @@ void __fastcall AddDirty(Body* body, void*, const RECT* rect)
     dirty->vptrAt00->addRectAt08(dirty, rect);
 }
 
-[[noreturn]] void __fastcall PureSlot(Body*, void*) { _purecall(); std::terminate(); }
+template<class Result, class... Args>
+[[noreturn]] Result __fastcall PureSlot(Body*, void*, Args...) { _purecall(); std::terminate(); }
 Body* __fastcall DeleteRetired(Body*, void*, std::uint32_t);
 Body* __fastcall DeleteBody(Body* body, void*, std::uint32_t flags)
     { return DeleteLayerListNativeAt441400(*body, flags); }
 
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table retired{
-    reinterpret_cast<decltype(Table::registerAt00)>(&PureSlot),
-    reinterpret_cast<decltype(Table::unregisterAt04)>(&PureSlot),
-    reinterpret_cast<decltype(Table::clearRegisteredAt08)>(&PureSlot),
-    reinterpret_cast<decltype(Table::emptyAt0C)>(&PureSlot),
-    reinterpret_cast<decltype(Table::registrationAt10)>(&PureSlot),
-    reinterpret_cast<decltype(Table::dirtyAt14)>(&PureSlot),
-    reinterpret_cast<decltype(Table::drawDirtyAt18)>(&PureSlot),
-    reinterpret_cast<decltype(Table::compositeAt1C)>(&PureSlot),
-    reinterpret_cast<decltype(Table::addDirtyAt20)>(&PureSlot),
+    reinterpret_cast<decltype(Table::registerAt00)>(&PureSlot<void, Item*>),
+    reinterpret_cast<decltype(Table::unregisterAt04)>(&PureSlot<void, Item*>),
+    reinterpret_cast<decltype(Table::clearRegisteredAt08)>(&PureSlot<void>),
+    reinterpret_cast<decltype(Table::emptyAt0C)>(&PureSlot<std::uint8_t>),
+    reinterpret_cast<decltype(Table::registrationAt10)>(&PureSlot<Registration*>),
+    reinterpret_cast<decltype(Table::dirtyAt14)>(&PureSlot<GuiDirtyRectNativeBody80h*>),
+    reinterpret_cast<decltype(Table::drawDirtyAt18)>(&PureSlot<void>),
+    reinterpret_cast<decltype(Table::compositeAt1C)>(&PureSlot<void, GraphicsSurfaceNativeBody*, const RECT*>),
+    reinterpret_cast<decltype(Table::addDirtyAt20)>(&PureSlot<void, const RECT*>),
     reinterpret_cast<decltype(Table::deletingDestructorAt24)>(&DeleteRetired)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::registerAt00)>(&Register),
     reinterpret_cast<decltype(Table::unregisterAt04)>(&Unregister),
@@ -181,6 +195,9 @@ const Table methods{
     reinterpret_cast<decltype(Table::compositeAt1C)>(&Composite),
     reinterpret_cast<decltype(Table::addDirtyAt20)>(&AddDirty),
     reinterpret_cast<decltype(Table::deletingDestructorAt24)>(&DeleteBody)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 Body* __fastcall DeleteRetired(Body* body, void*, std::uint32_t flags)
 {

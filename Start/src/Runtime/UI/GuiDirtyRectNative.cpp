@@ -61,7 +61,9 @@ void __fastcall AddXYWH14(Body* self, void*, LONG x, LONG y, LONG width, LONG he
 std::uint32_t __fastcall Count(Body* self, void*) { return self->countAt7C; }
 RECT* __fastcall Rects(Body* self, void*) { return self->rectsAt04; }
 
-[[noreturn]] void __fastcall PureSlot(Body*, void*)
+// 退役虚槽仍触发 CRT 纯虚调用；各桥接保留该槽的栈参数和返回类型。
+template<class Result, class... Args>
+[[noreturn]] Result __fastcall PureSlot(Body*, void*, Args...)
 {
     _purecall();
     std::terminate();
@@ -69,15 +71,21 @@ RECT* __fastcall Rects(Body* self, void*) { return self->rectsAt04; }
 Body* __fastcall DeleteRetired(Body*, void*, std::uint32_t);
 Body* __fastcall DeleteBody(Body*, void*, std::uint32_t);
 
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table retired{
-    reinterpret_cast<decltype(Table::clearAt00)>(&PureSlot),
-    reinterpret_cast<decltype(Table::coalesceAt04)>(&PureSlot),
-    reinterpret_cast<decltype(Table::addRectAt08)>(&PureSlot),
-    reinterpret_cast<decltype(Table::addLTRBAt0C)>(&PureSlot),
-    reinterpret_cast<decltype(Table::addXYWHAt10)>(&PureSlot),
-    reinterpret_cast<decltype(Table::addXYWHAt14)>(&PureSlot),
-    reinterpret_cast<decltype(Table::countAt18)>(&PureSlot),
-    reinterpret_cast<decltype(Table::rectsAt1C)>(&PureSlot),
+    reinterpret_cast<decltype(Table::clearAt00)>(&PureSlot<void>),
+    reinterpret_cast<decltype(Table::coalesceAt04)>(&PureSlot<void>),
+    reinterpret_cast<decltype(Table::addRectAt08)>(&PureSlot<void, const RECT*>),
+    reinterpret_cast<decltype(Table::addLTRBAt0C)>(&PureSlot<void, LONG, LONG, LONG, LONG>),
+    reinterpret_cast<decltype(Table::addXYWHAt10)>(&PureSlot<void, LONG, LONG, LONG, LONG>),
+    reinterpret_cast<decltype(Table::addXYWHAt14)>(&PureSlot<void, LONG, LONG, LONG, LONG>),
+    reinterpret_cast<decltype(Table::countAt18)>(&PureSlot<std::uint32_t>),
+    reinterpret_cast<decltype(Table::rectsAt1C)>(&PureSlot<RECT*>),
     reinterpret_cast<decltype(Table::deletingDestructorAt20)>(&DeleteRetired)};
 const Table methods{
     reinterpret_cast<decltype(Table::clearAt00)>(&Clear),
@@ -89,6 +97,9 @@ const Table methods{
     reinterpret_cast<decltype(Table::countAt18)>(&Count),
     reinterpret_cast<decltype(Table::rectsAt1C)>(&Rects),
     reinterpret_cast<decltype(Table::deletingDestructorAt20)>(&DeleteBody)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 Body* __fastcall DeleteBody(Body* self, void*, std::uint32_t flags)
 {

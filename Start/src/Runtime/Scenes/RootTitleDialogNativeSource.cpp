@@ -8,7 +8,7 @@
 #include <Runtime/ProcessAtlBaseModuleNative.h>
 #include <Runtime/ParamsRuntimeRoot.h>
 #include <Logging/Logger.h>
-#include "../../../games/baku-ane-otouto-shibocchau-zo/TitleData.h"
+#include "../../../games/baku-ane/TitleData.h"
 
 namespace KaGuYa::Start::Runtime
 {

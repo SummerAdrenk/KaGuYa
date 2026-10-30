@@ -32,7 +32,7 @@ template<class Function> Function ManagerSlot(ATL::IAtlStringMgr* manager, std::
 {
     // 原08080/07E80/07F10/081C0均为原始虚调用，不经过现代ATL接口的throw()。
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function function;
     static_assert(sizeof(function) == sizeof(void*));
     std::memcpy(&function, table + offset, sizeof(function));

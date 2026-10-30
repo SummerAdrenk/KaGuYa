@@ -268,18 +268,34 @@ void __fastcall NormalComposite(Pane* body, void*, GraphicsSurfaceNativeBody* de
 { CompositeMessageWindowNormalPaneNativeAt481D50(*reinterpret_cast<Normal*>(body), destination, clip, Current()); }
 void __fastcall VariableComposite(Pane* body, void*, GraphicsSurfaceNativeBody* destination, const RECT* clip)
 { CompositeMessageWindowVariablePaneNativeAt481E20(*reinterpret_cast<Variable*>(body), destination, clip, Current()); }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MessageWindowPaneNativeVtable normalTable{
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::typeAt00)>(&NormalType),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::boundsAt04)>(&Bounds),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::refreshAt08)>(&NormalRefresh),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::drawAt0C)>(&NormalDraw),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::compositeAt10)>(&NormalComposite)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MessageWindowPaneNativeVtable variableTable{
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::typeAt00)>(&VariableType),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::boundsAt04)>(&Bounds),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::refreshAt08)>(&VariableRefresh),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::drawAt0C)>(&VariableDraw),
     reinterpret_cast<decltype(MessageWindowPaneNativeVtable::compositeAt10)>(&VariableComposite)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 constexpr MessageWindowNormalPaneNativeDescriptor sampleBody1{
     nullptr, "\x83\x81\x83\x62\x83\x5A\x98\x67.vrm", 0};
 constexpr MessageWindowNormalPaneNativeDescriptor sampleBody2{

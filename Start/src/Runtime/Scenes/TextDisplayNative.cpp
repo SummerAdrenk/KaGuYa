@@ -44,17 +44,33 @@ struct RetiredTaskVtable final
     decltype(TextDisplayNativeVtable::deleteAt04) destroy;
 };
 static_assert(sizeof(RetiredTaskVtable)==8);
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RetiredTaskVtable baseMethods{
     reinterpret_cast<decltype(RetiredTaskVtable::run)>(&PureRun),
     reinterpret_cast<decltype(RetiredTaskVtable::destroy)>(&DeleteBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteBase(Body* self,void*,std::uint32_t flags)
 {self->vptrAt00=reinterpret_cast<const TextDisplayNativeVtable*>(&baseMethods);
     if(flags&1u)::operator delete(self,std::size_t{4});return self;}
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TextDisplayNativeVtable methods{
     reinterpret_cast<decltype(TextDisplayNativeVtable::runAt00)>(&Run),
     reinterpret_cast<decltype(TextDisplayNativeVtable::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(TextDisplayNativeVtable::updateAt08)>(&Update),
     reinterpret_cast<decltype(TextDisplayNativeVtable::drawAt0C)>(&Draw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void Commit(Services& s)
 {
     // 4B03C0先Graphics尺寸，再独立捕获根并向全局LayerList+20提交。

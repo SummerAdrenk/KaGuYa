@@ -43,6 +43,11 @@ private:
 // CG/SC原业务槽均取同一进程Params来源；不缓存正文或另设默认根。
 const void* CaptureBoundSecretCgParamsAt418480(std::uint32_t callSite);
 
+// 派生类虽封闭，5B291C的追加业务虚槽仍是原生ABI的一部分，不能删virtual。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class SecretCgNativeArchive final : public IEnvironmentArchiveRuntime
 {
 public:
@@ -83,6 +88,9 @@ public:
     SecretCgReferenceVector recordsAt0C;
     SecretCgMappingVectorStorage mappingsAt18;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(SecretCgNativeArchive) == 0x24);
 static_assert(alignof(SecretCgNativeArchive) == 4);
 static_assert(offsetof(SecretCgNativeArchive, readyAt04) == 4);

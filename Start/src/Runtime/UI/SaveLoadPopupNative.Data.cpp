@@ -6,6 +6,7 @@ namespace KaGuYa::Start::Runtime
 namespace
 {
 // 权威18号PE的CP932字节、null与重复指针直接编译，绝不按名字猜测或运行期读PE。
+// 运行期描述符、数字位置和导航均取资源profile；这里只保留原始words/strings与EH审计表。
 constexpr char name5B94AC[] = "\x83\x75\x83\x89\x83\x62\x83\x4E\x83\x41\x83\x45\x83\x67\x82\x50\x82\x55\x82\x4F\x2E\x62\x67\x64";
 constexpr char name5B94C8[] = "\x83\x7C\x83\x62\x83\x76\x83\x41\x83\x62\x83\x76\x83\x6F\x81\x5B\x2E\x76\x72\x6D";
 constexpr char name5B94E0[] = "\x4C\x83\x7C\x83\x62\x83\x76\x83\x41\x83\x62\x83\x76\x83\x6F\x81\x5B\x2E\x76\x72\x6D";
@@ -118,29 +119,7 @@ constexpr std::array<std::uint32_t, 2> words606558{{0x5B94C8u,0x5B94E0u}};
 constexpr std::array<std::uint32_t, 60> words606778{{0x5B9828u,0x5B9838u,0x5B9848u,0x5B9858u,0x5B9868u,0x5B9878u,0x5B9888u,0x5B9898u,0x5B98A8u,0x5B98B8u,0x5B98C8u,0x5B98D4u,0x5B98E0u,0x5B98ECu,0x5B98F8u,0x5B9904u,0x5B9910u,0x5B991Cu,0x5B9928u,0x5B9934u,0x5B9940u,0x5B9950u,0x5B9960u,0x5B9970u,0x5B9980u,0x5B9990u,0x5B99A0u,0x5B99B0u,0x5B99C0u,0x5B99D0u,0x5B99E0u,0x5B99F0u,0x5B9A00u,0x5B9A10u,0x5B9A20u,0x5B9A30u,0x5B9A40u,0x5B9A50u,0x5B9A60u,0x5B9A70u,0x5B9A80u,0x5B9A8Cu,0x5B9A98u,0x5B9AA4u,0x5B9AB0u,0x5B9ABCu,0x5B9AC8u,0x5B9AD4u,0x5B9AE0u,0x5B9AECu,0x5B9AF8u,0x5B9B08u,0x5B9B18u,0x5B9B28u,0x5B9B38u,0x5B9B48u,0x5B9B58u,0x5B9B68u,0x5B9B78u,0x5B9B88u}};
 constexpr std::array<std::uint32_t, 6> words606880{{0x5B9B98u,0x5B9BA8u,0x5B9BB8u,0x5B9BC4u,0x5B9BD4u,0x5B9BE4u}};
 constexpr std::array<std::uint32_t, 16> constants606868{{99,4,79,4,59,4,0x5B9B98u,0x5B9BA8u,0x5B9BB8u,0x5B9BC4u,0x5B9BD4u,0x5B9BE4u,129,1,31,7}};
-const GuiStaticDescriptorNative24h background{55, {{name5B94AC, nullptr, nullptr, name5B94AC, name5B94AC, nullptr, nullptr}}, nullptr};
-const GuiSliderDescriptorNative6Ch slider0{57, {{name5B94F8, nullptr, nullptr, name5B9510, name5B9510, name5B9510, nullptr}}, {{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}}, nullptr, 0, 1, 0, {1214,207,1239,605}, {0,0,0,-51}};
-const SaveLoadPopupNativeDetail::CheckDescriptor check0{60, {{name5B96F8, nullptr, nullptr, name5B9718, name5B9718, name5B9734, nullptr}}, {{name5B9754, nullptr, nullptr, name5B9770, name5B9770, name5B9770, nullptr}}, nullptr, 3, -1};
-const GuiButtonDescriptorNative2Ch arrows0[2]{
-    {{58, {{name5B9558, name5B9574, nullptr, name5B958C, name5B958C, name5B95A4, nullptr}}, nullptr}, 0, -1},
-    {{59, {{name5B95C0, name5B95DC, nullptr, name5B95F4, name5B95F4, name5B960C, nullptr}}, nullptr}, 0, -1},
-};
-const char* const digits0[30]{name5B9828,name5B9838,name5B9848,name5B9858,name5B9868,name5B9878,name5B9888,name5B9898,name5B98A8,name5B98B8,name5B98C8,name5B98D4,name5B98E0,name5B98EC,name5B98F8,name5B9904,name5B9910,name5B991C,name5B9928,name5B9934,name5B9940,name5B9950,name5B9960,name5B9970,name5B9980,name5B9990,name5B99A0,name5B99B0,name5B99C0,name5B99D0};
-const char* const markers0[3]{name5B9B98,name5B9BA8,name5B9BB8};
-const SaveLoadPopupNativeDetail::Data data0{background, name5B94C8, slider0, arrows0, check0, digits0, markers0};
-const GuiSliderDescriptorNative6Ch slider1{57, {{name5B9528, nullptr, nullptr, name5B9540, name5B9540, name5B9540, nullptr}}, {{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}}, nullptr, 0, 1, 0, {1214,207,1239,605}, {0,0,0,-51}};
-const SaveLoadPopupNativeDetail::CheckDescriptor check1{60, {{name5B9790, nullptr, nullptr, name5B97B0, name5B97B0, name5B97CC, nullptr}}, {{name5B97EC, nullptr, nullptr, name5B9808, name5B9808, name5B9808, nullptr}}, nullptr, 3, -1};
-const GuiButtonDescriptorNative2Ch arrows1[2]{
-    {{58, {{name5B9628, name5B9644, nullptr, name5B965C, name5B965C, name5B9674, nullptr}}, nullptr}, 0, -1},
-    {{59, {{name5B9690, name5B96AC, nullptr, name5B96C4, name5B96C4, name5B96DC, nullptr}}, nullptr}, 0, -1},
-};
-const char* const digits1[30]{name5B99E0,name5B99F0,name5B9A00,name5B9A10,name5B9A20,name5B9A30,name5B9A40,name5B9A50,name5B9A60,name5B9A70,name5B9A80,name5B9A8C,name5B9A98,name5B9AA4,name5B9AB0,name5B9ABC,name5B9AC8,name5B9AD4,name5B9AE0,name5B9AEC,name5B9AF8,name5B9B08,name5B9B18,name5B9B28,name5B9B38,name5B9B48,name5B9B58,name5B9B68,name5B9B78,name5B9B88};
-const char* const markers1[3]{name5B9BC4,name5B9BD4,name5B9BE4};
-const SaveLoadPopupNativeDetail::Data data1{background, name5B94E0, slider1, arrows1, check1, digits1, markers1};
-constexpr POINT digitPositions[3]{{99,4},{79,4},{59,4}};
-constexpr GuiDialogNavigationMapping navigation0[12]{{60,-1},{61,60},{62,61},{63,62},{64,63},{65,64},{66,65},{67,66},{68,67},{69,68},{70,69},{-1,0}};
 constexpr std::array<std::uint32_t,24> navigationWords0{{0x3Cu,0xFFFFFFFFu,0x3Du,0x3Cu,0x3Eu,0x3Du,0x3Fu,0x3Eu,0x40u,0x3Fu,0x41u,0x40u,0x42u,0x41u,0x43u,0x42u,0x44u,0x43u,0x45u,0x44u,0x46u,0x45u,0xFFFFFFFFu,0x0u}};
-constexpr GuiDialogNavigationMapping navigation1[12]{{70,-1},{69,70},{68,69},{67,68},{66,67},{65,66},{64,65},{63,64},{62,63},{61,62},{60,61},{-1,0}};
 constexpr std::array<std::uint32_t,24> navigationWords1{{0x46u,0xFFFFFFFFu,0x45u,0x46u,0x44u,0x45u,0x43u,0x44u,0x42u,0x43u,0x41u,0x42u,0x40u,0x41u,0x3Fu,0x40u,0x3Eu,0x3Fu,0x3Du,0x3Eu,0x3Cu,0x3Du,0xFFFFFFFFu,0x0u}};
 constexpr std::array<std::uint32_t,4> navigationHeaders{{1,0x606908,2,0x6068A8}};
 constexpr std::array<std::uint32_t,9> eh5F65D4{{0x19930522u,0x33u,0x5F65F8u,0x0u,0x0u,0x0u,0x0u,0x0u,0x1u}};

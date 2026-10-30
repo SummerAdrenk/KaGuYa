@@ -94,8 +94,9 @@ ScrContainer::ScrContainer(ScrContainer&& source) : ScrContainer()
     std::swap(bytesAt04.RawSlot(), source.bytesAt04.RawSlot());
     std::array<std::byte, 4> nil;
     std::memcpy(nil.data(), &headerAt28, 4);
-    std::memcpy(&headerAt28, &source.headerAt28, 4);
-    std::memcpy(&source.headerAt28, nil.data(), 4);
+    // 按原生表示交换已有header引用与nil引用；不能用CString赋值/析构增减引用。
+    std::memcpy(static_cast<void*>(&headerAt28), static_cast<const void*>(&source.headerAt28), 4);
+    std::memcpy(static_cast<void*>(&source.headerAt28), nil.data(), 4);
     source.scriptIdAt00 = -1;
     source.stagedPcAt10 = 0;
 }

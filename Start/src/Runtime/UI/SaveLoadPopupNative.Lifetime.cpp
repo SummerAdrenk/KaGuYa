@@ -22,6 +22,13 @@ const GuiDialogNativeVtable35& SaveLoadPopupNativeVtable() noexcept
     static const auto table = []
     {
         auto t = SaveLoadPageBaseNativeVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 void* 仅占 EDX、不读取其输入。
+        // flags/clip 仍各占 4 字节栈实参并由被调方清栈，其余槽无栈实参；各返回类型一致。
+        // Delete 的 noexcept 仅向可抛槽类型放宽，其余异常约定不变。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(field, entry) t.field = reinterpret_cast<decltype(t.field)>(&entry)
         BIND(deletingDestructorAt04, Delete);
         BIND(upperInputAt34, UpperInput);
@@ -33,6 +40,9 @@ const GuiDialogNativeVtable35& SaveLoadPopupNativeVtable() noexcept
         BIND(processInputAt54, ProcessInput);
         BIND(drawAt60, Draw);
 #undef BIND
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

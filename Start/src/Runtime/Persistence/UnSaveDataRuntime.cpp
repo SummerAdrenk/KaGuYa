@@ -18,12 +18,14 @@ void InitializeMusicName(UnSaveDataRuntime& value, IRuntimeStringManagerSource& 
     if (!manager) throw ATL::CAtlException(E_FAIL);
     using GetNil = ATL::CStringData* (__thiscall*)(ATL::IAtlStringMgr*);
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr，保持GetNil的可抛虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     GetNil getNil;
     std::memcpy(&getNil, table + 0x0C, sizeof(getNil));
     // 45E31B..45E320：原可抛虚槽返回后才发布，不调用新版noexcept GetNilString。
     const auto data = reinterpret_cast<std::uintptr_t>(getNil(manager)) + 0x10u;
-    std::memcpy(&value.stringAt2C_, &data, sizeof(data));
+    // GetNil已提供引用，原始槽只发布指针，不额外构造或赋值CString。
+    std::memcpy(static_cast<void*>(&value.stringAt2C_), &data, sizeof(data));
 }
 
 struct ConstructorCleanup final

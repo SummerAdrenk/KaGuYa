@@ -39,7 +39,8 @@ void CloneText(Text& out,const RuntimeCString& source)
 {
     auto* header=reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())-16);
     auto* cloned=CloneRuntimeCStringDataAt414540(header);char* data=reinterpret_cast<char*>(cloned)+16;
-    std::memcpy(&out.value,&data,4);out.active=true;
+    // 只发布Clone的原生指针；active仍在成功写槽后取得清理资格。
+    std::memcpy(static_cast<void*>(&out.value),&data,4);out.active=true;
 }
 }
 void BuildNameTextAt512200(Common* p,int mode,int shadow)

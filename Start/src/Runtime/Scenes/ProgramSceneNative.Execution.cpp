@@ -5,7 +5,8 @@ namespace KaGuYa::Start::Runtime
 void UpdateProgramSceneNativeAt4B9710(ProgramSceneNativeBody20h& b,ProgramSceneNativeServices& services)
 {
     using namespace ProgramSceneNativeDetail;
-    ProgramSceneNativeScope scope(services);auto& source=services.source;UpdateFrame frame{services.memory};
+    ProgramSceneNativeScope scope(services);auto& source=services.source;
+    UpdateFrame frame{.memory=services.memory,.text={}};
     const auto phase=Read(b.phaseAt04);
     switch(phase)
     {

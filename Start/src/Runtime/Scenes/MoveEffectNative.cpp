@@ -52,11 +52,19 @@ void __fastcall Draw(Body* body, void*) { DrawMoveEffectNativeAt4B5550(*body, Se
 std::uint8_t __fastcall Ready(Body* body, void*) { return Read(body->readyAt04); }
 Body* __fastcall Delete(Body* body, void*, std::uint32_t flags) noexcept
 { return DeleteMoveEffectNativeAt4A65C0(*body, flags, Services()); }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MoveEffectNativeVtable methods{
     reinterpret_cast<decltype(MoveEffectNativeVtable::tickAt00)>(&Tick),
     reinterpret_cast<decltype(MoveEffectNativeVtable::drawAt04)>(&Draw),
     reinterpret_cast<decltype(MoveEffectNativeVtable::readyAt08)>(&Ready),
     reinterpret_cast<decltype(MoveEffectNativeVtable::deleteAt0C)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 void RenderAndInvalidate(Body& body, MoveEffectNativeServices& services)
 {

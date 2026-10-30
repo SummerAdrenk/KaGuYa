@@ -21,6 +21,14 @@ void __fastcall Advance(Base*,void*){} // 原46B230是C3，不推进Dialog或动
 void __fastcall Reset(Base* b,void*){b->enabledAt0C=0;} // 4AF1F0原五字节仅写0C。
 void __fastcall Invalidate(Base* b,void*,RECT rectangle)
 {if(!::IsRectEmpty(&rectangle))b->parentAt10->vptrAt00->addDirtyAt20(b->parentAt10,&rectangle);}
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+// 按值栈参数 RECT 为 16 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const CgOperationWindowNativeVtable8 table{
     {{reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
       reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -30,6 +38,9 @@ const CgOperationWindowNativeVtable8 table{
       reinterpret_cast<decltype(LayerItemNativeFrameVtable::advanceAt14)>(&Advance),
       reinterpret_cast<decltype(LayerItemNativeFrameVtable::resetAt18)>(&Reset)},
     reinterpret_cast<decltype(CgOperationWindowNativeVtable8::invalidateAt1C)>(&Invalidate)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 GuiDirtyRectNativeBody80h* Dirty(Body& body)
 {
     auto* child=ResolveCgOperationDialogNative(body.dialogAt24);

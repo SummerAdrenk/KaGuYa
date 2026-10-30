@@ -100,6 +100,13 @@ std::uint8_t __fastcall Request(Base* base, void*, std::uint8_t value, std::int3
 }
 void __fastcall Advance(Base*, void*) noexcept {} // 46B230，选择流程由4BBFD0另行驱动。
 void __fastcall Reset(Base* base, void*) noexcept { base->enabledAt0C = 0; } // 原PE47EE70。
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LayerItemNativeFrameVtable methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -108,6 +115,9 @@ const LayerItemNativeFrameVtable methods{
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::requestAt10)>(&Request),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 constexpr char normalName[] = "\x91\x49\x91\xF0\x8E\x88\x95\xB6\x8E\x9A\x90\x46";
 constexpr char selectedName[] = "\x8A\xF9\x91\x49\x91\xF0\x95\xB6\x8E\x9A\x90\x46";
 constexpr char shadowName[] = "\x91\x49\x91\xF0\x8E\x88\x8F\xFC\x82\xE8\x90\x46";

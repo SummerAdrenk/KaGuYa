@@ -15,6 +15,14 @@ const SettingPageChoiceNativeVtable38& SettingPage01PreviewBlockNativeVtable() n
 {
     static const auto table = [] {
         auto t = ChoiceBaseTable(); // 5BF0CC：确切继承35槽，不用成功占位函数填表。
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         t.common.deletingDestructorAt04 = reinterpret_cast<decltype(t.common.deletingDestructorAt04)>(&Delete);
         t.common.pollAt48 = reinterpret_cast<decltype(t.common.pollAt48)>(&Poll);
         t.common.endAt4C = reinterpret_cast<decltype(t.common.endAt4C)>(&End);
@@ -22,6 +30,9 @@ const SettingPageChoiceNativeVtable38& SettingPage01PreviewBlockNativeVtable() n
         t.common.compositeAt5C = reinterpret_cast<decltype(t.common.compositeAt5C)>(&Composite);
         t.loadAt90 = reinterpret_cast<decltype(t.loadAt90)>(&Load);
         t.storeAt94 = reinterpret_cast<decltype(t.storeAt94)>(&Store);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }(); return table;
 }

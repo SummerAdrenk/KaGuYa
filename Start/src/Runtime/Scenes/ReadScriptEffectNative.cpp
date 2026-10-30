@@ -2,6 +2,7 @@
 
 #include <cstdlib>
 #include <cstring>
+#include <exception>
 #include <new>
 
 namespace KaGuYa::Start::Runtime
@@ -32,12 +33,21 @@ void* __fastcall DeleteBase(void* body, void*, std::uint32_t flags) noexcept
     if (flags & 1u) ::operator delete(body, std::size_t{8});
     return body;
 }
+// 原5B4D00的纯调用叶是cdecl；经具名桥接正常调用CRT，不能直接跨调用约定调用它。
+[[noreturn]] std::uint8_t __fastcall PureTick(void*, void*) { _purecall(); std::terminate(); }
+[[noreturn]] void __fastcall PureDraw(void*, void*) { _purecall(); std::terminate(); }
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ReadScriptEffectNativeVtable baseMethods{
-    // 5B4D00前两个槽同指向541C5F；该cdecl叶不读取ECX或栈实参。
-    reinterpret_cast<decltype(ReadScriptEffectNativeVtable::tickAt00)>(&_purecall),
-    reinterpret_cast<decltype(ReadScriptEffectNativeVtable::drawAt04)>(&_purecall),
+    reinterpret_cast<decltype(ReadScriptEffectNativeVtable::tickAt00)>(&PureTick),
+    reinterpret_cast<decltype(ReadScriptEffectNativeVtable::drawAt04)>(&PureDraw),
     reinterpret_cast<decltype(ReadScriptEffectNativeVtable::readyAt08)>(&Ready),
     reinterpret_cast<decltype(ReadScriptEffectNativeVtable::deleteAt0C)>(&DeleteBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const ReadScriptEffectNativeVtable& ReadScriptEffectBaseNativeMethods() noexcept { return baseMethods; }

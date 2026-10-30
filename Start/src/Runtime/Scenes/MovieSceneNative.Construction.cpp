@@ -36,7 +36,8 @@ void PublishNil(RuntimeCString& out,ATL::IAtlStringMgr* manager)
     using GetNil=ATL::CStringData*(__thiscall*)(ATL::IAtlStringMgr*);
     auto* nil=ManagerSlot<GetNil>(manager,12)(manager);
     const auto chars=reinterpret_cast<std::uintptr_t>(nil)+16u;
-    std::memcpy(&out,&chars,4);
+    // GetNil已提供引用；只发布原生指针，不额外构造或赋值CString。
+    std::memcpy(static_cast<void*>(&out),&chars,4);
 }
 void BeginConcatenation(RuntimeCString& out,const RuntimeCString& prefix,
     IMovieSceneNativeSource& source,unsigned fallbackSite)
@@ -127,7 +128,8 @@ MovieSceneNativeBody0Ch* ConstructMovieSceneNativeAt4A0B00(MovieSceneNativeBody0
     using namespace MovieSceneNativeDetail;
     MovieSceneNativeScope scope(services);auto& source=services.source;
     body.vptrAt00=&MovieSceneNativeMethods();
-    ConstructionFrame frame{body,services.memory};
+    ConstructionFrame frame{.body=body,.memory=services.memory,
+        .procOrPrefix={},.path={},.alternatePrefix={},.alternatePath={}};
     body.savedModeAt08=Read(Field<std::uint32_t>(Archive(source,2,0x4A0B41),4));
     Field<volatile std::uint32_t>(Archive(source,2,0x4A0B92),4)=0;
 

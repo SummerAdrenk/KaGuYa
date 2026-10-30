@@ -19,9 +19,17 @@ struct TaskTable final
 [[noreturn]] void PureTaskRun() { _purecall(); std::terminate(); }
 std::uint8_t __fastcall PureRun(Body*, void*, std::int32_t) { PureTaskRun(); }
 Body* __fastcall DeleteTask(Body* body, void*, std::uint32_t flags) noexcept;
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskTable task{
     reinterpret_cast<decltype(TaskTable::run)>(&PureRun),
     reinterpret_cast<decltype(TaskTable::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteTask(Body* body, void*, std::uint32_t flags) noexcept
 {
     RetireTask(*body);
@@ -50,11 +58,19 @@ void __fastcall RawUpdate(Body* body, void*)
 { UpdateReadScriptSceneNativeAt4BA530(*body, ActiveServices()); }
 void __fastcall RawDraw(Body* body, void*)
 { DrawReadScriptSceneNativeAt4B5A20(*body, ActiveServices()); }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::runAt00)>(&RawRun),
     reinterpret_cast<decltype(Table::deleteAt04)>(&RawDelete),
     reinterpret_cast<decltype(Table::updateAt08)>(&RawUpdate),
     reinterpret_cast<decltype(Table::drawAt0C)>(&RawDraw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void ReportError(ReadScriptSceneNativeServices& services, const char* message)
 {
     const auto target = services.source.CaptureErrorTargetAt4180C0();

@@ -7,7 +7,7 @@ using namespace SettingPage03NativeDetail;
 namespace
 {
 thread_local SettingPage03NativeServices* active = nullptr;
-void __fastcall Pure(Common*, void*) { _purecall(); std::terminate(); }
+[[noreturn]] void __fastcall Pure(Common*, void*) { _purecall(); std::terminate(); }
 Common* __fastcall DeleteBase(Common* p, void*, std::uint32_t flags) noexcept
 { DestroyBlockBase(p); if (flags & 1u) ::operator delete(p, std::size_t{0x80}); return p; }
 template<unsigned Kind> Common* __fastcall DeleteBlock(Common* p, void*, std::uint32_t flags) noexcept
@@ -80,12 +80,25 @@ void ConstructDialogRef(Slot& out, Common* p, std::uint32_t kind, std::uint32_t 
 const RetiredBlockVtable38& BlockBaseTable() noexcept
 {
     static const auto t = [] {
-        RetiredBlockVtable38 v{GuiDialogBaseVtable()};
+        RetiredBlockVtable38 v{GuiDialogBaseVtable(), {}, {}, {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(field, entry) v.field = reinterpret_cast<decltype(v.field)>(&entry)
         BIND(common.deletingDestructorAt04, DeleteBase);
-        BIND(common.beginAt44, BeginBlock); BIND(common.pollAt48, Pure); BIND(common.endAt4C, RadioEnd);
+        BIND(common.beginAt44, BeginBlock);
+        // Pure在_purecall返回后仍必定terminate；不存在需要交付给int槽的正常返回值。
+        v.common.pollAt48 = reinterpret_cast<decltype(v.common.pollAt48)>(&Pure);
+        BIND(common.endAt4C, RadioEnd);
         BIND(boundsAt8C, BlockBounds); BIND(loadAt90, Pure); BIND(storeAt94, Pure);
 #undef BIND
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t;
 }
@@ -99,12 +112,23 @@ void DestroyBlockBase(Common* p) noexcept
 const SettingPage03NativeVtable39& ParentBaseTable() noexcept
 {
     static const auto t = [] {
-        SettingPage03NativeVtable39 v{GuiDialogIntoBaseVtable()};
+        SettingPage03NativeVtable39 v{GuiDialogIntoBaseVtable(), {}, {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         v.common.common.deletingDestructorAt04 = reinterpret_cast<decltype(v.common.common.deletingDestructorAt04)>(&DeleteParentBase);
         v.common.common.drawAt60 = reinterpret_cast<decltype(v.common.common.drawAt60)>(&ParentDraw);
         v.common.common.compositeAt5C = reinterpret_cast<decltype(v.common.common.compositeAt5C)>(&ParentComposite);
         v.reloadAt94 = reinterpret_cast<decltype(v.reloadAt94)>(&Pure);
         v.boundsAt98 = reinterpret_cast<decltype(v.boundsAt98)>(&ParentBounds);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t;
 }
@@ -116,13 +140,23 @@ const GuiDialogNativeVtable35& RadioTable() noexcept
       decltype(SettingPage03BlockNativeVtable42::loadAt90) load, store; };
     static_assert(sizeof(RadioVtable) == 0x98);
     static const auto t = [] {
-        RadioVtable v{GuiDialogBaseVtable()};
+        RadioVtable v{GuiDialogBaseVtable(), {}, {}, {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         v.common.deletingDestructorAt04 = reinterpret_cast<decltype(v.common.deletingDestructorAt04)>(&DeleteRadio);
         v.common.beginAt44 = reinterpret_cast<decltype(v.common.beginAt44)>(&BeginBlock);
         v.common.pollAt48 = reinterpret_cast<decltype(v.common.pollAt48)>(&RadioPoll);
         v.common.endAt4C = reinterpret_cast<decltype(v.common.endAt4C)>(&RadioEnd);
         v.bounds = reinterpret_cast<decltype(v.bounds)>(&BlockBounds);
         v.load = v.store = reinterpret_cast<decltype(v.load)>(&RadioNoop);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t.common;
 }
@@ -138,6 +172,13 @@ const SettingPage03BlockNativeVtable42& SettingPage03BlockNativeVtable(std::uint
         {
             auto& v = a[i]; const auto& base = BlockBaseTable();
             v.common = base.common; v.boundsAt8C = base.boundsAt8C;
+            // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+            // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+            // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
             v.common.endAt4C = reinterpret_cast<decltype(v.common.endAt4C)>(&EndBlock);
             v.checkedAt98 = reinterpret_cast<decltype(v.checkedAt98)>(&Checked);
             v.valueAt9C = reinterpret_cast<decltype(v.valueAt9C)>(&Value);
@@ -147,6 +188,9 @@ const SettingPage03BlockNativeVtable42& SettingPage03BlockNativeVtable(std::uint
             v.common.pollAt48 = reinterpret_cast<decltype(v.common.pollAt48)>(i == 3 ? &Poll04 : &PollBlock);
             v.loadAt90 = reinterpret_cast<decltype(v.loadAt90)>(loads[i]);
             v.storeAt94 = reinterpret_cast<decltype(v.storeAt94)>(stores[i]);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         }
         return a;
     }();
@@ -156,13 +200,24 @@ const SettingPage03BlockNativeVtable42& SettingPage03BlockNativeVtable(std::uint
 const SettingPage03Block03NativeVtable41& SettingPage03Block03NativeVtable() noexcept
 {
     static const auto t = [] {
-        SettingPage03Block03NativeVtable41 v{GuiDialogIntoBaseVtable()};
+        SettingPage03Block03NativeVtable41 v{GuiDialogIntoBaseVtable(), {}, {}, {}, {}};
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(field, entry) v.field = reinterpret_cast<decltype(v.field)>(&entry)
         BIND(common.common.deletingDestructorAt04, DeleteContainer);
         BIND(common.common.beginAt44, Begin03); BIND(common.common.endAt4C, End03);
         BIND(common.common.drawAt60, Draw03); BIND(common.common.compositeAt5C, Composite03);
         BIND(boundsAt94, Bounds03); BIND(loadAt98, Load03); BIND(storeAt9C, Store03); BIND(setGateAtA0, Gate03);
 #undef BIND
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t;
 }
@@ -170,10 +225,20 @@ const SettingPage03NativeVtable39& SettingPage03NativeVtable() noexcept
 {
     static const auto t = [] {
         auto v = ParentBaseTable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         v.common.common.deletingDestructorAt04 = reinterpret_cast<decltype(v.common.common.deletingDestructorAt04)>(&DeleteParent);
         v.common.common.beginAt44 = reinterpret_cast<decltype(v.common.common.beginAt44)>(&ParentBegin);
         v.common.common.pollAt48 = reinterpret_cast<decltype(v.common.common.pollAt48)>(&ParentPoll);
         v.reloadAt94 = reinterpret_cast<decltype(v.reloadAt94)>(&ParentReload);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t;
 }

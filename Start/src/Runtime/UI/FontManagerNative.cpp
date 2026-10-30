@@ -78,8 +78,17 @@ void Destroy(FontManagerNativeBody1Ch& body, bool* modernSecondaryDestroyed) noe
 
 FontManagerNativeBody1Ch* __fastcall DeleteEntry(FontManagerNativeBody1Ch* body, void*, std::uint32_t flags)
 { return DeleteFontManagerAt468AE0(*body, flags); }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const FontManagerNativeVtable methods{
     reinterpret_cast<decltype(FontManagerNativeVtable::deleteAt00)>(&DeleteEntry)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 class FontManagerControl final : public EnvironmentObjectReferenceControl
 {

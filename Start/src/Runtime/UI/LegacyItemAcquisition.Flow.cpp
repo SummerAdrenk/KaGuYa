@@ -175,20 +175,41 @@ void SystemBegin(Panel& p)
 const GuiDialogNativeVtable35& PanelMethods() noexcept
 {
     static const auto table=[] {auto t=GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define ITEM_SLOT(n,f) t.n=reinterpret_cast<decltype(t.n)>(&f)
         ITEM_SLOT(deletingDestructorAt04,DeletePanel);ITEM_SLOT(resetInputAt3C,ResetInput);ITEM_SLOT(activeInputAt38,ConfirmKey);
         ITEM_SLOT(writeStateAt1C,WritePanelState);
         ITEM_SLOT(beginAt44,BeginPanel);ITEM_SLOT(pollAt48,PollPanel);ITEM_SLOT(endAt4C,EndPanel);
 #undef ITEM_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;}();return table;
 }
 const GuiDialogIntoNativeVtable37& TopMethods() noexcept
 {
     static const auto table=[] {auto t=GuiDialogIntoBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define ITEM_SLOT(n,f) t.common.n=reinterpret_cast<decltype(t.common.n)>(&f)
         ITEM_SLOT(deletingDestructorAt04,DeleteTop);ITEM_SLOT(beginAt44,BeginTop);ITEM_SLOT(pollAt48,PollTop);
         ITEM_SLOT(endAt4C,EndTop);ITEM_SLOT(drawAt60,DrawTop);ITEM_SLOT(compositeAt5C,Composite);
 #undef ITEM_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;}();return table;
 }
 }

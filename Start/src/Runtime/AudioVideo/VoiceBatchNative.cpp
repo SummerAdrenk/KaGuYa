@@ -117,7 +117,8 @@ bool PlayVoiceBatchAt42C4F0(IScrVmVoiceRuntimeBoundary& voice, const RuntimeCStr
         auto* header = CloneRuntimeCStringDataAt414540(
             reinterpret_cast<ATL::CStringData*>(const_cast<char*>(chars)) - 1);
         chars = reinterpret_cast<const char*>(header + 1);
-        std::memcpy(&held.value, &chars, sizeof(chars));
+        // Clone引用只写入空槽，保留Unwind和缓存header的既有释放责任。
+        std::memcpy(static_cast<void*>(&held.value), &chars, sizeof(chars));
         TextUnwind unwind{&held.value};
         if (voice.OpenSlot(i, RuntimeStringView(held.value), value))
             // 42C782通过Ref重新读取control，与第一遍其他状态寻址的captured不同。

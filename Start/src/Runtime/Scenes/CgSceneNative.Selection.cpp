@@ -86,7 +86,8 @@ bool TitleRequested(void* scenes,ICgSceneNativeSource& source)
     auto& command=Field<RuntimeCString>(scenes,0x1C);
     union Text{RuntimeCString value;Text(){}~Text(){}} temporary;
     auto* clone=CloneRuntimeCStringDataAt414540(reinterpret_cast<ATL::CStringData*>(const_cast<char*>(command.GetString()))-1);
-    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(&temporary.value,&chars,4);
+    // Clone引用以原生指针进入空槽，仍由cleanup按原时点释放。
+    auto* chars=reinterpret_cast<char*>(clone+1);std::memcpy(static_cast<void*>(&temporary.value),&chars,4);
     struct Unwind final{RuntimeCString& value;bool active=true;~Unwind() noexcept{if(active)DestroyRuntimeCStringAt40CD40(&value);}} cleanup{temporary.value};
     bool result=::_mbscmp(reinterpret_cast<const unsigned char*>(temporary.value.GetString()),reinterpret_cast<const unsigned char*>(TitleName()))==0;
     if(!result&&CurrentAppreciationSceneProfile().listRightClickToTitle)

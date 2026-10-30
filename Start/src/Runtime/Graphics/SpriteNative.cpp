@@ -10,8 +10,16 @@ namespace
 using Body = SpriteNativeBodyA0h;
 Body* __fastcall Delete(Body* body, void*, std::uint32_t flags) noexcept
 { return DeleteSpriteNativeAt43EDB0(body, flags); }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const SpriteNativeVtable methods{
     reinterpret_cast<decltype(SpriteNativeVtable::deletingDestructorAt00)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 struct ConstructionUnwind final
 {

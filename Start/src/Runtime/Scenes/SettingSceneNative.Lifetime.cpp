@@ -39,9 +39,17 @@ struct RetiredTaskTable final
     decltype(Table::deleteAt04) destroy;
 };
 Body* __fastcall DeleteTask(Body*, void*, std::uint32_t) noexcept;
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RetiredTaskTable retired{
     reinterpret_cast<decltype(RetiredTaskTable::run)>(&PureRun),
     reinterpret_cast<decltype(RetiredTaskTable::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(RetiredTaskTable) == 8);
 Body* __fastcall DeleteTask(Body* body, void*, std::uint32_t flags) noexcept
 {
@@ -49,11 +57,19 @@ Body* __fastcall DeleteTask(Body* body, void*, std::uint32_t flags) noexcept
     if (flags & 1u) ::operator delete(body, std::size_t{4});
     return body;
 }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     reinterpret_cast<decltype(Table::runAt00)>(&RawRun),
     reinterpret_cast<decltype(Table::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),
     reinterpret_cast<decltype(Table::drawAt0C)>(&EmptyDraw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 class DialogControl final : public EnvironmentObjectReferenceControl
 {
 public:

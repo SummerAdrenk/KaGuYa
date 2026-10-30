@@ -96,7 +96,16 @@ BOOL __fastcall Entry(void* menu,void*,HWND w,UINT m,WPARAM p,LPARAM l,LRESULT* 
     auto& frame=*reinterpret_cast<MainFrameNativeBody90h*>(reinterpret_cast<DWORD>(menu)-0x54u);
     return ProcessMainFrameMenuNativeAt42F040(frame,w,m,p,l,out,map,*current);
 }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MainFrameMenuNativeVtable1 table{reinterpret_cast<decltype(MainFrameMenuNativeVtable1::processAt00)>(&Entry)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 class Api final:public IMainFrameMenuNativeApi
 {
 public:

@@ -34,6 +34,11 @@ void __fastcall Advance(Base* base, void*)
 }
 void __fastcall Reset(Base* base, void*)
     { ResetLayerWindowNativeAt47EC40(Derived(base), Services().pattern.drawing); }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LayerItemNativeFrameVtable methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -42,6 +47,9 @@ const LayerItemNativeFrameVtable methods{
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::requestAt10)>(&Request),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 struct RawPatternUnwind final
 {

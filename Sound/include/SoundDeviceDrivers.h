@@ -38,6 +38,11 @@ private:
 static_assert(sizeof(SoundDeviceDriverList::Node) == 16);
 static_assert(sizeof(SoundDeviceDriverList) == 8);
 
+// 原默认设备根保留析构虚槽及首DWORD的vptr。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class SoundDefaultDeviceRoot final
 {
 public:
@@ -49,5 +54,8 @@ private:
     SoundDeviceDriverList drivers_;
     GUID defaultDevice_{};
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(SoundDefaultDeviceRoot) == 28);
 }

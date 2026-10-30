@@ -49,11 +49,11 @@ inline void ReleaseNormally(YtlReferenceSlotRuntime& slot, EnvironmentObjectRefe
         if (edi->owningAt08)
         {
             using Destroy = void (__thiscall*)(YtlReferenceControlRuntime*);
-            std::memcpy(&table, edi, sizeof(table));
+            std::memcpy(&table, static_cast<const void*>(edi), sizeof(table));
             reinterpret_cast<Destroy>(table[0])(edi);
         }
         using Delete = void (__thiscall*)(YtlReferenceControlRuntime*, std::uint32_t);
-        std::memcpy(&table, edi, sizeof(table));
+        std::memcpy(&table, static_cast<const void*>(edi), sizeof(table));
         reinterpret_cast<Delete>(table[1])(edi, 1);
     }
     slot.controlAt08 = nullptr;

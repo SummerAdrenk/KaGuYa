@@ -78,6 +78,12 @@ std::int32_t __fastcall MouseRelease(const GuiInputNativeBody*, void*)
     return mouse.CurrentLeftAt10() == 0 || mouse.SuppressionAt28() != 0 ? 1 : 0;
 }
 
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const GuiInputNativeVtable nullMethods{
     reinterpret_cast<decltype(GuiInputNativeVtable::readHeldAt00)>(&NullAction),
     reinterpret_cast<decltype(GuiInputNativeVtable::readPressedAt04)>(&NullAction),
@@ -94,6 +100,9 @@ const GuiInputNativeVtable gameMethods{
     reinterpret_cast<decltype(GuiInputNativeVtable::readPointerMovedAt10)>(&Moved),
     reinterpret_cast<decltype(GuiInputNativeVtable::readMousePressAt14)>(&MousePress),
     reinterpret_cast<decltype(GuiInputNativeVtable::readMouseReleaseAt18)>(&MouseRelease)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 // Null初装与GuiInputState adoption保持独立control类型/虚表；正文均无虚析构。
 template<bool NullInput>

@@ -185,6 +185,11 @@ NativeTimerCreatorBody0Ch* __fastcall DeleteCreator(NativeTimerCreatorBody0Ch* b
 NativeTimeGetTimeBody14h* __fastcall DeleteSource(NativeTimeGetTimeBody14h* body, void*, std::uint32_t flags)
 { return DeleteNativeTimeGetTimeAt43FEA0(*body, flags); }
 
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeTimerVtable timerMethods{
     reinterpret_cast<decltype(NativeTimerVtable::resetAt00)>(&Reset),
     reinterpret_cast<decltype(NativeTimerVtable::elapsedAt04)>(&Elapsed),
@@ -192,6 +197,14 @@ const NativeTimerVtable timerMethods{
     reinterpret_cast<decltype(NativeTimerVtable::pauseAt0C)>(&Pause),
     reinterpret_cast<decltype(NativeTimerVtable::resumeAt10)>(&Resume),
     reinterpret_cast<decltype(NativeTimerVtable::deleteAt14)>(&DeleteTimer)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeTimerVtable timerBaseMethods{
     reinterpret_cast<decltype(NativeTimerVtable::resetAt00)>(&PureTimerVoid),
     reinterpret_cast<decltype(NativeTimerVtable::elapsedAt04)>(&PureTimerRead),
@@ -199,6 +212,14 @@ const NativeTimerVtable timerBaseMethods{
     reinterpret_cast<decltype(NativeTimerVtable::pauseAt0C)>(&PureTimerVoid),
     reinterpret_cast<decltype(NativeTimerVtable::resumeAt10)>(&PureTimerVoid),
     reinterpret_cast<decltype(NativeTimerVtable::deleteAt14)>(&DeleteTimerBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeFpsTimerVtable fpsMethods{
     reinterpret_cast<decltype(NativeFpsTimerVtable::setFramesPerSecondAt00)>(&SetFps),
     reinterpret_cast<decltype(NativeFpsTimerVtable::framesPerSecondAt04)>(&Fps),
@@ -213,6 +234,14 @@ const NativeFpsTimerVtable fpsMethods{
     reinterpret_cast<decltype(NativeFpsTimerVtable::resetFrameCountAt28)>(&ResetFrameCount),
     reinterpret_cast<decltype(NativeFpsTimerVtable::frameCountAt2C)>(&FrameCount),
     reinterpret_cast<decltype(NativeFpsTimerVtable::deleteAt30)>(&DeleteFps)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeFpsTimerVtable fpsBaseMethods{
     reinterpret_cast<decltype(NativeFpsTimerVtable::setFramesPerSecondAt00)>(&PureFpsSet),
     reinterpret_cast<decltype(NativeFpsTimerVtable::framesPerSecondAt04)>(&PureFpsRead),
@@ -227,11 +256,30 @@ const NativeFpsTimerVtable fpsBaseMethods{
     reinterpret_cast<decltype(NativeFpsTimerVtable::resetFrameCountAt28)>(&PureFpsVoid),
     reinterpret_cast<decltype(NativeFpsTimerVtable::frameCountAt2C)>(&PureFpsRead),
     reinterpret_cast<decltype(NativeFpsTimerVtable::deleteAt30)>(&DeleteFpsBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeTimeGetTimeVtable sourceMethods{
     reinterpret_cast<decltype(NativeTimeGetTimeVtable::deleteAt00)>(&DeleteSource)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeTimerCreatorVtable creatorMethods{
     reinterpret_cast<decltype(NativeTimerCreatorVtable::createAt00)>(&CreateSource),
     reinterpret_cast<decltype(NativeTimerCreatorVtable::deleteAt04)>(&DeleteCreator)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 __declspec(noinline) NativeTimerScope::NativeTimerScope(NativeTimerDependencies& dependencies) noexcept

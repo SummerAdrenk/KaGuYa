@@ -15,8 +15,16 @@ thread_local IGraphicsSurfaceApi* activeApi = nullptr;
 { throw std::logic_error("CSurface destruction requires its external Graphics scope"); }
 
 GraphicsSurfaceNativeBody* __fastcall DeleteBody(GraphicsSurfaceNativeBody* self, void*, std::uint32_t flags);
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const GraphicsSurfaceNativeVtable methods{
     reinterpret_cast<decltype(GraphicsSurfaceNativeVtable::deletingDestructor)>(&DeleteBody)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 void ClearFields(GraphicsSurfaceNativeBody& body)
 {
@@ -98,14 +106,14 @@ GraphicsSurfaceNativeBody::~GraphicsSurfaceNativeBody() noexcept
 GraphicsSurfaceNativeBody::GraphicsSurfaceNativeBody(ModernMoveTag, GraphicsSurfaceNativeBody& source) noexcept
 {
     // 构造期复制representation，保证目标对象生命期成立；不新增原GetNil/Clone调用。
-    std::memcpy(this, &source, sizeof(*this));
+    std::memcpy(static_cast<void*>(this), static_cast<const void*>(&source), sizeof(*this));
     source.handleAt04 = 0;
     source.widthAt08 = source.heightAt0C = 0;
     source.originXAt10 = source.originYAt14 = 0;
     source.alphaAt18 = 0;
     source.clearColorAt20 = 0;
     const char* empty = nullptr;
-    std::memcpy(&source.nameAt1C, &empty, sizeof(empty));
+    std::memcpy(static_cast<void*>(&source.nameAt1C), &empty, sizeof(empty));
 }
 
 void GraphicsSurfaceNativeBody::ResetAt432670(IGraphicsSurfaceApi& api)

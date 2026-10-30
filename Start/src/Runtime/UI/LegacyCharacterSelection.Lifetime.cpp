@@ -104,10 +104,21 @@ const GuiDialogNativeVtable35& LegacyCharacterSelectionDialogMethods() noexcept
     static const auto table=[]
     {
         auto t=GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+        // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(slot,fn) t.slot=reinterpret_cast<decltype(t.slot)>(&fn)
         BIND(beginAt44,BeginThunk);BIND(pollAt48,PollThunk);BIND(endAt4C,EndThunk);
         BIND(deletingDestructorAt04,DeleteThunk);BIND(drawAt60,DrawThunk);BIND(compositeAt5C,CompositeThunk);
 #undef BIND
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();return table;
 }

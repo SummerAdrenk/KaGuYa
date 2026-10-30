@@ -130,26 +130,58 @@ Base* __fastcall DeleteSlot(Base* body, void*, std::uint32_t flags) noexcept
 { return reinterpret_cast<Base*>(DeleteBody(*reinterpret_cast<Body*>(body), flags)); }
 
 // 原PE四表：5B4D14、5B4D8C、5B4D28、5B4D3C，Ready都是4B0730。
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table blend{
     reinterpret_cast<decltype(Table::tickAt00)>(&Tick<TickReadScriptBlendNativeAt4BB750>),
     reinterpret_cast<decltype(Table::drawAt04)>(&Draw<0>),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready),
     reinterpret_cast<decltype(Table::deleteAt0C)>(&DeleteSlot<DeleteReadScriptBlendNativeAt4A63D0>)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table mosaic{
     reinterpret_cast<decltype(Table::tickAt00)>(&Tick<TickReadScriptMosaicNativeAt4BB8D0>),
     reinterpret_cast<decltype(Table::drawAt04)>(&Draw<1>),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready),
     reinterpret_cast<decltype(Table::deleteAt0C)>(&DeleteSlot<DeleteReadScriptMosaicNativeAt4A64E0>)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table transit{
     reinterpret_cast<decltype(Table::tickAt00)>(&Tick<TickReadScriptTransitNativeAt4BBEA0>),
     reinterpret_cast<decltype(Table::drawAt04)>(&Draw<2>),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready),
     reinterpret_cast<decltype(Table::deleteAt0C)>(&DeleteSlot<DeleteReadScriptTransitNativeAt4A66D0>)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table universal{
     reinterpret_cast<decltype(Table::tickAt00)>(&Tick<TickReadScriptUniversalNativeAt4BBF40>),
     reinterpret_cast<decltype(Table::drawAt04)>(&Draw<3>),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready),
     reinterpret_cast<decltype(Table::deleteAt0C)>(&DeleteSlot<DeleteReadScriptUniversalNativeAt4A67B0>)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 template<auto Construct, class... Args> Body* New(Args&&... args)
 {

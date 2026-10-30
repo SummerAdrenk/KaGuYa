@@ -13,6 +13,11 @@ struct MessageOwnerNativeWithSources final
     IMessageReaderFactory& factory;
 };
 
+// 5B29F8删除入口按虚槽派发；final不改变该ABI要求。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class MessageOwnerNative34h final
 {
 public:
@@ -57,6 +62,9 @@ private:
     void ConstructAt45A5D0(MessageOwnerNativeWithSources sources);
     void RestoreVptrAt463245() noexcept;
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(MessageOwnerNative34h) == 0x34);
 static_assert(alignof(MessageOwnerNative34h) == 4);
 static_assert(offsetof(MessageOwnerNative34h, readerAt04) == 4);

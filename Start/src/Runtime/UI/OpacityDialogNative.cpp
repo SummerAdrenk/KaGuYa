@@ -151,7 +151,7 @@ const GuiStaticDescriptorNative24h backgroundDescriptor{
 const GuiSliderDescriptorNative6Ch sliderDescriptor{
     1, {cursorOn, cursorOff, nullptr, cursorOn, cursorOn, cursorOn, nullptr},
     {}, nullptr, 0, 0, 0, {845, 661, 1009, 680}, {0, 0, -12, 0}};
-const OpacityDialogNativeProfile defaultProfile{sliderDescriptor.interactionRectAt4C};
+const OpacityDialogNativeProfile defaultProfile{sliderDescriptor.interactionRectAt4C, {}};
 
 void AppendChild(Base& body, const Slot& source)
 {
@@ -167,6 +167,13 @@ const GuiDialogNativeVtable35& OpacityDialogNativeVtable() noexcept
 {
     static const GuiDialogNativeVtable35 table = [] {
         auto result = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define OPACITY_SLOT(slot, entry) result.slot = reinterpret_cast<decltype(result.slot)>(&entry)
         OPACITY_SLOT(dirtyAt00, Dirty);
         OPACITY_SLOT(deletingDestructorAt04, Delete);
@@ -174,6 +181,9 @@ const GuiDialogNativeVtable35& OpacityDialogNativeVtable() noexcept
         OPACITY_SLOT(pollAt48, Update);
         OPACITY_SLOT(endAt4C, End);
 #undef OPACITY_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return result;
     }();
     return table;

@@ -23,7 +23,7 @@ GdiDrawModule::~GdiDrawModule() noexcept(false)
 GdiDrawModule* GdiDrawModule::Destroy(const std::uint32_t flags)
 {
     // 原10008141：析构正常完成后才按flags释放，不用delete表达式补偿异常。
-    this->~GdiDrawModule();
+    this->GdiDrawModule::~GdiDrawModule();
     if (flags & 1u) ::operator delete(this);
     return this;
 }

@@ -64,6 +64,14 @@ std::int32_t __fastcall End01(Common*, void*) { Leaves leaves; return 1; } // 50
 template<bool Mode01> GuiDialogNativeVtable35 Make() noexcept
 {
     GuiDialogNativeVtable35 t{};
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+    // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节、RECT 为 16 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(member, target) t.member = reinterpret_cast<decltype(t.member)>(&target)
     SLOT(dirtyAt00, Dirty); SLOT(clearChildrenAt08, Clear); SLOT(idAt0C, Id);
     SLOT(appendChildAt10, Append); SLOT(findChildAt14, Find); SLOT(setDirtyAt18, SetDirty);
@@ -86,6 +94,9 @@ template<bool Mode01> GuiDialogNativeVtable35 Make() noexcept
         SLOT(beginAt44, Begin00); SLOT(pollAt48, Poll00); SLOT(endAt4C, End00);
     }
 #undef SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return t;
 }
 }

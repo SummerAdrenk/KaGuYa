@@ -447,6 +447,14 @@ std::int32_t __fastcall Changed(Common* body, void*) { return Slider(body).chang
 std::int32_t __fastcall Reverse(Common* body, void*) { return Slider(body).reverseAt54; }
 void __fastcall StepInput(Common* body, void*, std::int32_t value) { Slider(body).stepInputAt58 = value; }
 
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+// 按值栈参数 YtlReferenceSlotRuntime 为 12 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BASE(slot, function) reinterpret_cast<decltype(GuiControlNativeVtable23::slot)>(&function)
 #define EXTRA(slot, function) reinterpret_cast<decltype(GuiSliderNativeVtable31::slot)>(&function)
 const GuiSliderNativeVtable31 table{{
@@ -462,6 +470,9 @@ const GuiSliderNativeVtable31 table{{
     EXTRA(setStepInputAt74, StepInput), EXTRA(setHitSlotAt78, SetHitSlotAt5361E0)};
 #undef EXTRA
 #undef BASE
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 struct BodyUnwind final
 {

@@ -72,7 +72,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 读取原生vptr，保留管理器虚槽及可抛调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function result;
     static_assert(sizeof(result) == sizeof(void*));
     std::memcpy(&result, table + offset, sizeof(result));
@@ -94,7 +95,8 @@ char* Data(ATL::CStringData* header) noexcept
 void Publish(RuntimeCString& destination, ATL::CStringData* header) noexcept
 {
     char* data = Data(header);
-    std::memcpy(&destination, &data, sizeof(data));
+    // 只发布已有引用的原生指针；不额外构造、赋值或析构CString。
+    std::memcpy(static_cast<void*>(&destination), &data, sizeof(data));
 }
 
 ATL::CStringData* CloneDataAt414540(ATL::CStringData* source)
@@ -173,7 +175,8 @@ Mapping* DefaultMappingsAt4668C0(Mapping* next, std::uint32_t count,
     {
         // 466900..466934：先清整个 16 字节，Capture/GetNil 后发布串，再清内层三指针。
         // 5EB678 无前缀清理：失败前完成的元素不回滚，调用者 end 也尚未推进。
-        std::memset(next, 0, sizeof(Mapping));
+        // 清零的是待构造的原始存储，不调用Mapping/CString构造或析构。
+        std::memset(static_cast<void*>(next), 0, sizeof(Mapping));
         auto* manager = strings.CaptureAt417360();
         if (!manager) throw ATL::CAtlException(E_FAIL);
         Publish(next->nameAt00, ManagerSlot<GetNil>(manager, 12)(manager));

@@ -21,11 +21,21 @@ EditWindowEndpointNativeBody24h* __fastcall Delete(EditWindowEndpointNativeBody2
 }
 WNDPROC __fastcall Procedure(EditWindowEndpointNativeBody24h*,void*){return &BoundPropertySheetNativeAt439E40;}
 void __fastcall Final(EditWindowEndpointNativeBody24h*,void*,HWND){} // 原424DE0为ret4空叶。
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// flags 的 DWORD/uint32_t 在此 x86 ABI 中均为无符号 32 位栈参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const EditWindowEndpointNativeVtable4 table{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::processAt00)>(&Process),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::procedureAt08)>(&Procedure),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void Unwind(GamePropertyNativeBody33Ch& body,int state,GamePropertyNativeServices& s)noexcept
 {
     if(state>=6)DestroyPropertyPageSystem2NativeAt40EBF0(GamePropertySystem2Native(body),s.sheet.endpoint);

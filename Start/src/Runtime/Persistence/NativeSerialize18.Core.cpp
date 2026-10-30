@@ -49,6 +49,12 @@ void* __fastcall DeleteBase(void* p,void*,U flags)
 {WriteAt(p,0,&NativeISerializeMethods());if(flags&1)RequireNativeSerialize18Services().memory.DeleteBody(p,4);return p;}
 [[noreturn]] void Pure(){_purecall();std::terminate();}
 }
+// 原序列化虚槽使用thiscall；桥接函数保留ECX接收者及不读取的EDX占位。
+// 其余参数、标量/指针返回及被调方清栈与槽签名对应，不改变表初始化方式。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeSerialize18Vtable31& NativeSerialize18Methods() noexcept
 {
     using namespace NativeSerialize18Detail;static const auto table=[]
@@ -75,4 +81,7 @@ const NativeISerializeVtable29& NativeISerializeMethods() noexcept
         t.deletingDestructorAt70=reinterpret_cast<decltype(t.deletingDestructorAt70)>(&NativeSerialize18Detail::DeleteBase);return t;
     }();return table;
 }
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }

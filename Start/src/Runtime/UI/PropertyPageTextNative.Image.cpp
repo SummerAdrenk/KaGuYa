@@ -28,7 +28,17 @@ void ResetDib(Dib& b,PropertyPageTextNativeServices& s)
     b.bitsAt18=0;b.clearAt1C=0;b.colorAt20=0;
 }
 Dib* __fastcall DeleteDib(Dib* b,void*,DWORD flags)noexcept;
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DibTable dibTable{reinterpret_cast<decltype(DibTable::deleteAt00)>(&DeleteDib)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Dib* __fastcall DeleteDib(Dib* b,void*,DWORD flags)noexcept
 {
     // 411BD0 state0/5DF52C flags5：Reset、名称叶或sized delete异常直接terminate。

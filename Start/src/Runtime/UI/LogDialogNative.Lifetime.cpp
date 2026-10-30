@@ -57,7 +57,8 @@ void CStringLife::Clone(const RuntimeCString& source)
     auto* header=reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())-16);
     auto* cloned=CloneRuntimeCStringDataAt414540(header);
     auto* chars=reinterpret_cast<char*>(cloned)+16;
-    std::memcpy(&value,&chars,4);active=true;
+    // Clone引用只按原生指针表示发布，保持active的清理资格切换。
+    std::memcpy(static_cast<void*>(&value),&chars,4);active=true;
 }
 void* Root(std::uint32_t site)
 {auto& s=RequireLogDialogNativeServices().source;s.EnsureRootAt413BE0(site);return s.RootAt6198C4(site);}

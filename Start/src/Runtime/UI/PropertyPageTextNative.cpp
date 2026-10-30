@@ -39,6 +39,13 @@ WNDPROC __fastcall ImageGetProcedure(Window*,void*){return &ImageProcedure;}
 // 原424DB0/424DF0是真空叶，不增加DestroyWindow或对象自删。
 void __fastcall PageFinal(Dialog*,void*,HWND){}
 void __fastcall ImageFinal(Window*,void*,HWND){}
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// flags 的 DWORD/uint32_t 在此 x86 ABI 中均为无符号 32 位栈参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DialogEndpointNativeVtable4 textTable{
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::processAt00)>(&TextMessage),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::deleteAt04)>(&TextDelete),
@@ -54,6 +61,9 @@ const EditWindowEndpointNativeVtable4 imageTable{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&ImageDelete),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::procedureAt08)>(&ImageGetProcedure),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::finalMessageAt0C)>(&ImageFinal)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 UINT CALLBACK MessCreation(HWND w,UINT m,PropertyPageNativeHeader34h* p)
 {return PropertyPageCreationNativeAt430F20(w,m,p);} // 430DE0与430F20的消息2/412960合同相同。
 }

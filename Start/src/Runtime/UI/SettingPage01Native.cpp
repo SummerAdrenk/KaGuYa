@@ -12,8 +12,18 @@ const SettingPageNativeVtable39& SettingPage01NativeVtable() noexcept
 {
     static const auto t = [] {
         auto v = SettingPageNativeBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         v.common.common.deletingDestructorAt04 = reinterpret_cast<decltype(v.common.common.deletingDestructorAt04)>(&Delete);
         v.reloadAt94 = reinterpret_cast<decltype(v.reloadAt94)>(&SettingPage02NativeDetail::Reload01);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return v;
     }(); return t;
 }

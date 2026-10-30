@@ -14,12 +14,28 @@ Body* __fastcall Delete(Body* body,void*,unsigned flags)noexcept{return DeleteLi
 std::uint8_t __fastcall Pure(Body*,void*,int){_purecall();std::terminate();}
 Body* __fastcall DeleteTask(Body* body,void*,unsigned flags)noexcept;
 struct Retired{decltype(LikabilitySceneNativeVtable4::runAt00) run;decltype(LikabilitySceneNativeVtable4::deleteAt04) destroy;};
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Retired retired{reinterpret_cast<decltype(Retired::run)>(&Pure),reinterpret_cast<decltype(Retired::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LikabilitySceneNativeVtable4 methods{
     reinterpret_cast<decltype(LikabilitySceneNativeVtable4::runAt00)>(&RunSceneTaskNativeAt4C3630),
     reinterpret_cast<decltype(LikabilitySceneNativeVtable4::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(LikabilitySceneNativeVtable4::updateAt08)>(&Update),
     reinterpret_cast<decltype(LikabilitySceneNativeVtable4::drawAt0C)>(&DrawSceneTaskNativeAt4B5E20)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteTask(Body* body,void*,unsigned flags)noexcept
 {LikabilitySceneNativeDetail::Retire(*body);if(flags&1u)::operator delete(body,std::size_t{4});return body;}
 }

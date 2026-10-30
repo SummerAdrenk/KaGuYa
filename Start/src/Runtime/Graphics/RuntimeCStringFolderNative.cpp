@@ -25,10 +25,26 @@ RuntimeCStringFolderNativeBody8h* __fastcall DeleteFolder(
     return DeleteRuntimeCStringFolderNativeAt440530(*body, flags);
 }
 using DeleteSlot = decltype(RuntimeCStringFolderNativeVtable::deletingDestructorAt00);
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RuntimeCStringFolderNativeVtable scannerMethods{
     reinterpret_cast<DeleteSlot>(&DeleteScanner)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RuntimeCStringFolderNativeVtable folderMethods{
     reinterpret_cast<DeleteSlot>(&DeleteFolder)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 // 5E3C54：state0只清CString；state1清基类；state2先清临时串再落入state1。
 struct BodyUnwind final

@@ -43,7 +43,8 @@ void CloneText(RuntimeCString& fresh, const RuntimeCString& source)
 {
     auto* header = reinterpret_cast<ATL::CStringData*>(const_cast<char*>(source.GetString())) - 1;
     const auto chars = reinterpret_cast<std::uintptr_t>(CloneRuntimeCStringDataAt414540(header)) + 16u;
-    std::memcpy(&fresh, &chars, sizeof(chars));
+    // Clone已取得引用；原始输出槽只接管指针，保持调用方清理顺序。
+    std::memcpy(static_cast<void*>(&fresh), &chars, sizeof(chars));
 }
 void ResolveCurrentDescription(RuntimeCString& label, ISaveLoadDialogNativeConfirmationSource& source)
 {
@@ -107,6 +108,8 @@ void Labels::Configure(GuiDialogNativeBody5Ch* body, std::uint8_t saveMode,
 void Labels::Finish()
 {
     RuntimeCString* values[]{&page.value, &slot.value, &time.value, &scene.value};
+    // 保留原槽地址初始化；退役依据是Configure缓存的header，而非当前槽值。
+    (void)values;
     // 原normal场景退scene/time/slot/page；异常前先撤当前资格，不重试失败元素。
     while (completed_)
     {

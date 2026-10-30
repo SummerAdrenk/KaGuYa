@@ -78,10 +78,25 @@ struct CStringExceptionMetadata final
                 type->thisDisplacement.vdisp != 0 || !type->copyFunction)
                 throw std::logic_error("Unsupported CStringT catchable type ABI");
             types[i] = *type;
+            // PMFN是CRT元数据的擦除类型；实际复制叶由CRT以ECX/栈source调用。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
             types[i].copyFunction = reinterpret_cast<PMFN>(&CopyCStringException);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         }
         info = *original;
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         info.pmfnUnwind = reinterpret_cast<PMFN>(&DestroyCStringException);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         info.pCatchableTypeArray = reinterpret_cast<const CatchableTypeArray*>(&array);
     }
     CStringExceptionMetadata(const CStringExceptionMetadata&) = delete;

@@ -21,11 +21,20 @@ struct StringCleanup final
 };
 }
 
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DialogEndpointNativeVtable4 LegacyTitleNameDialog::table_{
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::processAt00)>(&Process),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::procedureAt08)>(&Procedure),
     reinterpret_cast<decltype(DialogEndpointNativeVtable4::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 LegacyTitleNameDialog::LegacyTitleNameDialog(ILegacyTitleNameServices& source,
     ILegacyTitleNameApi& api, IRuntimeStringManagerSource& strings)

@@ -175,6 +175,11 @@ std::uint8_t __fastcall Request(Base* body, void*, std::uint8_t value, std::int3
     { return RequestMessageWindowLayerNativeAt487030(Derived(body), value, unused, Services()); }
 void __fastcall Advance(Base*, void*) {} // 46B230只有RET。
 void __fastcall Reset(Base* body, void*) { ResetMessageWindowLayerNativeAt47ED90(Derived(body)); }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -183,6 +188,9 @@ const Table methods{
     reinterpret_cast<decltype(Table::requestAt10)>(&Request),
     reinterpret_cast<decltype(Table::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(Table::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 }
 

@@ -70,7 +70,8 @@ int RunWinMainNativeAt43D6E0(HINSTANCE image,HINSTANCE previous,LPSTR line,int s
         auto* copied=CloneRuntimeCStringDataAt414540(header);
         const char* chars=reinterpret_cast<const char*>(copied+1);
         union Text{RuntimeCString value;Text()noexcept{}~Text()noexcept{}} name;
-        std::memcpy(&name.value,&chars,sizeof(chars));
+        // Clone引用只按原生指针写入空槽，仍遵守原异常及缓存header释放路径。
+        std::memcpy(static_cast<void*>(&name.value),&chars,sizeof(chars));
         AppendRuntimeCStringAt413550(name.value,"_Running",8);
         // 43D7F5的CMutex虚+08=432640：局部handle刚写0，仅判零，无Win32调用。
         // 原7F8的ESI固定跨CreateMutex和Run；即使回调改fresh槽也按该header释放。

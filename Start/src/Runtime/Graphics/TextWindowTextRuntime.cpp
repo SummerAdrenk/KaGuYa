@@ -62,7 +62,8 @@ std::int32_t PrepareNameNewlines(RuntimeCString& bytes, const TextWindowTextDesc
                 reinterpret_cast<std::uintptr_t>(bytes.GetString()) - sizeof(ATL::CStringData));
             const auto* const cloned = CloneRuntimeCStringDataAt414540(header);
             const char* const characters = reinterpret_cast<const char*>(cloned + 1);
-            std::memcpy(output, &characters, sizeof(characters));
+            // Clone引用交给原始返回槽，保持remainderOwner现有释放路径。
+            std::memcpy(static_cast<void*>(output), &characters, sizeof(characters));
         });
     auto& flattened = flattenedOwner.Value();
     auto& remainder = remainderOwner.Value();

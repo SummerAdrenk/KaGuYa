@@ -196,13 +196,6 @@ struct CheckBoxDescriptors final
         Cp932("\x83\x5E\x83\x51\x81\x96\x2E\x76\x72\x6D")};
 }
 
-[[nodiscard]] RECT MovedRect(const RECT& source, const POINT origin)
-{
-    return RECT{origin.x, origin.y,
-        origin.x + source.right - source.left,
-        origin.y + source.bottom - source.top};
-}
-
 class SaveLoadPopupEventTargetRuntime final
     : public ISaveLoadDialogEventTarget
 {

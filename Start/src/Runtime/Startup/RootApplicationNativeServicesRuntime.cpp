@@ -7,8 +7,8 @@
 #include <Runtime/ProcessWinHookRuntime.h>
 #include <Runtime/GameBuildProfile.h>
 #include <Runtime/StartupResourceProfile.h>
-#include "../../../games/baku-ane-otouto-shibocchau-zo/ToolData.h"
-#include "../../../games/baku-ane-otouto-shibocchau-zo/WindowData.h"
+#include "../../../games/baku-ane/ToolData.h"
+#include "../../../games/baku-ane/WindowData.h"
 
 namespace KaGuYa::Start::Runtime
 {

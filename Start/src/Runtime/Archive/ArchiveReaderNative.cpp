@@ -86,7 +86,8 @@ ArchiveStreamReaderRuntime::~ArchiveStreamReaderRuntime() noexcept
 void* ArchiveStreamReaderRuntime::DeleteAtVslot00(std::uint32_t flags)
 {
     auto* address = this;
-    this->~ArchiveStreamReaderRuntime();
+    // 已由删除虚槽选定具体类型；仅析构正文，外块仍按flags单独释放。
+    this->ArchiveStreamReaderRuntime::~ArchiveStreamReaderRuntime();
     if (flags & 1u) ::operator delete(address, std::size_t{0x14});
     return address;
 }

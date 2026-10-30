@@ -16,7 +16,8 @@ template<class Function>
 Function ManagerSlot(ATL::IAtlStringMgr* manager, std::size_t offset) noexcept
 {
     const std::byte* table;
-    std::memcpy(&table, manager, sizeof(table));
+    // 只读取原生vptr字节，保留可抛管理器虚槽调用。
+    std::memcpy(&table, static_cast<const void*>(manager), sizeof(table));
     Function result;
     std::memcpy(&result, table + offset, sizeof(result));
     return result;
@@ -68,7 +69,8 @@ void InitializeEmptyRuntimeCString(RuntimeCString& destination, IRuntimeStringMa
     auto* header = ManagerSlot<GetNil>(manager, 12)(manager);
     // 原码直接add 10h，不解引用/校验返回header；空结果也不改成现代空串。
     const auto pointer = reinterpret_cast<std::uintptr_t>(header) + sizeof(ATL::CStringData);
-    std::memcpy(&destination, &pointer, sizeof(pointer));
+    // GetNil已提供引用；原始槽只接管指针，不再构造或赋值CString。
+    std::memcpy(static_cast<void*>(&destination), &pointer, sizeof(pointer));
 }
 
 ATL::CStringData* CloneRuntimeCStringDataAt414540(ATL::CStringData* source)
@@ -115,7 +117,7 @@ void AssignRuntimeCStringAt410220(RuntimeCString& destination, const RuntimeCStr
     ReleaseHeader(previous);
     const char* data = static_cast<const char*>(next->data());
     // 41026F只写已构造对象的4-byte指针，不调用会额外减持的ATL赋值。
-    std::memcpy(&destination, &data, sizeof(data));
+    std::memcpy(static_cast<void*>(&destination), &data, sizeof(data));
 }
 
 void __cdecl FormatRuntimeCStringAt417130(RuntimeCString& destination, const char* format, ...)

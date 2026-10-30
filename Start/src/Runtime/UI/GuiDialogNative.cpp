@@ -261,7 +261,8 @@ void __fastcall ResetInput(Body* body, void*)
     body->vptrAt00->setActiveAt30(body, nullptr);
     body->inputLatchAt30 = 0;
 }
-[[noreturn]] std::int32_t __fastcall Pure(Body*, void*) { _purecall(); std::terminate(); }
+template<class Result>
+[[noreturn]] Result __fastcall Pure(Body*, void*) { _purecall(); std::terminate(); }
 std::int32_t __fastcall Result(Body*, void*) { return -1; }
 
 std::int32_t __fastcall UpperInput(Body* body, void*)
@@ -496,6 +497,14 @@ std::int32_t __fastcall MouseRelease(Body* body, void*)
 }
 void __fastcall ChildChanged(Body*, void*, Slot argument) noexcept { ReleaseWithoutClearing(argument); }
 
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+// 按值栈参数 YtlReferenceSlotRuntime 为 12 字节、RECT 为 16 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(name, function) reinterpret_cast<decltype(GuiDialogNativeVtable35::name)>(&function)
 const GuiDialogNativeVtable35 table{
     SLOT(dirtyAt00, Dirty), SLOT(deletingDestructorAt04, Delete), SLOT(clearChildrenAt08, ClearChildren),
@@ -503,13 +512,18 @@ const GuiDialogNativeVtable35 table{
     SLOT(writeStateAt1C, WriteState), SLOT(readStateAt20, ReadState), SLOT(writeEnabledAt24, WriteEnabled),
     SLOT(readEnabledAt28, ReadEnabled), SLOT(enabledAt2C, Enabled), SLOT(setActiveAt30, SetActive),
     SLOT(upperInputAt34, UpperInput), SLOT(activeInputAt38, Zero), SLOT(resetInputAt3C, ResetInput),
-    SLOT(priorityInputAt40, Zero), SLOT(beginAt44, Pure), SLOT(pollAt48, Pure), SLOT(endAt4C, Pure),
+    SLOT(priorityInputAt40, Zero),
+    // 纯虚入口没有正常返回；仍为 begin/poll/end 保留各自的返回类型。
+    SLOT(beginAt44, Pure<void>), SLOT(pollAt48, Pure<std::int32_t>), SLOT(endAt4C, Pure<std::int32_t>),
     SLOT(resultAt50, Result), SLOT(processInputAt54, ProcessInput), SLOT(flushDirtyAt58, FlushDirty),
     SLOT(compositeAt5C, Composite), SLOT(drawAt60, Draw), SLOT(invalidateAt64, Invalidate),
     SLOT(resetChildrenAt68, ResetChildren), SLOT(heldAt6C, Held), SLOT(pressedAt70, Pressed), SLOT(pointerAt74, Pointer),
     SLOT(wheelAt78, Wheel), SLOT(movedAt7C, Moved), SLOT(mousePressAt80, MousePress),
     SLOT(mouseReleaseAt84, MouseRelease), SLOT(childChangedAt88, ChildChanged)};
 #undef SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 void DestroyChildren(Body* body) noexcept
 {

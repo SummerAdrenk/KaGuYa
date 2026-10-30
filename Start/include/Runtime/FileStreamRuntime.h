@@ -31,6 +31,11 @@ protected:
 };
 static_assert(sizeof(IFileStreamRuntime) == 4);
 
+// +24/+28是具体流追加的原虚槽，final不代表可以改成普通成员。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class FileStreamRuntime final : public IFileStreamRuntime
 {
 public:
@@ -67,6 +72,9 @@ public:
 
     YtlReferenceSlotRuntime fileAt04{};
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(FileStreamRuntime) == 16);
 
 // 40ED70显式生命周期入口：storage为本流仍有效的16-byte存储，可已退表。

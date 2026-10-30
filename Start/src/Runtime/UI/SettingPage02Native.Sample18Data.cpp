@@ -232,6 +232,8 @@ std::span<const SettingPageRadioGroupNative> SettingPageRadioGroupsSample18(Sett
     case SettingPageRadioContainerKind::Page01Block01: return p01b1_groups;
     case SettingPageRadioContainerKind::Page02Block00: return p02b0_groups;
     case SettingPageRadioContainerKind::Page02Block03: return p02b3_groups;
+    // 跨游戏场景选项来自当前profile.sceneChoices，不属于18号静态分组表。
+    case SettingPageRadioContainerKind::SceneChoices: return {};
     }
     return {};
 }

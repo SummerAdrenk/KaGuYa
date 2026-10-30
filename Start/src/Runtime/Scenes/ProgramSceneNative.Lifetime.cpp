@@ -15,11 +15,27 @@ Body* __fastcall Delete(Body* b,void*,unsigned flags)noexcept{return DeleteProgr
 std::uint8_t __fastcall Pure(Body*,void*,int){_purecall();std::terminate();}
 Body* __fastcall DeleteTask(Body* b,void*,unsigned flags)noexcept;
 struct Retired{decltype(ProgramSceneNativeVtable4::runAt00) run;decltype(ProgramSceneNativeVtable4::deleteAt04) destroy;};
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Retired retired{reinterpret_cast<decltype(retired.run)>(&Pure),reinterpret_cast<decltype(retired.destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const ProgramSceneNativeVtable4 methods{
     reinterpret_cast<decltype(methods.runAt00)>(&RunSceneTaskNativeAt4C3630),
     reinterpret_cast<decltype(methods.deleteAt04)>(&Delete),reinterpret_cast<decltype(methods.updateAt08)>(&Update),
     reinterpret_cast<decltype(methods.drawAt0C)>(&DrawSceneTaskNativeAt4B5E20)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteTask(Body* b,void*,unsigned flags)noexcept
 {Retire(*b);if(flags&1u)::operator delete(b,std::size_t{4});return b;}
 }

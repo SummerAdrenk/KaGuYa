@@ -106,6 +106,12 @@ void* __fastcall DeleteQuick(SaveFileDeleteFactoryNativeBody0Ch* body, void*, st
 { return DeleteQuickSaveFileDeleteFactoryNativeAt469030(*body, flags); }
 void* __fastcall DeleteAuto(SaveFileDeleteFactoryNativeBody0Ch* body, void*, std::uint32_t flags)
 { return DeleteAutoSaveFileDeleteFactoryNativeAt4686D0(*body, flags); }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 void* 仅占 EDX、不读取其输入。
+// flags 仍为同一 4 字节栈实参并由被调方清栈；void* 返回及可抛异常约定一致。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const SaveFileDeleteFactoryNativeVtable1 baseTable{
     reinterpret_cast<decltype(SaveFileDeleteFactoryNativeVtable1::deletingDestructorAt00)>(&DeleteBase)};
 const SaveFileDeleteFactoryNativeVtable1 regularTable{
@@ -114,6 +120,9 @@ const SaveFileDeleteFactoryNativeVtable1 quickTable{
     reinterpret_cast<decltype(SaveFileDeleteFactoryNativeVtable1::deletingDestructorAt00)>(&DeleteQuick)};
 const SaveFileDeleteFactoryNativeVtable1 autoTable{
     reinterpret_cast<decltype(SaveFileDeleteFactoryNativeVtable1::deletingDestructorAt00)>(&DeleteAuto)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const SaveFileDeleteFactoryNativeVtable1& BaseSaveFileDeleteFactoryNativeVtable() noexcept { return baseTable; }

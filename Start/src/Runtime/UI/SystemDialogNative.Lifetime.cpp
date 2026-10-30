@@ -25,6 +25,13 @@ SystemDialogNativeVtable38 MakeModal() noexcept
     SystemDialogNativeVtable38 t;
     // 原表全部继承槽与5BDCB8相同，只有以下Modal业务槽不同；不遗漏非常用槽。
     t.common = GuiDialogBaseVtable();
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define BIND(f, e) t.common.f = reinterpret_cast<decltype(t.common.f)>(&e)
     BIND(deletingDestructorAt04, DeleteModal);
     BIND(activeInputAt38, ActiveInput);
@@ -38,6 +45,9 @@ SystemDialogNativeVtable38 MakeModal() noexcept
     t.beginExtraAt8C = reinterpret_cast<decltype(t.beginExtraAt8C)>(&Noop);
     t.pollExtraAt90 = reinterpret_cast<decltype(t.pollExtraAt90)>(&Pure);
     t.endExtraAt94 = reinterpret_cast<decltype(t.endExtraAt94)>(&Noop);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return t;
 }
 }
@@ -48,11 +58,21 @@ const SystemDialogNativeVtable38& SystemDialogNativeVtable() noexcept
     static const auto table = []
     {
         auto t = MakeModal();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         t.common.deletingDestructorAt04 = reinterpret_cast<decltype(t.common.deletingDestructorAt04)>(&Delete);
         t.common.beginAt44 = reinterpret_cast<decltype(t.common.beginAt44)>(&Begin);
         t.common.endAt4C = reinterpret_cast<decltype(t.common.endAt4C)>(&End);
         t.common.processInputAt54 = reinterpret_cast<decltype(t.common.processInputAt54)>(&ProcessInput);
         t.pollExtraAt90 = reinterpret_cast<decltype(t.pollExtraAt90)>(&PollExtra);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

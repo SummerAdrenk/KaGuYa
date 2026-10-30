@@ -22,7 +22,7 @@ bool CompareReadScriptCommandNative(IReadScriptCommandNativeSource& source,void*
         ReleaseRuntimeCStringHeader(clone);return matched;
     }
     union Text{RuntimeCString value;Text()noexcept{}~Text()noexcept{}} text;
-    std::memcpy(&text.value,&chars,sizeof(chars)); // 4ADAD8在Clone正常返回后才写fresh out。
+    std::memcpy(static_cast<void*>(&text.value),&chars,sizeof(chars)); // 4ADAD8只发布Clone取得的原生指针，不经CString赋值。
     const bool matched=::_mbscmp(reinterpret_cast<const unsigned char*>(text.value.GetString()),reinterpret_cast<const unsigned char*>(expected))==0;
     DestroyRuntimeCStringAt40CD40(&text.value);return matched;
 }

@@ -72,7 +72,8 @@ std::int32_t PrepareNameNewlines(RuntimeCString& name,
                 reinterpret_cast<std::uintptr_t>(name.GetString()) - sizeof(ATL::CStringData));
             const auto* cloned = CloneRuntimeCStringDataAt414540(header);
             const char* characters = reinterpret_cast<const char*>(cloned + 1);
-            std::memcpy(output, &characters, sizeof(characters));
+            // Clone引用交给原始返回槽，保持remainder现有释放路径。
+            std::memcpy(static_cast<void*>(output), &characters, sizeof(characters));
         });
     std::int32_t shift = 0;
     const char* current = remainder.Value().GetString();

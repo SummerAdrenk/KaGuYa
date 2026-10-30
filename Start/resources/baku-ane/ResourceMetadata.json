@@ -1,0 +1,435 @@
+{
+  "schema_version": 1,
+  "resources": [
+    {
+      "key": [
+        1,
+        14,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        1,
+        15,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        2,
+        202,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        2,
+        203,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        2,
+        204,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        1,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        2,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        3,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        4,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        5,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        6,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        7,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        8,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        9,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        10,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        11,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        12,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        3,
+        13,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        4,
+        128,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        101,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        102,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        104,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        105,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        106,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        107,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        108,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        109,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        111,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        112,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        113,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        114,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        115,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        209,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        210,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        211,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        9,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3585,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3601,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3603,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3604,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3605,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3606,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3825,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3826,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        6,
+        3838,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        9,
+        128,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        12,
+        207,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        12,
+        208,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        14,
+        128,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        14,
+        205,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        16,
+        1,
+        1041
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        24,
+        1,
+        1033
+      ],
+      "codepage": 1252
+    },
+    {
+      "key": [
+        5,
+        212,
+        1041
+      ],
+      "codepage": 1252,
+      "origin": "shared-runtime-compatibility-extension",
+      "note": "Not an original 01/Baku resource. Added for the shared PropertyPageSoundNative; payload and CodePage must match original 02 RT_DIALOG/212/1041. Original 01 resources, including 105, remain unchanged; this is not whole-resource-set byte equality with original 01.",
+      "source_rc": "Start/resources/namaiki/dialogs/Dialog212_1041.rc",
+      "source_metadata": "Start/resources/namaiki/ResourceMetadata.json",
+      "source_pe": ".BuildCache/pe/namaiki-kissuisou-e-youkoso/Start.exe",
+      "evidence": ".BuildCache/compatibility/settings-contract-audit/README.md"
+    }
+  ]
+}

@@ -29,15 +29,34 @@ BOOL __fastcall Idle(void* body, void*)
     auto& services = RequireMainFrameWindowNativeServices();
     return IdleMainFrameNativeAt424E10(body, services.idle, services.callbacks);
 }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// flags 的 DWORD/uint32_t 在此 x86 ABI 中均为无符号 32 位栈参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const EditWindowEndpointNativeVtable4 window{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::processAt00)>(&Process),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::procedureAt08)>(&Procedure),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 struct FilterTable final { BOOL (__thiscall* method)(void*, MSG*); };
 struct IdleTable final { BOOL (__thiscall* method)(void*); };
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const FilterTable filter{reinterpret_cast<decltype(FilterTable::method)>(&Filter)};
 const IdleTable idle{reinterpret_cast<decltype(IdleTable::method)>(&Idle)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(FilterTable) == 4 && sizeof(IdleTable) == 4);
 }
 MainFrameWindowNativeScope::MainFrameWindowNativeScope(MainFrameWindowNativeServices& services) noexcept : previous_(current) { current = &services; }

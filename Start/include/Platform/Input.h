@@ -141,7 +141,7 @@ public:
         UINT message,
         WPARAM wParam,
         LPARAM lParam,
-        LRESULT& result);
+        LRESULT& result) override;
 
     [[nodiscard]] MouseRawSnapshot ConsumeFrameSnapshot() noexcept;
     [[nodiscard]] std::uint8_t Pressed(std::size_t button) const noexcept;
@@ -244,7 +244,7 @@ public:
         UINT message,
         WPARAM wParam,
         LPARAM lParam,
-        LRESULT& result);
+        LRESULT& result) override;
     [[nodiscard]] bool LoadAndApply(
         LPCSTR resource,
         bool systemResource,
@@ -276,7 +276,7 @@ public:
         UINT message,
         WPARAM wParam,
         LPARAM lParam,
-        LRESULT& result);
+        LRESULT& result) override;
 
     [[nodiscard]] std::uint8_t KeyState(std::size_t virtualKey) const noexcept;
 

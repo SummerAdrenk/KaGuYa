@@ -51,6 +51,12 @@ const GuiDialogNativeVtable35& PopupMenuNativeVtable() noexcept
     static const auto table = []
     {
         auto value = GuiDialogBaseVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(field, function) value.field = reinterpret_cast<decltype(value.field)>(&function)
         SLOT(deletingDestructorAt04, Delete);
         SLOT(activeInputAt38, PopupMenuNativeEntries::ActiveInput);
@@ -62,6 +68,9 @@ const GuiDialogNativeVtable35& PopupMenuNativeVtable() noexcept
         SLOT(processInputAt54, PopupMenuNativeEntries::Input);
         SLOT(flushDirtyAt58, PopupMenuNativeEntries::Flush);
 #undef SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return value;
     }();
     return table;

@@ -49,8 +49,9 @@ public:
     TemporaryPair(const char* key, const char* value)
     {
         Cell borrowed;
-        std::memcpy(&borrowed.value.keyAt00, &key, sizeof(key));
-        std::memcpy(&borrowed.value.valueAt04, &value, sizeof(value));
+        // 临时槽只借用两个chars，不增持或析构；下方ClonePair取得目标引用。
+        std::memcpy(static_cast<void*>(&borrowed.value.keyAt00), &key, sizeof(key));
+        std::memcpy(static_cast<void*>(&borrowed.value.valueAt04), &value, sizeof(value));
         CloneParamsSettingPairAt42029C(cell_.value, borrowed.value);
     }
     ~TemporaryPair() noexcept { if (active_) DestroyParamsSettingPairAt40CE90(cell_.value); }

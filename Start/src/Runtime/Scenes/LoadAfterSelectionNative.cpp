@@ -45,15 +45,31 @@ __declspec(naked) void __fastcall EmptyDraw(Body*,void*){__asm {_emit 0xC3}}
 std::uint8_t __fastcall PureRun(Body*,void*,std::int32_t){_purecall();std::terminate();}
 Body* __fastcall DeleteTask(Body* body,void*,std::uint32_t flags) noexcept;
 struct RetiredTable final{decltype(Table::runAt00) run;decltype(Table::deleteAt04) destroy;};
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const RetiredTable retired{reinterpret_cast<decltype(RetiredTable::run)>(&PureRun),
     reinterpret_cast<decltype(RetiredTable::destroy)>(&DeleteTask)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void Retire(Body& body) noexcept{body.vptrAt00=reinterpret_cast<const Table*>(&retired);}
 Body* __fastcall DeleteTask(Body* body,void*,std::uint32_t flags) noexcept
 {Retire(*body);if(flags&1u)::operator delete(body,std::size_t{4});return body;}
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{reinterpret_cast<decltype(Table::runAt00)>(&RawRun),
     reinterpret_cast<decltype(Table::deleteAt04)>(&Delete),
     reinterpret_cast<decltype(Table::updateAt08)>(&Update),
     reinterpret_cast<decltype(Table::drawAt0C)>(&EmptyDraw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 struct TaskUnwind final{Body& body;bool armed=true;~TaskUnwind() noexcept{if(armed)Retire(body);}};
 struct RefUnwind final
 {YtlReferenceSlotRuntime& ref;bool armed=true;~RefUnwind() noexcept{if(armed)ReleaseYtlReference(ref);}};

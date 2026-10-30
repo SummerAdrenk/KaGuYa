@@ -19,9 +19,19 @@ const SaveLoadMessageBoxNativeVtable38& SaveLoadMessageBoxNativeVtable() noexcep
         // 原38槽与Modal表只有delete04、begin44、pollExtra90不同。
         // 继承入口只访问原80h前缀，不使用SystemDialog专属80/84字段。
         auto t = SystemDialogNativeModalVtable();
+        // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+        // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+        // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         t.common.deletingDestructorAt04 = reinterpret_cast<decltype(t.common.deletingDestructorAt04)>(&Delete);
         t.common.beginAt44 = reinterpret_cast<decltype(t.common.beginAt44)>(&Begin);
         t.pollExtraAt90 = reinterpret_cast<decltype(t.pollExtraAt90)>(&PollResult);
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         return t;
     }();
     return table;

@@ -11,9 +11,17 @@ LegacyItemAcquisitionScene* __fastcall Delete(LegacyItemAcquisitionScene* b,void
 {DestroyLegacyItemAcquisitionScene(*b);if(flags&1u)::operator delete(b,sizeof(*b));return b;}
 void __fastcall Update(LegacyItemAcquisitionScene* b,void*){UpdateLegacyItemAcquisitionScene(*b);}
 void __fastcall Draw(LegacyItemAcquisitionScene*,void*){} // 原0x5069F0为空；页面由GUI poll/转场提交。
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LegacyItemAcquisitionSceneVtable Methods{
     reinterpret_cast<decltype(Methods.run)>(&Run),reinterpret_cast<decltype(Methods.destroy)>(&Delete),
     reinterpret_cast<decltype(Methods.update)>(&Update),reinterpret_cast<decltype(Methods.draw)>(&Draw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 bool PreserveSkip(SaveDataEnvironmentArchive& s){return (s.bytesAt34[4]&8u)!=0;}
 }
 LegacyItemAcquisitionScene* ConstructLegacyItemAcquisitionScene(void* raw,LegacyItemAcquisitionServices& s)

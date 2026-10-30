@@ -69,7 +69,7 @@ std::uint8_t MessageWindowNativeStateSource::MessageWindowAllowedAt419290(DrawMa
     auto* const sound = ResolveInlineReference<true, EnvironmentSoundParamsArchive>(save->soundParamsAt1C);
     // 419326在最后一次环境Capture前固定vtable地址；+60函数槽在Capture后才读取。
     const void* table;
-    std::memcpy(&table, sound, sizeof(table));
+    std::memcpy(&table, static_cast<const void*>(sound), sizeof(table));
     unsave = static_cast<UnSaveDataRuntime*>(
         ResolveEnvironmentArchiveAt417990(*environment_.CaptureAt4180C0(), 2));
     using VoiceAllowed = bool (__thiscall*)(EnvironmentSoundParamsArchive*, const UnSaveDataStringArrayReference&);

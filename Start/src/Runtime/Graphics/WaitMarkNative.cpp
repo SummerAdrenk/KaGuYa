@@ -51,6 +51,11 @@ std::uint8_t __fastcall Request(Base* self, void*, std::int32_t value, std::int3
 void __fastcall Advance(Base* self, void*)
 { AdvanceWaitMarkNativeAt46B1F0(*reinterpret_cast<Body*>(self), Current().state); }
 void __fastcall Reset(Base* self, void*) { self->enabledAt0C = 0; }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const WaitMarkNativeVtable methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -59,6 +64,9 @@ const WaitMarkNativeVtable methods{
     reinterpret_cast<decltype(WaitMarkNativeVtable::requestAt10)>(&Request),
     reinterpret_cast<decltype(WaitMarkNativeVtable::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(WaitMarkNativeVtable::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 WaitMarkNativeScope::WaitMarkNativeScope(WaitMarkNativeServices& services) noexcept
     : previous_(activeServices), surfaces_(services.surfaces), layers_(services.memory) { activeServices = &services; }

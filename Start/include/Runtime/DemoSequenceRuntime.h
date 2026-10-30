@@ -59,7 +59,8 @@ private:
     [[nodiscard]] DemoSpriteRuntime& ExistingSprite(std::size_t index);
 
     IDemoSequenceResourceServices& resources_;
-    IGraphicsSurfaceApi& graphics_;
+    // 保留既有服务槽及布局；构造参数已交给各画布和sprites，后续由它们调用。
+    [[maybe_unused]] IGraphicsSurfaceApi& graphics_;
     IGraphicsSurfaceCompositionApi& composition_;
     IGraphicsScreenUpdateApi& screen_;
     IGraphicsSurfaceTransitionApi& transitionApi_;

@@ -35,11 +35,20 @@ std::uint8_t __fastcall ResetCursor(void* p,void*)
     auto* methods=reinterpret_cast<const CursorTable*>(body.vptrAt00);
     return methods->set(p,MAKEINTRESOURCEA(0x7F00),1,1);
 }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const MouseTable mouseMethods{reinterpret_cast<Dispatch>(&Mouse),reinterpret_cast<Delete>(&DeleteMouse)};
 const KeyboardTable keyboardMethods{reinterpret_cast<Dispatch>(&Keyboard),
     reinterpret_cast<decltype(KeyboardTable::key)>(&Key),reinterpret_cast<decltype(KeyboardTable::reset)>(&ResetKeyboard),reinterpret_cast<Delete>(&DeleteKeyboard)};
 const CursorTable cursorMethods{reinterpret_cast<Dispatch>(&Cursor),reinterpret_cast<decltype(CursorTable::set)>(&SetCursor),
     reinterpret_cast<decltype(CursorTable::reset)>(&ResetCursor),reinterpret_cast<Delete>(&DeleteCursor)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 const InputRawMessageVtable* MouseRawNativeMethods() noexcept{return reinterpret_cast<const InputRawMessageVtable*>(&mouseMethods);}
 const InputRawMessageVtable* KeyboardRawNativeMethods() noexcept{return reinterpret_cast<const InputRawMessageVtable*>(&keyboardMethods);}

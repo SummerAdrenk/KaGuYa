@@ -25,6 +25,14 @@ int __fastcall Navigate(void* b, void*) { return NavigateCgScButtonNativeAt4B4BC
 void __fastcall Draw(void* b, void*) { DrawCgScButtonNativeAt4ABE80(b); }
 void __fastcall Composite(void* b, void*, GraphicsSurfaceNativeBody* target, const RECT* clip)
 { CompositeCgScButtonNativeAt4A80B0(b, target, clip); }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// 按值栈参数 RECT 为 16 字节；无聚合返回或新增隐藏参数。
+// void* 与具体正文指针使用同一 ECX 地址，不作 this 调整。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SHARED_SLOT(member,function) reinterpret_cast<decltype(ICgScButtonNativeVtable15::member)>(&function)
 const ICgScButtonNativeVtable15 shared{
     SHARED_SLOT(deleteAt00,DeleteShared),SHARED_SLOT(processAt04,Process),SHARED_SLOT(invalidateAt08,Invalidate),
@@ -41,6 +49,9 @@ const CgButtonNativeVtable15 methods{
     CG_SLOT(commitAt24, Commit), CG_SLOT(selectAt28, Select), CG_SLOT(currentAt2C, Current),
     CG_SLOT(navigateAt30, Navigate), CG_SLOT(drawAt34, Draw), CG_SLOT(compositeAt38, Composite)};
 #undef CG_SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 const CgButtonNativeVtable15& CgButtonNativeVtable() noexcept { return methods; }
 const ICgScButtonNativeVtable15& ICgScButtonNativeVtable()noexcept{return shared;}

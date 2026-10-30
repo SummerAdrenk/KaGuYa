@@ -114,6 +114,14 @@ void __fastcall Changed(Common* p, void*, Slot child) { ChangeProgramMain00Dialo
 GuiDialogNativeVtable35 Make() noexcept
 {
     GuiDialogNativeVtable35 table{};
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+    // noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+    // 按值栈参数 YtlReferenceSlotRuntime 为 12 字节、RECT 为 16 字节；无聚合返回或新增隐藏参数。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 #define SLOT(member, target) table.member = reinterpret_cast<decltype(table.member)>(&target)
     SLOT(dirtyAt00, Dirty);
     SLOT(clearChildrenAt08, ClearChildren);
@@ -147,6 +155,9 @@ GuiDialogNativeVtable35 Make() noexcept
     SLOT(deletingDestructorAt04, Delete); SLOT(beginAt44, Begin);
     SLOT(pollAt48, Poll); SLOT(endAt4C, End); SLOT(childChangedAt88, Changed);
 #undef SLOT
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return table;
 }
 }

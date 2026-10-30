@@ -131,12 +131,28 @@ Base* __fastcall FlashDelete(Base* body, void*, std::uint32_t flags) noexcept
 { (void)DeleteReadScriptFlashNativeAt4A64B0(*reinterpret_cast<Flash*>(body), flags); return body; }
 Base* __fastcall ShakeDelete(Base* body, void*, std::uint32_t flags) noexcept
 { (void)DeleteReadScriptShakeNativeAt4A65F0(*reinterpret_cast<Shake*>(body), flags); return body; }
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table flashMethods{
     reinterpret_cast<decltype(Table::tickAt00)>(&FlashTick), reinterpret_cast<decltype(Table::drawAt04)>(&Draw),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready), reinterpret_cast<decltype(Table::deleteAt0C)>(&FlashDelete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table shakeMethods{
     reinterpret_cast<decltype(Table::tickAt00)>(&ShakeTick), reinterpret_cast<decltype(Table::drawAt04)>(&Draw),
     reinterpret_cast<decltype(Table::readyAt08)>(&Ready), reinterpret_cast<decltype(Table::deleteAt0C)>(&ShakeDelete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const Table& ReadScriptFlashNativeMethods() noexcept { return flashMethods; }

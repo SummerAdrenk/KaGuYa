@@ -12,7 +12,16 @@ int __fastcall MarkerState(GuiControlNativeBody50h* c,void*)
 {return !c->enabledAt18?2:!c->stateAt14?1:c->unknownAt24?5:c->hoverAt1C?4:c->focusAt20?3:0;}
 const GuiControlNativeVtable23& MarkerMethods()
 {
+    // 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+    // 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
     static const auto methods=[]{auto m=GuiStaticVtable();m.resourceStateAt38=reinterpret_cast<decltype(m.resourceStateAt38)>(&MarkerState);return m;}();return methods;
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 }
 void ConstructArea(Body& b)

@@ -29,6 +29,14 @@ WNDPROC __fastcall ControlTarget(Endpoint*,void*)
 // 424DF0/4834E0均为retn4；保留EAX，不添加Root移除或析构调用。
 __declspec(naked) void __fastcall Final(Endpoint*,void*,HWND)
 {__asm{ret 4}}
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+// noexcept 实现仅向可抛槽类型放宽，不改变原异常处理。
+// Final 的裸函数仅执行 ret 4，恰好清理 HWND 栈参数，不读取 EDX。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const EditWindowEndpointNativeVtable4 windowTable{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::processAt00)>(&WindowMap),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&DeleteWindow),
@@ -39,6 +47,9 @@ const EditWindowEndpointNativeVtable4 controlTable{
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::deleteAt04)>(&DeleteControl),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::procedureAt08)>(&ControlTarget),
     reinterpret_cast<decltype(EditWindowEndpointNativeVtable4::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 const EditWindowEndpointNativeVtable4& EditWindowNativeVtable() noexcept{return windowTable;}
 const EditWindowEndpointNativeVtable4& EditControlNativeVtable() noexcept{return controlTable;}

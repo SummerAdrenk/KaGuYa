@@ -75,7 +75,8 @@ bool ReadParams(RuntimeStringBorrow directory, ParamsRuntimeRootOwner& params,
         input.body.cursorAt14 = 0;
         auto* current = &params.GetOrCreateAt418480();
         const NativeArchiveVtable2* methods;
-        std::memcpy(&methods, current, sizeof(methods));
+        // 只捕获当前对象的原生vptr，不复制或重建params正文。
+        std::memcpy(&methods, static_cast<const void*>(current), sizeof(methods));
         methods->serializeAt00(current, &input.body);
         // 496053重新取根；496061在释放buffer/路径之前直接比较原+28 double。
         recognized = !(params.GetOrCreateAt418480().versionAt28 < 0.0);

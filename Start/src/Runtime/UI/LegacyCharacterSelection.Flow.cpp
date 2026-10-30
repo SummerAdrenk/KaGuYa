@@ -48,7 +48,7 @@ void Hover(Body& b)
         if(b.page==0)
         {
             for(unsigned i=0;i<p.animations.size();++i)
-            {auto* c=Find(b,p.animations[i].button.common.eventAt00);if(c&&c->visible){b.animations[i]->AdvanceAnimation();if(c->body->vptrAt00->resourceStateAt38(c->body)==0)Dirty(b);}}
+            {auto* c=Find(b,p.animations[i].button.common.eventAt00);if(c&&c->visible){(void)b.animations[i]->AdvanceAnimation();if(c->body->vptrAt00->resourceStateAt38(c->body)==0)Dirty(b);}}
         }
         else
         {

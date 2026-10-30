@@ -10,6 +10,11 @@
 namespace KaGuYa::Sound
 {
 // 原根只含这五个DWORD；注册表真实持有16字节链节点。
+// 两种根对象均保留原vptr/虚槽；final不允许删除virtual或改变字段偏移。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunnecessary-virtual-specifier"
+#endif
 class SoundSystemRoot final
 {
 public:
@@ -38,6 +43,9 @@ public:
 private:
     std::atomic<std::uint32_t> focus_{0}, pan_{0}, frequency_{0}, position_{0};
 };
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 static_assert(sizeof(SoundParameterRoot) == 24);
 static_assert(std::atomic<std::uint32_t>::is_always_lock_free);
 

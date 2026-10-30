@@ -24,7 +24,15 @@ Body* __fastcall DeleteBody(Body* self, void*, std::uint32_t flags)
     return self;
 }
 
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{reinterpret_cast<decltype(Table::deletingDestructorAt00)>(&DeleteBody)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 class DrawManagerControl final : public EnvironmentObjectReferenceControl
 {

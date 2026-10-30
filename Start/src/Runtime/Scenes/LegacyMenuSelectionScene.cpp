@@ -16,9 +16,17 @@ LegacyMenuSelectionScene* __fastcall Delete(LegacyMenuSelectionScene* b, void*, 
 void __fastcall Update(LegacyMenuSelectionScene* b, void*) { UpdateLegacyMenuSelectionScene(*b); }
 void __fastcall Draw(LegacyMenuSelectionScene* b, void*)
 { if (b->drawEnabled) b->services->source.DrawBackgroundAndMenu(*b->dialog); }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LegacyMenuSelectionSceneVtable Methods{
     reinterpret_cast<decltype(Methods.run)>(&Run), reinterpret_cast<decltype(Methods.destroy)>(&Delete),
     reinterpret_cast<decltype(Methods.update)>(&Update), reinterpret_cast<decltype(Methods.draw)>(&Draw)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 bool PreserveSkip(SaveDataEnvironmentArchive& save) { return (save.bytesAt34[4]&8u)!=0; }
 }
 LegacyMenuSelectionScene* ConstructLegacyMenuSelectionScene(void* raw, LegacyMenuSelectionServices& s)

@@ -26,6 +26,11 @@ void __fastcall Finish(Body* b,void*){FinishDirectMovieNativeAt4AC940(*b);}
 void __fastcall Pulse(Body* b,void*){PulseDirectMovieNativeAt4B5010(*b);}
 void __fastcall Resize(Body* b,void*){ResizeDirectMovieNativeAt4BC220(*b,RequireDirectMovieNativeServices());}
 Body* __fastcall Delete(Body* b,void*,unsigned flags)noexcept{return DeleteDirectMovieNativeAt4A62A0(b,flags);}
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const DirectMovieNativeVtable11 methods{
     reinterpret_cast<decltype(methods.messageAt00)>(&Message),reinterpret_cast<decltype(methods.acquireAt04)>(&Acquire),
     reinterpret_cast<decltype(methods.releaseAt08)>(&Release),reinterpret_cast<decltype(methods.loadAt0C)>(&Load),
@@ -33,6 +38,9 @@ const DirectMovieNativeVtable11 methods{
     reinterpret_cast<decltype(methods.rewindAt18)>(&Rewind),reinterpret_cast<decltype(methods.finishAt1C)>(&Finish),
     reinterpret_cast<decltype(methods.pulseAt20)>(&Pulse),reinterpret_cast<decltype(methods.resizeAt24)>(&Resize),
     reinterpret_cast<decltype(methods.deleteAt28)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 Body* __fastcall DeleteBase(Body* b,void*,unsigned flags)noexcept;
 // 5B48A0：前十槽为 _purecall，末槽4A72D0按4字节基类尺寸删除。
 const std::uintptr_t retired[]{

@@ -55,9 +55,17 @@ TaskNativeBody4h* __fastcall Delete(TaskNativeBody4h* task, void*, std::uint32_t
     }
     return task;
 }
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskNativeVtable methods{
     reinterpret_cast<decltype(TaskNativeVtable::runAt00)>(&Run),
     reinterpret_cast<decltype(TaskNativeVtable::deleteAt04)>(&Delete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const TaskNativeVtable& LegacyTitleSceneMethods() noexcept { return methods; }

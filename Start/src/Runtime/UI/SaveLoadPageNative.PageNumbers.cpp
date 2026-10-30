@@ -72,7 +72,7 @@ void DrawTabs(Body& body,int page,SaveLoadPageNativeServices& services)
                 const auto handle=destination->handleAt04;
                 if(!handle)continue;
                 services.drawing.SurfaceClearRaw(handle,0,nullptr);
-                services.drawing.SurfaceBlitRaw(handle,background->handleAt04,0,0,nullptr,nullptr,nullptr,0);
+                (void)services.drawing.SurfaceBlitRaw(handle,background->handleAt04,0,0,nullptr,nullptr,nullptr,0);
                 const auto digitState=state==3?1:state==5?2:state==1&&profile.page.digitStates==4?3:0;
                 int divisor=1000;
                 for(const auto point:profile.page.digitPositions)
@@ -82,7 +82,7 @@ void DrawTabs(Body& body,int page,SaveLoadPageNativeServices& services)
                     const auto& vector=Parent(&body.common).pageDigitsAtF8;
                     if(glyphIndex<0||glyphIndex>=GuiControlSurfaceReferenceCount(vector))throw std::logic_error("tab digit outside profile table");
                     auto* glyph=Resolve<GraphicsSurfaceNativeBody>(vector.begin[glyphIndex]);
-                    services.drawing.SurfaceBlitRaw(handle,glyph->handleAt04,point.x,point.y,nullptr,nullptr,nullptr,0);
+                    (void)services.drawing.SurfaceBlitRaw(handle,glyph->handleAt04,point.x,point.y,nullptr,nullptr,nullptr,0);
                 }
             }
             child->vptrAt00->writeStateAt44(child,index!=page);

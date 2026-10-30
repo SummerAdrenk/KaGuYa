@@ -337,7 +337,7 @@ constexpr SelectDialogNativeProfile selection{placements, {nullptr, nullptr, vis
     {nullptr, nullptr, navigation2, navigation3}, std::size(placements)};
 
 // Opacity slider 0x578C98+0x4C; adjustment remains (0,0,-12,0).
-constexpr OpacityDialogNativeProfile opacity{{699, 556, 784, 575}};
+constexpr OpacityDialogNativeProfile opacity{{699, 556, 784, 575}, {}};
 }
 
 const ToolDialogNativeProfile& Tool() noexcept { return tool; }

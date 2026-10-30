@@ -18,7 +18,7 @@ public:
         // 5B3750+00 -> 492DA0：必须读取当前正文表，不能被final类去虚拟化。
         using Delete = WindowModeNative2Ch* (__thiscall*)(WindowModeNative2Ch*, std::uint32_t);
         const Delete* table;
-        std::memcpy(&table, body, sizeof(table));
+        std::memcpy(&table, static_cast<const void*>(body), sizeof(table));
         table[0](body, 1);
     }
     void DeleteControlAtVslot04(std::uint32_t flags) override

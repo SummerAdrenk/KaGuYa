@@ -1,5 +1,6 @@
 #include "FileInfoProgressNative.Internal.h"
 #include <cstdlib>
+#include <exception>
 #include <new>
 
 namespace KaGuYa::Start::Runtime
@@ -23,6 +24,14 @@ FileInfoProgressNativeBody10h* __fastcall DeleteBase(FileInfoProgressNativeBody1
     if (flags & 1u) RequireFileInfoProgressNativeServices().endpoint.memory.DeleteBody(p, 4); // 469930
     return p;
 }
+// 纯调用保持原失败动作，但使用各槽的参数/返回形状桥接，再以cdecl调用CRT。
+template<class Result, class Receiver, class... Args>
+[[noreturn]] Result __fastcall Pure(Receiver*, void*, Args...) { _purecall(); std::terminate(); }
+// 下列桥接的ECX/栈布局与thiscall槽一致，额外EDX参数不读取。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const FileInfoProgressNativeVtable5 table{
     reinterpret_cast<decltype(FileInfoProgressNativeVtable5::pollAt00)>(&Poll),
     reinterpret_cast<decltype(FileInfoProgressNativeVtable5::stepAt04)>(&Step),
@@ -30,11 +39,14 @@ const FileInfoProgressNativeVtable5 table{
     reinterpret_cast<decltype(FileInfoProgressNativeVtable5::windowAt0C)>(&Window),
     reinterpret_cast<decltype(FileInfoProgressNativeVtable5::deleteAt10)>(&Delete)};
 const FileInfoProgressNativeVtable5 baseTable{
-    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::pollAt00)>(&_purecall),
-    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::stepAt04)>(&_purecall),
-    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::rangeAt08)>(&_purecall),
-    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::windowAt0C)>(&_purecall),
+    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::pollAt00)>(&Pure<BYTE, FileInfoProgressNativeBody10h>),
+    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::stepAt04)>(&Pure<LRESULT, FileInfoProgressNativeBody10h>),
+    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::rangeAt08)>(&Pure<LRESULT, FileInfoProgressNativeBody10h, DWORD>),
+    reinterpret_cast<decltype(FileInfoProgressNativeVtable5::windowAt0C)>(&Pure<HWND, const FileInfoProgressNativeBody10h>),
     reinterpret_cast<decltype(FileInfoProgressNativeVtable5::deleteAt10)>(&DeleteBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 void __fastcall DestroyDialog(FileInfoProgressDialogNativeControl18h* p, void*)
 {
     if (auto* body = Read(p->payloadAt14))
@@ -42,9 +54,16 @@ void __fastcall DestroyDialog(FileInfoProgressDialogNativeControl18h* p, void*)
 }
 FileInfoProgressDialogNativeControl18h* __fastcall DeleteRefBase(
     FileInfoProgressDialogNativeControl18h*, void*, DWORD);
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const FileInfoProgressDialogNativeControlVtable2 retiredRefTable{
-    reinterpret_cast<decltype(FileInfoProgressDialogNativeControlVtable2::destroyAt00)>(&_purecall),
+    reinterpret_cast<decltype(FileInfoProgressDialogNativeControlVtable2::destroyAt00)>(&Pure<void, FileInfoProgressDialogNativeControl18h>),
     reinterpret_cast<decltype(FileInfoProgressDialogNativeControlVtable2::deleteAt04)>(&DeleteRefBase)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 FileInfoProgressDialogNativeControl18h* __fastcall DeleteRefBase(
     FileInfoProgressDialogNativeControl18h* p, void*, DWORD flags)
 {
@@ -59,9 +78,16 @@ FileInfoProgressDialogNativeControl18h* __fastcall DeleteControl(
     if (flags & 1u) RequireFileInfoProgressNativeServices().endpoint.memory.DeleteBody(p, 0x18); // 467BC0
     return p;
 }
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const FileInfoProgressDialogNativeControlVtable2 controlTable{
     reinterpret_cast<decltype(FileInfoProgressDialogNativeControlVtable2::destroyAt00)>(&DestroyDialog),
     reinterpret_cast<decltype(FileInfoProgressDialogNativeControlVtable2::deleteAt04)>(&DeleteControl)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 struct ConstructionCleanup final
 {
     FileInfoProgressNativeBody10h& body;

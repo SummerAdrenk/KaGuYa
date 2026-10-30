@@ -7,7 +7,8 @@ namespace KaGuYa::Start::Runtime
 namespace
 {
 // 原PE601028的文件初值就是2Ch，其余十DWORD为0；4012F0成功时不重写size。
-constinit WindowClassWinModuleNativeBody2Ch module{.sizeAt00=0x2C};
+constinit WindowClassWinModuleNativeBody2Ch module{.sizeAt00=0x2C, .lockAt04={},
+    .creationHeadAt1C=nullptr, .atomsAt20=nullptr, .atomCountAt24=0, .atomCapacityAt28=0};
 void __cdecl ExitAt5AA340()
 {ReleaseWindowClassWinModuleNativeAt5AA340(module,ProcessAtlBaseModuleNative(),DefaultWindowClassNativeApi());}
 void __cdecl Initialize()

@@ -17,7 +17,8 @@ bool MatchParamsHeaderAt413B30(const RuntimeCString& globalHeader,
                 reinterpret_cast<std::uintptr_t>(globalHeader.GetString()) - sizeof(ATL::CStringData));
             auto* copied = CloneRuntimeCStringDataAt414540(source);
             const char* characters = static_cast<const char*>(copied->data());
-            std::memcpy(output, &characters, sizeof(characters));
+            // Clone取得的引用只按原生指针发布，仍由parameter负责清理。
+            std::memcpy(static_cast<void*>(output), &characters, sizeof(characters));
         });
 
     // 参数复制完成才进入413B30；Clone抛出时不能提前把调用方输出清零。

@@ -39,6 +39,12 @@ Endpoint* __fastcall SecondDelete(Endpoint* b, void*, DWORD flags)
 DLGPROC __fastcall Procedure(Endpoint*, void*) { return &BoundPropertyPageSystemNativeAt415710; }
 void __fastcall Final(Endpoint*, void*, HWND) {} // PE424DB0确为retn4，不销毁窗口或正文。
 using Table = DialogEndpointNativeVtable4;
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table saveTable{reinterpret_cast<decltype(Table::processAt00)>(&SaveProcess),
     reinterpret_cast<decltype(Table::deleteAt04)>(&SaveDelete),
     reinterpret_cast<decltype(Table::procedureAt08)>(&Procedure), reinterpret_cast<decltype(Table::finalMessageAt0C)>(&Final)};
@@ -48,6 +54,9 @@ const Table firstTable{reinterpret_cast<decltype(Table::processAt00)>(&FirstProc
 const Table secondTable{reinterpret_cast<decltype(Table::processAt00)>(&SecondProcess),
     reinterpret_cast<decltype(Table::deleteAt04)>(&SecondDelete),
     reinterpret_cast<decltype(Table::procedureAt08)>(&Procedure), reinterpret_cast<decltype(Table::finalMessageAt0C)>(&Final)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 PropertyPageSystemNativeScope::PropertyPageSystemNativeScope(PropertyPageSystemNativeServices& s) noexcept
     : previous_(current), endpoint_(s.endpoint) { current = &s; }

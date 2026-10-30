@@ -65,6 +65,12 @@ void __fastcall Reset(Base* self, void*)
     auto* const dialog = Dialog(Derived(self));
     dialog->vptrAt00->beginAt44(dialog);
 }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -73,6 +79,9 @@ const Table methods{
     reinterpret_cast<decltype(Table::requestAt10)>(&Request),
     reinterpret_cast<decltype(Table::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(Table::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const LayerItemNativeFrameVtable& OpacityWindowNativeMethods() noexcept { return methods; }

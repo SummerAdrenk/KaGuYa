@@ -18,9 +18,17 @@ void* __fastcall DeleteSaveParams(void* body, void*, std::uint32_t flags) noexce
     return static_cast<ScrSaveParamsRuntimeState*>(body)->DeleteAtVslot04(flags);
 }
 
+// 原生x86虚槽桥接：对象走ECX，额外void*只占EDX且不消费，其余参数/返回与原槽对应。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const NativeArchiveVtable2 methods{
     reinterpret_cast<decltype(NativeArchiveVtable2::serializeAt00)>(&SerializeSaveParams),
     reinterpret_cast<decltype(NativeArchiveVtable2::deleteAt04)>(&DeleteSaveParams)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 const NativeArchiveVtable2& SaveParamsNativeMethods() noexcept

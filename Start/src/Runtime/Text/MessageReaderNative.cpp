@@ -78,7 +78,9 @@ void NativeMessageReader::DecodeBufferAt46DFD0(std::uint8_t* buffer, std::int32_
     }
 
     // 46E078..46E081：每字节重读 key；覆盖 key 后它变为 0，不再重读 encrypted。
+#if defined(_MSC_VER) && !defined(__clang__)
 #pragma loop(no_vector)
+#endif
     for (; index < length; ++index)
         buffer[index] ^= keyAt09;
 }

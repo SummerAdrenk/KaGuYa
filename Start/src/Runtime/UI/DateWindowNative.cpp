@@ -152,6 +152,12 @@ std::uint8_t __fastcall Request(Base* self, void*, std::uint8_t requested, std::
 void __fastcall Advance(Base*, void*) {} // 原vtable指向4AE170 nullsub_1。
 void __fastcall Reset(Base* self, void*)
 { ResetDateWindowNative(*reinterpret_cast<Body*>(self)); }
+// 保持原 x86 __thiscall ABI：__fastcall 首参走 ECX，未命名 EDX 占位不读取。
+// 后续实参仍按原布局入栈并由被调方清栈；返回类型相同，异常约定兼容。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const LayerItemNativeFrameVtable methods{
     {reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
      reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -160,6 +166,9 @@ const LayerItemNativeFrameVtable methods{
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::requestAt10)>(&Request),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::advanceAt14)>(&Advance),
     reinterpret_cast<decltype(LayerItemNativeFrameVtable::resetAt18)>(&Reset)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 Body* ConstructDateWindowNative(Body& body, LayerListNativeBody18h* parent, DateWindowNativeServices& services)

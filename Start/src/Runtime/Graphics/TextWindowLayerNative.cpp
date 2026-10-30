@@ -136,6 +136,11 @@ void __fastcall Clear(Base* body, void*)
     { ClearTextWindowLayerNativeAt46DC10(Derived(body), Services()); }
 
 // PE 5B2C90的八槽顺序；使用现有x86 fastcall桥保持ECX及原ret4/ret8约定。
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const Table methods{
     {{reinterpret_cast<decltype(LayerItemNativeVtable::drawAt00)>(&Draw),
       reinterpret_cast<decltype(LayerItemNativeVtable::compositeAt04)>(&Composite),
@@ -145,6 +150,9 @@ const Table methods{
      reinterpret_cast<decltype(LayerItemNativeFrameVtable::advanceAt14)>(&Advance),
      reinterpret_cast<decltype(LayerItemNativeFrameVtable::resetAt18)>(&Reset)},
     reinterpret_cast<decltype(Table::clearAt1C)>(&Clear)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 }
 
 TextWindowLayerNativeScope::TextWindowLayerNativeScope(TextWindowLayerNativeServices& services) noexcept

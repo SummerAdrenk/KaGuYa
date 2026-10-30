@@ -14,9 +14,17 @@ struct TaskBridge final
 std::uint8_t __fastcall BridgeRun(TaskNativeBody4h* body,void*,std::int32_t argument)
 {reinterpret_cast<TaskBridge*>(body)->task->Run(argument);return 1;}
 TaskNativeBody4h* __fastcall BridgeDelete(TaskNativeBody4h* body,void*,std::uint32_t flags) noexcept;
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
 const TaskNativeVtable taskMethods{
     reinterpret_cast<decltype(TaskNativeVtable::runAt00)>(&BridgeRun),
     reinterpret_cast<decltype(TaskNativeVtable::deleteAt04)>(&BridgeDelete)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 TaskNativeBody4h* __fastcall BridgeDelete(TaskNativeBody4h* body,void*,std::uint32_t flags) noexcept
 {
     auto* bridge=reinterpret_cast<TaskBridge*>(body);bridge->~TaskBridge();
@@ -52,8 +60,16 @@ struct SceneControllerRuntime::NativeStorage final
             NativeStorage& storage;bool armed=true;
             ~Unwind() noexcept{if(armed&&storage.body)storage.body->vptrAt00->deleteAt04(reinterpret_cast<TaskNativeBody4h*>(storage.body),1);}
         } unwind{*this};
+// 保留原生x86虚槽：ECX接收者、未读取的EDX占位及栈参数按对应槽布局桥接。
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wcast-function-type-mismatch"
+#endif
         static const SceneFactoryNativeVtable methods{
             reinterpret_cast<decltype(SceneFactoryNativeVtable::createAt00)>(&Create)};
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
         auto* factoryBody=static_cast<SceneFactoryNativeBody4h*>(services.memory.AllocateBody(4));
         if(factoryBody)factoryBody->vptrAt00=&methods;
         AdoptSceneFactoryNativeAt45BB78(*body,factoryBody,services);unwind.armed=false;
