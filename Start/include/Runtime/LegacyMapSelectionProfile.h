@@ -169,6 +169,9 @@ struct LegacyMapSelectionProfile final
     LegacyMapSelectionSpecial special{};
     LegacyMapSelectionBook book{};
     LegacyMapSelectionDecision decision{};
+    // 原MapSelectDialog先画自身控件(-2)，再按子页append顺序正序画（09:4CE910、15:4B9730）。
+    // MapSystemDialog多在场景子页之后append（09/15最后）；空表沿用创建顺序。
+    std::span<const int> drawOrder;
 };
 
 const LegacyMapSelectionProfile& NoLegacyMapSelectionProfile() noexcept;

@@ -152,6 +152,8 @@ constexpr POINT secondCounterPoints[]{
     {111,242},
     {152,242},
     {193,242}};
+// 09:4FC670子页append顺序1(BackGround)/2(Character)/3(Decision)/0(System)；4CE910正序绘制，系统栏在最上。
+constexpr int drawOrder[]{0,1,2,-1};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::CharacterDecision,
     .views=views,
@@ -164,7 +166,8 @@ const LegacyMapSelectionProfile profile{
     .resultVariable="prog_result",
     .secondResultVariable="prog_param00",
     .results={}, .actors={}, .animatedActors={}, .animationPositions={},
-    .decision={decisionActors,"\x8D\x44\x8A\xB4\x93\x78\x83\x6E\x81\x5B\x83\x67\x83\x7D\x81\x5B\x83\x4E\x2E\x76\x72\x6D",{600,77},firstCounterPoints,secondCounterPoints,{"\x83\x4E\x83\x8A\x83\x62\x83\x4E\x89\xB9\x2E\x73\x65\x64",0},{"\x83\x56\x83\x58\x83\x65\x83\x80\x89\xB9\x81\x79\x91\x49\x91\xF0\x8C\x88\x92\xE8\x89\xB9\x81\x7A\x2E\x73\x65\x64",1}}
+    .decision={decisionActors,"\x8D\x44\x8A\xB4\x93\x78\x83\x6E\x81\x5B\x83\x67\x83\x7D\x81\x5B\x83\x4E\x2E\x76\x72\x6D",{600,77},firstCounterPoints,secondCounterPoints,{"\x83\x4E\x83\x8A\x83\x62\x83\x4E\x89\xB9\x2E\x73\x65\x64",0},{"\x83\x56\x83\x58\x83\x65\x83\x80\x89\xB9\x81\x79\x91\x49\x91\xF0\x8C\x88\x92\xE8\x89\xB9\x81\x7A\x2E\x73\x65\x64",1}},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

@@ -192,6 +192,8 @@ constexpr LegacyMapSelectionBadge badges[]{
     {23,3,{221,434}},
     {24,4,{428,434}},
     {25,5,{634,434}}};
+// 05:4FD610先挂自身Static(3)，再append子页1/2，MapSystemDialog(0)最后。
+constexpr int drawOrder[]{-2,0,1,-1};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
@@ -208,6 +210,7 @@ const LegacyMapSelectionProfile profile{
     .actors=actorRows,
     .area={.rule=LegacyMapSelectionAreaRule::PriorityMarkers,.count=8,.firstPlace=4,.firstMarker=-1,.firstBackground=28,.freeEvent=26,.cancelEvent=27,.freeResultBase=6,.extraAreaVariables={},.markerPositions=markerPositions,.markerStates=markerStates,.badgeNames=badgeNames,.badges=badges,.animation="\x4D\x41\x50\x91\x49\x91\xF0\x5F\x83\x41\x83\x6A\x83\x81\x83\x6E\x81\x5B\x83\x8C\x83\x80\x2E\x61\x6E\x6D",.animationPosition={656,355},.animationEvent=25},
     .animatedActors={}, .animationPositions={},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

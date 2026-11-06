@@ -213,6 +213,8 @@ constexpr const char* areaVariables[]{
     "\x82\xBB\x82\xCC\x91\xBC\x81\x40\x83\x43\x83\x78\x83\x93\x83\x67\x83\x5E\x83\x43\x83\x76\x81\x69\x88\xA2\x90\x77\x92\xCB\x89\x77\x81\x6A",
     "\x82\xBB\x82\xCC\x91\xBC\x81\x40\x83\x43\x83\x78\x83\x93\x83\x67\x83\x5E\x83\x43\x83\x76\x81\x69\x8B\x53\x8F\xE3\x89\xB7\x90\xF2\x8A\x58\x81\x6A",
     "\x82\xBB\x82\xCC\x91\xBC\x81\x40\x83\x43\x83\x78\x83\x93\x83\x67\x83\x5E\x83\x43\x83\x76\x81\x69\x8B\x53\x8F\xE3\x98\x5B\x83\x50\x81\x5B\x83\x75\x83\x8B\x89\x77\x81\x6A"};
+// 08:50F0D0先挂自身Static(5)，子页append顺序1/2/0(System)/3(Date)/4(Gague)。
+constexpr int drawOrder[]{-2,0,1,-1,2};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
@@ -229,6 +231,7 @@ const LegacyMapSelectionProfile profile{
     .actors=actorRows,
     .area={.rule=LegacyMapSelectionAreaRule::RouteVisibility,.count=7,.firstPlace=6,.firstMarker=13,.firstBackground=31,.freeEvent=29,.cancelEvent=30,.freeResultBase=9,.extraAreaVariables=areaVariables,.markerPositions={},.markerStates={},.badgeNames={},.badges={},.dateEvent=59,.gaugeEvent=60},
     .animatedActors={}, .animationPositions={},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

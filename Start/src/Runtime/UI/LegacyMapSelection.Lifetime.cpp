@@ -187,6 +187,17 @@ Gui* NewLegacyMapSelectionDialog(LegacyMapSelectionServices& s)
         case LegacyMapSelectionKind::CharacterDecision:ConstructDecision(*b);break;
         default:throw std::logic_error("Map selection: invalid kind");
         }
+        if(!p.drawOrder.empty())
+        {
+            const auto rank=[&p](int id)
+            {
+                const auto it=std::find(p.drawOrder.begin(),p.drawOrder.end(),id);
+                if(it==p.drawOrder.end())throw std::logic_error("Map selection: view missing from draw order");
+                return it-p.drawOrder.begin();
+            };
+            for(const auto& panel:b->panels)static_cast<void>(rank(panel->id));
+            std::stable_sort(b->panels.begin(),b->panels.end(),[&rank](const auto& l,const auto& r){return rank(l->id)<rank(r->id);});
+        }
         Load(*b,b->black,"bg_black.bgd");CreateCanvas(*b,b->image,0);
         return &b.release()->common;
     }

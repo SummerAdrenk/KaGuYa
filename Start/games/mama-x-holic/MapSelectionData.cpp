@@ -337,6 +337,8 @@ constexpr POINT markerPositions[]{
     {1186,310},
     {1230,310},
     {1274,310}};
+// 11:5025A0先挂自身Static(3)，再append子页1/2，MapSystemDialog(0)最后。
+constexpr int drawOrder[]{-2,0,1,-1};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
@@ -353,6 +355,7 @@ const LegacyMapSelectionProfile profile{
     .actors=actorRows,
     .area={.rule=LegacyMapSelectionAreaRule::StackedFive,.count=11,.firstPlace=4,.firstMarker=15,.firstBackground=29,.freeEvent=27,.cancelEvent=28,.freeResultBase=6,.explorationVariable="\x8B\xA4\x92\xCA\x83\x8B\x81\x5B\x83\x67\x81\x40\x92\xCA\x89\xDF\x83\x74\x83\x89\x83\x4F",.extraAreaVariables={},.markerPositions=markerPositions,.markerStates={},.badgeNames={},.badges={}},
     .animatedActors={}, .animationPositions={},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

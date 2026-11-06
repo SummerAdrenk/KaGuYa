@@ -268,6 +268,8 @@ constexpr int visibilitySets[]{
     34,
     35,
     52};
+// 15:4FB9B0先挂自身Static(4)，子页append顺序1/2/3(Hint)/0(System)；4B9730先自身后子页。
+constexpr int drawOrder[]{-2,0,1,3,-1};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
@@ -284,7 +286,8 @@ const LegacyMapSelectionProfile profile{
     .actors=actorRows,
     .area={.rule=LegacyMapSelectionAreaRule::SpecialEvents,.count=9,.firstPlace=5,.firstMarker=14,.firstBackground=37,.freeEvent=-1,.cancelEvent=36,.freeResultBase=0,.hintArea=8,.hintCancel=54,.parentOverlay=4,.extraAreaVariables={},.markerPositions={},.markerStates={},.badgeNames={},.badges={}},
     .animatedActors={}, .animationPositions={},
-    .special={specialTypes,specialTypeWidgets,flagVariables,flagWidgets,otherLocations,visibilitySets}
+    .special={specialTypes,specialTypeWidgets,flagVariables,flagWidgets,otherLocations,visibilitySets},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }

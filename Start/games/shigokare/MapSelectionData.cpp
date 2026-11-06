@@ -141,6 +141,8 @@ constexpr LegacyMapSelectionBadge badges[]{
     {16,3,{522,168}},
     {17,4,{646,168}},
     {18,5,{770,168}}};
+// 07:500D10先挂自身Static(4)，子页append顺序1/2/0(System)/3(Date)。
+constexpr int drawOrder[]{-2,0,1,-1,2};
 const LegacyMapSelectionProfile profile{
     .kind=LegacyMapSelectionKind::AreaActors,
     .views=views,
@@ -157,6 +159,7 @@ const LegacyMapSelectionProfile profile{
     .actors=actorRows,
     .area={.rule=LegacyMapSelectionAreaRule::TimeMarkers,.count=8,.firstPlace=5,.firstMarker=-1,.firstBackground=21,.freeEvent=19,.cancelEvent=20,.freeResultBase=6,.extraAreaVariables={},.markerPositions={},.markerStates={},.badgeNames=badgeNames,.badges=badges,.dateEvent=40},
     .animatedActors={}, .animationPositions={},
+    .drawOrder=drawOrder
 };
 }
 const LegacyMapSelectionProfile& Profile() noexcept { return profile; }
