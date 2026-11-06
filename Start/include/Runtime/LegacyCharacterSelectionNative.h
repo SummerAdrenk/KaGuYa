@@ -44,6 +44,8 @@ struct LegacyCharacterSelectionDialog final
     LegacyCharacterSelectionPhase phase=LegacyCharacterSelectionPhase::Opening;
     TransitOperation operation{};
     int mode=0, option=0, page=0, selected=-1, activeTab=0, hold=0, transitionStage=0;
+    // 02原4F8C10的独立Enter锁存，不与GUI焦点的inputLatchAt30混用。
+    int enterLatch=0;
     explicit LegacyCharacterSelectionDialog(LegacyCharacterSelectionServices&);
 };
 class LegacyCharacterSelectionScope final

@@ -3,6 +3,72 @@
 
 namespace KaGuYa::Start::Runtime::LegacyCharacterSelectionDetail
 {
+int ActiveInput(Gui& gui,int& latch)
+{
+    // 02:4F8C10。调用者已确认存在激活控件，type非0不处理Enter。
+    if(gui.activeAt4C->typeAt08!=0)return 0;
+    const int previous=latch;
+    if(!previous)
+    {
+        if(!gui.vptrAt00->pressedAt70(&gui,5))return 0;
+        latch=1;
+        auto* child=gui.activeAt4C;
+        reinterpret_cast<const GuiButtonNativeVtable29*>(child->vptrAt00)->setPressedAt70(child,1);
+        return 1;
+    }
+    if(!gui.vptrAt00->heldAt6C(&gui,5))
+    {
+        Ref event;
+        CopyGuiClickedEventReference(event.slot,gui.activeAt4C->eventAt3C);
+        if(event.slot.baseAt00)
+        {
+            auto* selected=ResolveGuiClickedEvent(event.slot);
+            selected->vptrAt00->invokeAt00(selected);
+        }
+        // 先调用事件再清锁；回调抛出时仍保留原锁存，但局部Ref必须释放。
+        latch=0;
+    }
+    return previous;
+}
+void ResetInput(Gui& gui,int& latch)
+{
+    // 02:50E020先清独立锁，再进入4CF2A0的焦点/GUI锁复位。
+    latch=0;
+    gui.vptrAt00->setActiveAt30(&gui,nullptr);
+    gui.inputLatchAt30=0;
+}
+int UpperInput(Gui& gui,std::span<const LegacyCharacterSelectionHotkey> hotkeys,int page)
+{
+    // 02:4F8A10，鼠标/取消先于Enter，Enter先于角色热键。
+    if(gui.vptrAt00->movedAt7C(&gui)||gui.vptrAt00->mousePressAt80(&gui)||gui.vptrAt00->pressedAt70(&gui,0))
+    {gui.vptrAt00->resetInputAt3C(&gui);return 0;}
+    if(gui.activeAt4C&&gui.vptrAt00->activeInputAt38(&gui))return 1;
+    for(const auto& key:hotkeys)
+    {
+        if(key.view!=page||!gui.vptrAt00->pressedAt70(&gui,key.input))continue;
+        Ref selected;
+        gui.vptrAt00->findChildAt14(&gui,&selected.slot,key.event);
+        if(selected.slot.baseAt00)
+        {
+            auto* child=ResolveGuiControl(selected.slot);
+            if(child->vptrAt00->enabledAt1C(child))
+            {
+                child=ResolveGuiControl(selected.slot);
+                if(child->vptrAt00->resourceStateAt38(child)==0)
+                {
+                    gui.vptrAt00->resetChildrenAt68(&gui);
+                    gui.inputLatchAt30=1;
+                    child=ResolveGuiControl(selected.slot);
+                    gui.vptrAt00->setActiveAt30(&gui,child);
+                    return 3;
+                }
+            }
+        }
+        // 原版在首个已按下热键处结束，不继续尝试后续候选。
+        return gui.inputLatchAt30?2:0;
+    }
+    return gui.inputLatchAt30?2:0;
+}
 void Navigation(Body& b)
 {
     ClearGuiNavigationReferencesAt4D80B0(b.common.navigationAt24);
@@ -123,7 +189,7 @@ int Poll(Gui* gui,void*)
     if(b.phase==LegacyCharacterSelectionPhase::Confirming)return 1;
     if(b.phase==LegacyCharacterSelectionPhase::Hold)
     {if(b.hold>0)--b.hold;else{b.phase=LegacyCharacterSelectionPhase::Closing;b.transitionStage=0;}return 1;}
-    Hotkeys(b);
+    if(p.kind!=LegacyCharacterSelectionKind::TwoPage)Hotkeys(b);
     if(p.kind==LegacyCharacterSelectionKind::TwoPage&&b.selected>=0)
     {
         // 02只让确认页收输入；底层页面继续按原状态绘制，不改成整页灰色。

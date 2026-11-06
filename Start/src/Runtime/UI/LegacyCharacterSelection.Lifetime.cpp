@@ -73,6 +73,25 @@ namespace
 void __fastcall BeginThunk(Gui* g,void*){auto& b=*reinterpret_cast<Body*>(g);LegacyCharacterSelectionScope scope(*b.services);Begin(g,nullptr);}
 int __fastcall PollThunk(Gui* g,void*){auto& b=*reinterpret_cast<Body*>(g);LegacyCharacterSelectionScope scope(*b.services);return Poll(g,nullptr);}
 int __fastcall EndThunk(Gui* g,void*){auto& b=*reinterpret_cast<Body*>(g);LegacyCharacterSelectionScope scope(*b.services);return End(g,nullptr);}
+int __fastcall ActiveInputThunk(Gui* g,void*)
+{
+    auto& b=*reinterpret_cast<Body*>(g);
+    if(b.services->profile.kind!=LegacyCharacterSelectionKind::TwoPage)return GuiDialogBaseVtable().activeInputAt38(g);
+    LegacyCharacterSelectionScope scope(*b.services);return ActiveInput(*g,b.enterLatch);
+}
+void __fastcall ResetInputThunk(Gui* g,void*)
+{
+    auto& b=*reinterpret_cast<Body*>(g);
+    if(b.services->profile.kind!=LegacyCharacterSelectionKind::TwoPage){GuiDialogBaseVtable().resetInputAt3C(g);return;}
+    LegacyCharacterSelectionScope scope(*b.services);ResetInput(*g,b.enterLatch);
+}
+int __fastcall UpperInputThunk(Gui* g,void*)
+{
+    auto& b=*reinterpret_cast<Body*>(g);
+    // 确认页仍使用既有导航表；普通地图页才使用原版的角色热键入口。
+    if(b.services->profile.kind!=LegacyCharacterSelectionKind::TwoPage||b.selected>=0)return GuiDialogBaseVtable().upperInputAt34(g);
+    LegacyCharacterSelectionScope scope(*b.services);return UpperInput(*g,b.services->profile.hotkeys,b.page);
+}
 Gui* __fastcall DeleteThunk(Gui* g,void*,unsigned flags) noexcept
 {auto* b=reinterpret_cast<Body*>(g);LegacyCharacterSelectionScope scope(*b->services);Destroy(*b);b->~Body();if(flags&1)::operator delete(b,sizeof(Body));return g;}
 void __fastcall DrawThunk(Gui* g,void*,const RECT* clip)
@@ -114,6 +133,7 @@ const GuiDialogNativeVtable35& LegacyCharacterSelectionDialogMethods() noexcept
 #endif
 #define BIND(slot,fn) t.slot=reinterpret_cast<decltype(t.slot)>(&fn)
         BIND(beginAt44,BeginThunk);BIND(pollAt48,PollThunk);BIND(endAt4C,EndThunk);
+        BIND(upperInputAt34,UpperInputThunk);BIND(activeInputAt38,ActiveInputThunk);BIND(resetInputAt3C,ResetInputThunk);
         BIND(deletingDestructorAt04,DeleteThunk);BIND(drawAt60,DrawThunk);BIND(compositeAt5C,CompositeThunk);
 #undef BIND
 #if defined(__clang__)
